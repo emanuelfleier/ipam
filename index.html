@@ -25,9 +25,9 @@
         }
         /* Estilo para el botón de mes activo */
         .tab-active {
-            background-color: #0d9488; /* Verde azulado principal */
+            background-color: #0f766e; /* Nuevo Verde azulado principal */
             color: white;
-            border-color: #0d9488;
+            border-color: #0f766e;
         }
         /* Hace que el cursor cambie a puntero en los elementos del gráfico */
         canvas:hover {
@@ -55,11 +55,33 @@
 </head>
 <body class="p-4 sm:p-6 md:p-8">
 
-    <div class="max-w-7xl mx-auto">
+    <!-- Ventana Modal de Contraseña -->
+    <div id="password-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">Acceso Restringido</h2>
+            <p class="text-center text-gray-500 mb-6">Por favor, ingrese la contraseña para continuar.</p>
+            <form id="password-form">
+                <div class="mb-4">
+                    <label for="password-input" class="sr-only">Contraseña</label>
+                    <input type="password" id="password-input" placeholder="Contraseña" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition">
+                </div>
+                <p id="error-message" class="text-red-500 text-sm text-center mb-4 hidden">Contraseña incorrecta. Intente de nuevo.</p>
+                <button type="submit" class="w-full bg-teal-600 text-white font-bold py-2 px-4 rounded-md hover:bg-teal-700 transition-colors duration-300">
+                    Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contenido Principal del Dashboard (Oculto por defecto) -->
+    <div id="main-content" class="max-w-7xl mx-auto hidden">
         <!-- Encabezado -->
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Dashboard de Estadísticas Médicas</h1>
-            <p class="text-gray-500 mt-1">Análisis de prestaciones de Mayo a Agosto 2025</p>
+        <header class="mb-8 text-center">
+            <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-700 to-cyan-600">
+                Dashboard de Diagnóstico por Imagen
+            </h1>
+            <p class="text-xl font-medium text-gray-600 mt-1">Sanatorio IPAM</p>
+            <p class="text-gray-500 mt-2">Análisis de prestaciones de Mayo a Agosto 2025</p>
         </header>
 
         <!-- Selector de Vista -->
@@ -93,6 +115,30 @@
     </div>
 
     <script>
+        // --- LÓGICA DE CONTRASEÑA ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const passwordModal = document.getElementById('password-modal');
+            const mainContent = document.getElementById('main-content');
+            const CORRECT_PASSWORD = 'ipam3125';
+
+            passwordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (passwordInput.value === CORRECT_PASSWORD) {
+                    passwordModal.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                    // Iniciar el dashboard una vez que la contraseña es correcta
+                    initializeDashboard();
+                } else {
+                    errorMessage.classList.remove('hidden');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            });
+        });
+
         // --- BASE DE DATOS DE ESTADÍSTICAS ---
         const statsData = {
             mayo: {
@@ -144,7 +190,7 @@
         // --- LÓGICA DEL DASHBOARD ---
 
         let charts = {};
-        const colorPalette = ['#14b8a6', '#2dd4bf', '#a7f3d0', '#0891b2', '#67e8f9', '#a5f3fc'];
+        const colorPalette = ['#0f766e', '#0e7490', '#1d4ed8', '#16a34a', '#8b5cf6', '#ec4899'];
         
         function showFilterMessage(filterType, filterValue) {
             const filterBar = document.getElementById('filter-bar');
@@ -246,9 +292,9 @@
             renderChart('origenChart', 'doughnut', data.origen.labels, [{ label: 'Origen', data: data.origen.data, backgroundColor: colorPalette }], 'Origen');
             renderChart('tipoServicioChart', 'bar', data.tipoServicio.labels, [{ label: 'Estudios', data: data.tipoServicio.data, backgroundColor: colorPalette[0] }], 'Tipo de Servicio');
             renderChart('profesionalesChart', 'bar', data.profesionales.labels, [{ label: 'Estudios', data: data.profesionales.data, backgroundColor: colorPalette[1] }], 'Profesional', { indexAxis: 'y' });
-            renderChart('obrasSocialesChart', 'bar', data.obrasSociales.labels, [{ label: 'Estudios', data: data.obrasSociales.data, backgroundColor: colorPalette[3] }], 'Obra Social', { indexAxis: 'y' });
-            renderChart('diasSemanaChart', 'bar', data.diasSemana.labels, [{ label: 'Estudios', data: data.diasSemana.data, backgroundColor: colorPalette[0] }], 'Día de la Semana');
-            renderChart('frecuenciaChart', 'bar', data.frecuenciaPacientes.labels, [{ label: 'Cantidad de Pacientes', data: data.frecuenciaPacientes.data, backgroundColor: colorPalette[1] }], 'Frecuencia');
+            renderChart('obrasSocialesChart', 'bar', data.obrasSociales.labels, [{ label: 'Estudios', data: data.obrasSociales.data, backgroundColor: colorPalette[2] }], 'Obra Social', { indexAxis: 'y' });
+            renderChart('diasSemanaChart', 'bar', data.diasSemana.labels, [{ label: 'Estudios', data: data.diasSemana.data, backgroundColor: colorPalette[3] }], 'Día de la Semana');
+            renderChart('frecuenciaChart', 'bar', data.frecuenciaPacientes.labels, [{ label: 'Cantidad de Pacientes', data: data.frecuenciaPacientes.data, backgroundColor: colorPalette[4] }], 'Frecuencia');
             document.getElementById('top-pacientes-list').innerHTML = data.topPacientes.map(p => `<li class="flex justify-between items-center p-3 bg-gray-50 rounded-md"><span>${p.nombre}</span><span class="font-bold text-teal-600 bg-teal-100 px-3 py-1 rounded-full text-sm">${p.cantidad} estudios</span></li>`).join('');
         }
 
@@ -285,15 +331,15 @@
                     label: 'Prácticas Realizadas', 
                     data: summary.evolution.practicas, 
                     borderColor: colorPalette[0], 
-                    backgroundColor: 'rgba(20, 184, 166, 0.2)', 
+                    backgroundColor: 'rgba(15, 118, 110, 0.2)', 
                     tension: 0.2, 
                     fill: true 
                 },
                 { 
                     label: 'Pacientes Únicos', 
                     data: summary.evolution.pacientes, 
-                    borderColor: colorPalette[3], 
-                    backgroundColor: 'rgba(8, 145, 178, 0.2)', 
+                    borderColor: colorPalette[2], 
+                    backgroundColor: 'rgba(29, 78, 216, 0.2)', 
                     tension: 0.2, 
                     fill: true 
                 }
@@ -312,7 +358,7 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        function initializeDashboard() {
             const viewSelector = document.getElementById('view-selector');
             const months = Object.keys(statsData);
             const summaryButton = document.createElement('button');
@@ -335,7 +381,7 @@
             document.getElementById('clear-filter-btn').addEventListener('click', clearFilterMessage);
 
             switchView('summary');
-        });
+        }
     </script>
 </body>
 </html>
