@@ -81,7 +81,7 @@
                 Dashboard de Diagnóstico por Imagen
             </h1>
             <p class="text-xl font-medium text-gray-600 mt-1">Sanatorio IPAM</p>
-            <p class="text-gray-500 mt-2">Análisis de prestaciones de Mayo a Agosto 2025</p>
+            <p class="text-gray-500 mt-2">Análisis de prestaciones - Año 2025</p>
         </header>
 
         <!-- Selector de Vista -->
@@ -141,6 +141,50 @@
 
         // --- BASE DE DATOS DE ESTADÍSTICAS ---
         const statsData = {
+            enero: {
+                periodo: "01 al 31 de enero de 2025",
+                kpis: { practicas: 408, pacientes: 147, promedio: 2.78 },
+                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [118, 169, 121] },
+                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [25, 94, 198, 10, 26] },
+                profesionales: { labels: ["Médico Informate", "ALESSI DAVID", "MERLAT VANESA", "Centro Médico IPAM", "GONZALEZ EDUARDO", "JAMIN ALEXIS"], data: [260, 44, 43, 21, 9, 6] },
+                obrasSociales: { labels: ["GLOBAL EMPRESARIA S.A", "ANDAR GLOBAL", "SOMU (GLOBAL)", "GLOBAL HOSPITAL ESPAÑOL"], data: [268, 69, 53, 18] },
+                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [53, 88, 57, 104, 59, 37, 10] },
+                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios", "10 Estudios", "38 Estudios"], data: [61, 53, 14, 6, 6, 2, 1, 1] },
+                topPacientes: [ { nombre: "SCIAINI CLAUDIA ANA MARIA", cantidad: 39 }, { nombre: "CANO JAVIER ORLANDO", cantidad: 14 }, { nombre: "LIBUTTI VALENTINO PATRICIO", cantidad: 12 }, { nombre: "BERON ESCALANTE AYLIN ROMA", cantidad: 11 }, { nombre: "JOSE DIEGO OMAR", cantidad: 11 }, { nombre: "CALVO FLORENCIA AGUSTINA", cantidad: 7 }, { nombre: "CANIS ALBERTO RAFAEL", cantidad: 7 }, { nombre: "GARCIA LOPEZ LUISINA", cantidad: 7 }, { nombre: "RIOS VICTOR DARIO", cantidad: 7 }, { nombre: "FARIAS VANESA CECILIA", cantidad: 6 } ]
+            },
+            febrero: {
+                periodo: "01 al 28 de febrero de 2025",
+                kpis: { practicas: 318, pacientes: 154, promedio: 2.06 },
+                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [85, 141, 92] },
+                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [24, 63, 198, 9, 24] },
+                profesionales: { labels: ["Médico Informate", "ALESSI DAVID", "MERLAT VANESA", "SCARABINO NADIA", "PIACENZI MARIA", "FALCO FERNANDO"], data: [228, 31, 20, 9, 8, 5] },
+                obrasSociales: { labels: ["GLOBAL EMPRESARIA S.A", "ANDAR GLOBAL", "SOMU (GLOBAL)", "GLOBAL HOSPITAL ESPAÑOL"], data: [227, 67, 21, 3] },
+                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [60, 42, 52, 53, 43, 46, 22] },
+                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "5 Estudios", "6 Estudios", "8 Estudios", "16 Estudios"], data: [83, 53, 8, 4, 1, 2, 1] },
+                topPacientes: [ { nombre: "FERREYRA JORGE", cantidad: 18 }, { nombre: "DIAZ CINTIA BEATRIZ", cantidad: 15 }, { nombre: "SCIAINI CLAUDIA ANA MARIA", cantidad: 9 }, { nombre: "FONTELA LUZMILA JACKELINE", cantidad: 8 }, { nombre: "GAUNA HECTOR RICARDO", cantidad: 7 }, { nombre: "BADINO ALEJANDRO MARTIN", cantidad: 6 }, { nombre: "CORBALAN DIEGO HERNAN", cantidad: 6 }, { nombre: "LOMBARDI CRISTIAN DURVAL", cantidad: 5 }, { nombre: "ORTIZ SEGOVIA HUGO ALCIDES", cantidad: 5 }, { nombre: "PERALTA THIAN SANTIAGO", cantidad: 5 } ]
+            },
+            marzo: {
+                periodo: "01 al 31 de marzo de 2025",
+                kpis: { practicas: 326, pacientes: 148, promedio: 2.20 },
+                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [91, 135, 100] },
+                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [19, 67, 205, 13, 22] },
+                profesionales: { labels: ["Médico Informate", "MERLAT VANESA", "ALESSI DAVID", "Centro Médico IPAM", "FALCO FERNANDO", "GENOVA DAMIAN"], data: [237, 36, 31, 6, 5, 3] },
+                obrasSociales: { labels: ["GLOBAL EMPRESARIA S.A", "ANDAR GLOBAL", "SOMU (GLOBAL)", "GLOBAL HOSPITAL ESPAÑOL"], data: [233, 60, 26, 5] },
+                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [55, 43, 49, 62, 69, 19, 29] },
+                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "11 Estudios", "12 Estudios"], data: [67, 54, 8, 9, 5, 1, 1] },
+                topPacientes: [ { nombre: "FERNANDEZ NARCISO GUSTAVO", cantidad: 12 }, { nombre: "LEDESMA AXEL JOEY", cantidad: 11 }, { nombre: "GUADAGNA WENDY ROCIO", cantidad: 10 }, { nombre: "LUNA NAIM ISMAEL", cantidad: 7 }, { nombre: "NUÑEZ MAURICIO MIGUEL", cantidad: 7 }, { nombre: "VIERA HECTOR", cantidad: 7 }, { nombre: "FONTELA LUZMILA JACKELINE", cantidad: 6 }, { nombre: "AMBEK EMANNUEL", cantidad: 5 }, { nombre: "CARO SANDRA ANDREA", cantidad: 5 }, { nombre: "MARZADRI FELIPE JULIAN", cantidad: 5 } ]
+            },
+            abril: {
+                periodo: "01 al 30 de abril de 2025",
+                kpis: { practicas: 379, pacientes: 169, promedio: 2.24 },
+                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [81, 167, 131] },
+                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [30, 102, 191, 5, 51] },
+                profesionales: { labels: ["Médico Informate", "MERLAT VANESA", "ALESSI DAVID", "PIACENZI MARIA", "FUMAGALLO EDUARDO", "LUYO VERA LIGIA"], data: [245, 56, 27, 13, 9, 5] },
+                obrasSociales: { labels: ["GLOBAL EMPRESARIA S.A", "ANDAR GLOBAL", "ANDAR GLOBAL PLUS", "SOMU (GLOBAL)"], data: [264, 75, 23, 12] },
+                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [65, 78, 74, 57, 62, 26, 17] },
+                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "5 Estudios", "6 Estudios", "14 Estudios"], data: [73, 63, 15, 6, 3, 1] },
+                topPacientes: [ { nombre: "MARZADRI FELIPE JULIAN", cantidad: 14 }, { nombre: "MANSILLA DIEGO ROMAN", cantidad: 8 }, { nombre: "MARSICO PILAR", cantidad: 8 }, { nombre: "SOSA MORENO MIGUEL ANGEL", cantidad: 8 }, { nombre: "CABRAL PABLO ELIAS", cantidad: 7 }, { nombre: "MACORITO MOLINARI ALVARO", cantidad: 7 }, { nombre: "SILVA YAMILA BELEN", cantidad: 7 }, { nombre: "FRAGAPANE OSCAR MIGUEL", cantidad: 6 }, { nombre: "LOPEZ HUGO", cantidad: 6 }, { nombre: "PAREDES SERGIO FABIAN", cantidad: 6 } ]
+            },
             mayo: {
                 periodo: "01 al 31 de mayo de 2025",
                 kpis: { practicas: 389, pacientes: 179, promedio: 1.94 },
@@ -385,3 +429,4 @@
     </script>
 </body>
 </html>
+
