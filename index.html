@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Estadísticas Médicas</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js para los gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados y configuración de la fuente */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Gris claro de fondo */
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        /* Estilo para el botón de mes activo */
+        .tab-active {
+            background-color: #3b82f6; /* Azul */
+            color: white;
+            border-color: #3b82f6;
+        }
+        /* Hace que el cursor cambie a puntero en los elementos del gráfico */
+        canvas:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Encabezado -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Dashboard de Estadísticas Médicas</h1>
+            <p class="text-gray-500 mt-1">Análisis de prestaciones de Mayo a Agosto 2025</p>
+        </header>
+
+        <!-- Selector de Vista -->
+        <div id="view-selector" class="mb-8 flex flex-wrap gap-2">
+            <!-- Los botones se generan dinámicamente con JS -->
+        </div>
+        
+        <!-- Barra de Filtro Simulado -->
+        <div id="filter-bar" class="hidden mb-6 p-4 bg-blue-100 border border-blue-200 rounded-lg flex justify-between items-center">
+            <div>
+                <p class="font-semibold text-blue-800">Filtro Activo (Simulación)</p>
+                <p id="filter-text" class="text-sm text-blue-700"></p>
+                <p class="text-xs text-blue-600 mt-1">Nota: Para un filtrado real, se requerirían datos no agregados.</p>
+            </div>
+            <button id="clear-filter-btn" class="px-3 py-1 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600">Limpiar Filtro</button>
+        </div>
+
+
+        <!-- Contenedor del Dashboard -->
+        <div id="dashboard-content">
+            <!-- Resumen General (KPIs) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="kpi-container">
+                <!-- Las tarjetas de KPI se generan dinámicamente -->
+            </div>
+
+            <!-- Contenedor de Gráficos -->
+            <div id="charts-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Los gráficos se generan dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- BASE DE DATOS DE ESTADÍSTICAS ---
+        const statsData = {
+            mayo: {
+                periodo: "01 al 31 de mayo de 2025",
+                kpis: { practicas: 389, pacientes: 179, promedio: 1.94 },
+                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [108, 197, 84] },
+                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [29, 120, 203, 19, 18] },
+                profesionales: { labels: ["Médico Informate", "ALESSI DAVID", "MERLAT VANESA", "Centro Médico IPAM", "PIACENZI MARIA", "SCARABINO NADIA", "LUYO VERA LIGIA"], data: [234, 61, 46, 10, 8, 7, 6] },
+                obrasSociales: { labels: ["GLOBAL EMPRESARIA S.A", "ANDAR GLOBAL", "ANDAR GLOBAL PLUS", "SOMU (GLOBAL)"], data: [272, 59, 25, 22] },
+                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [67, 52, 64, 77, 76, 24, 29] },
+                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios", "8 Estudios", "9 Estudios", "12 Estudios"], data: [84, 124, 45, 40, 20, 6, 8, 9, 12] },
+                topPacientes: [ { nombre: "ALEGRE MAURO MATIAS", cantidad: 12 }, { nombre: "BRACCO CELINA DANIELA", cantidad: 11 }, { nombre: "RODRIGUEZ JONATAN ALEXIS", cantidad: 10 }, { nombre: "PEREYRA JESICA GEORGINA", cantidad: 9 }, { nombre: "VILLENEUVE MELANIE", cantidad: 9 }, { nombre: "CORBALAN HIPOLITO RAMON", cantidad: 6 }, { nombre: "VILLORDO ANTONINO VALENTIN", cantidad: 6 }, { nombre: "ALTAMIRANO VICTOR HUGO", cantidad: 5 }, { nombre: "AYALA VALERIA ROMINA", cantidad: 5 }, { nombre: "BADINO ALEJANDRO MARTIN", cantidad: 5 } ]
+            },
+            junio: {
+                periodo: "01 al 30 de junio de 2025",
+                kpis: { practicas: 397, pacientes: 188, promedio: 2.11 },
+                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [101, 213, 83] },
+                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [27, 132, 195, 8, 35] },
+                profesionales: { labels: ["Médico Informate", "ALESSI DAVID", "MERLAT VANESA", "PIACENZI MARIA", "FALCO FERNANDO", "SCARABINO NADIA"], data: [246, 61, 49, 15, 7, 7] },
+                obrasSociales: { labels: ["GLOBAL EMPRESARIA S.A", "ANDAR GLOBAL", "ANDAR GLOBAL PLUS", "SOMU (GLOBAL)"], data: [305, 65, 21, 6] },
+                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [63, 74, 58, 75, 84, 20, 23] },
+                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios", "7 Estudios", "11 Estudios", "28 Estudios"], data: [95, 63, 16, 6, 3, 2, 1, 1, 1] },
+                topPacientes: [ { nombre: "ALEGRE MAURO MATIAS", cantidad: 28 }, { nombre: "AMICELLI DOMINGO ROQUE", cantidad: 13 }, { nombre: "PERALTA GRACIELA LILIANA", cantidad: 12 }, { nombre: "BUYATTI YANINA", cantidad: 6 }, { nombre: "MACHUCA CAROLINA SOLEDAD", cantidad: 6 }, { nombre: "RAMOS JAVIER MARCELO", cantidad: 6 }, { nombre: "BENITEZ SERGIO JORGE", cantidad: 5 }, { nombre: "ENTESANO VANESA", cantidad: 5 }, { nombre: "MORIN NEstor FABIAN", cantidad: 5 }, { nombre: "POSTIGLIONE CAMILA ALDANA", cantidad: 5 } ]
+            },
+            julio: {
+                periodo: "01 al 31 de julio de 2025",
+                kpis: { practicas: 444, pacientes: 196, promedio: 2.27 },
+                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [99, 208, 137] },
+                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [23, 110, 270, 9, 32] },
+                profesionales: { labels: ["Médico Informate", "MERLAT VANESA", "ALESSI DAVID", "PIACENZI MARIA", "FUMAGALLO EDUARDO", "SCARABINO NADIA"], data: [311, 56, 31, 13, 10, 6] },
+                obrasSociales: { labels: ["GLOBAL EMPRESARIA S.A", "ANDAR GLOBAL", "ANDAR GLOBAL PLUS", "SOMU (GLOBAL)"], data: [321, 73, 37, 12] },
+                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [72, 84, 100, 86, 62, 22, 18] },
+                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios", "7 Estudios", "9 Estudios", "32 Estudios"], data: [86, 68, 24, 6, 4, 5, 1, 1, 1] },
+                topPacientes: [ { nombre: "MUÑOZ VERA CONSTANZA", cantidad: 32 }, { nombre: "MARTINEZ ORLANDO OSCAR", cantidad: 9 }, { nombre: "OBREGON MIRTA GRACIELA", cantidad: 9 }, { nombre: "GONZALEZ TAMARA MARIEL", cantidad: 7 }, { nombre: "ALVARENGA ANGEL GABRIEL", cantidad: 6 }, { nombre: "CUADROS LILIANA SUSANA", cantidad: 6 }, { nombre: "MONGE SOLEDAD AYLEN", cantidad: 6 }, { nombre: "REMINECHY RENZO ANTONIO", cantidad: 6 }, { nombre: "RIVERO CAROLINA", cantidad: 6 }, { nombre: "TINININI GIULIANO GIANMARCO", cantidad: 6 } ]
+            },
+            agosto: {
+                periodo: "01 al 26 de agosto de 2025",
+                kpis: { practicas: 293, pacientes: 157, promedio: 1.87 },
+                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [90, 153, 50] },
+                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [13, 57, 196, 4, 23] },
+                profesionales: { labels: ["Médico Informate", "MERLAT VANESA", "ALESSI DAVID", "PIACENZI MARIA", "LUYO VERA LIGIA", "SCARABINO NADIA"], data: [222, 28, 20, 9, 3, 3] },
+                obrasSociales: { labels: ["GLOBAL EMPRESARIA S.A", "ANDAR GLOBAL", "ANDAR GLOBAL PLUS", "SOMU (GLOBAL)"], data: [194, 48, 35, 12] },
+                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [55, 71, 28, 33, 60, 33, 13] },
+                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios"], data: [80, 106, 48, 20, 10, 6] },
+                topPacientes: [ { nombre: "CASEN RODRIGUEZ AMANDA", cantidad: 6 }, { nombre: "LUENGO FLORENCIA GABRIELA", cantidad: 6 }, { nombre: "SCHIBELBEIN EDUARDO", cantidad: 6 }, { nombre: "LARES DAMARIS JAZMIN", cantidad: 5 }, { nombre: "OLIVERA NILDA ESTER", cantidad: 5 }, { nombre: "VALDEZ FRANCHESCA", cantidad: 5 }, { nombre: "D ALOIA ALEJANDRO GASPAR", cantidad: 4 }, { nombre: "DOMINGUEZ YANINA SOLEDAD", cantidad: 4 }, { nombre: "GIMENEZ VALENTINO", cantidad: 4 }, { nombre: "GIORDANO ERIKA LAURA", cantidad: 4 } ]
+            }
+        };
+
+        // --- LÓGICA DEL DASHBOARD ---
+
+        let charts = {};
+        const colorPalette = Object.values({
+            blue: 'rgba(59, 130, 246, 0.7)', sky: 'rgba(14, 165, 233, 0.7)',
+            indigo: 'rgba(99, 102, 241, 0.7)', purple: 'rgba(139, 92, 246, 0.7)',
+            pink: 'rgba(236, 72, 153, 0.7)', teal: 'rgba(20, 184, 166, 0.7)',
+            green: 'rgba(34, 197, 94, 0.7)',
+        });
+        
+        // --- NUEVA FUNCIÓN ---
+        // Muestra la barra de filtro simulado
+        function showFilterMessage(filterType, filterValue) {
+            const filterBar = document.getElementById('filter-bar');
+            const filterText = document.getElementById('filter-text');
+            filterText.textContent = `Mostrando resultados para ${filterType}: "${filterValue}"`;
+            filterBar.classList.remove('hidden');
+        }
+
+        // --- NUEVA FUNCIÓN ---
+        // Oculta la barra de filtro simulado
+        function clearFilterMessage() {
+            document.getElementById('filter-bar').classList.add('hidden');
+        }
+
+        function renderChart(canvasId, type, labels, datasets, chartTitle, options = {}) {
+            if (charts[canvasId]) {
+                charts[canvasId].destroy();
+            }
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const defaultOptions = {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { backgroundColor: '#334155', titleFont: { size: 14 }, bodyFont: { size: 12 }, padding: 10, cornerRadius: 4, mode: 'index', intersect: false, }
+                },
+                scales: (type === 'bar' || type === 'line') ? { y: { beginAtZero: true, grid: { color: '#e5e7eb' } }, x: { grid: { display: false } } } : {},
+                // --- NUEVA OPCIÓN ---
+                // Manejador de clic para la simulación de filtro
+                onClick: (evt, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = evt.chart.data.labels[index];
+                        showFilterMessage(chartTitle, label);
+                    }
+                },
+            };
+             if (type === 'doughnut') {
+                defaultOptions.plugins.legend.position = 'top';
+            } else if (datasets.length <= 1) {
+                defaultOptions.plugins.legend.display = false;
+            }
+
+            if (options.indexAxis === 'y') {
+                defaultOptions.scales = { x: { beginAtZero: true, grid: { color: '#e5e7eb' } }, y: { grid: { display: false } } };
+            }
+            charts[canvasId] = new Chart(ctx, { type, data: { labels, datasets }, options: { ...defaultOptions, ...options } });
+        }
+        
+        function getChangeIndicator(current, previous) {
+            if (previous === null || previous === 0) return '';
+            const change = ((current - previous) / previous) * 100;
+            const color = change >= 0 ? 'text-green-600' : 'text-red-600';
+            const icon = change >= 0 ? 
+                `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" /></svg>` :
+                `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414 0l-3 3a1 1 0 101.414 1.414L9 10.586V7a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 000-1.414z" clip-rule="evenodd" /></svg>`;
+            return `<span class="flex items-center text-xs font-semibold ${color} ml-2">${icon} ${change.toFixed(1)}%</span>`;
+        }
+
+        function showMonthlyView(month) {
+            const data = statsData[month];
+            if (!data) return;
+
+            const months = Object.keys(statsData);
+            const currentMonthIndex = months.indexOf(month);
+            const previousMonthData = currentMonthIndex > 0 ? statsData[months[currentMonthIndex - 1]] : null;
+            const practicasIndicator = getChangeIndicator(data.kpis.practicas, previousMonthData ? previousMonthData.kpis.practicas : null);
+            const pacientesIndicator = getChangeIndicator(data.kpis.pacientes, previousMonthData ? previousMonthData.kpis.pacientes : null);
+            const maxServiceIndex = data.tipoServicio.data.indexOf(Math.max(...data.tipoServicio.data));
+            const servicioPrincipal = data.tipoServicio.labels[maxServiceIndex];
+            const maxDayIndex = data.diasSemana.data.indexOf(Math.max(...data.diasSemana.data));
+            const diaPico = data.diasSemana.labels[maxDayIndex];
+            const maxOsIndex = data.obrasSociales.data.indexOf(Math.max(...data.obrasSociales.data));
+            const osPrincipal = data.obrasSociales.labels[maxOsIndex];
+
+            const kpiContainer = document.getElementById('kpi-container');
+            kpiContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8';
+            kpiContainer.innerHTML = `
+                <div class="bg-white p-4 rounded-lg shadow-md"><p class="text-sm text-gray-500">Total Prácticas</p><div class="flex items-baseline"><p class="text-2xl font-bold text-gray-800">${data.kpis.practicas}</p>${practicasIndicator}</div></div>
+                <div class="bg-white p-4 rounded-lg shadow-md"><p class="text-sm text-gray-500">Pacientes Únicos</p><div class="flex items-baseline"><p class="text-2xl font-bold text-gray-800">${data.kpis.pacientes}</p>${pacientesIndicator}</div></div>
+                <div class="bg-white p-4 rounded-lg shadow-md"> <p class="text-sm text-gray-500">Promedio x Paciente</p> <p class="text-2xl font-bold text-gray-800">${data.kpis.promedio}</p> </div>
+                <div class="bg-white p-4 rounded-lg shadow-md"> <p class="text-sm text-gray-500">Servicio Principal</p> <p class="text-2xl font-bold text-gray-800">${servicioPrincipal}</p> </div>
+                <div class="bg-white p-4 rounded-lg shadow-md"> <p class="text-sm text-gray-500">Obra Social Principal</p> <p class="text-2xl font-bold text-gray-800 truncate">${osPrincipal}</p> </div>
+                <div class="bg-white p-4 rounded-lg shadow-md"> <p class="text-sm text-gray-500">Día de Mayor Actividad</p> <p class="text-2xl font-bold text-gray-800">${diaPico}</p> </div>
+            `;
+
+            const chartsGrid = document.getElementById('charts-grid');
+            chartsGrid.innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-md"><h2 class="text-xl font-semibold text-gray-700">Origen del Servicio</h2><p class="text-sm text-gray-500 mb-4">De qué área provienen las solicitudes de estudios.</p><div class="chart-container"><canvas id="origenChart"></canvas></div></div>
+                <div class="bg-white p-6 rounded-lg shadow-md"><h2 class="text-xl font-semibold text-gray-700">Tipo de Servicio</h2><p class="text-sm text-gray-500 mb-4">Distribución de los tipos de estudios médicos realizados.</p><div class="chart-container"><canvas id="tipoServicioChart"></canvas></div></div>
+                <div class="bg-white p-6 rounded-lg shadow-md lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Profesionales con Mayor Volumen</h2><p class="text-sm text-gray-500 mb-4">Clasificación de profesionales según la cantidad de estudios.</p><div class="chart-container" style="height: 400px;"><canvas id="profesionalesChart"></canvas></div></div>
+                <div class="bg-white p-6 rounded-lg shadow-md"><h2 class="text-xl font-semibold text-gray-700">Obras Sociales con Mayor Volumen</h2><p class="text-sm text-gray-500 mb-4">Obras sociales que generaron el mayor volumen de estudios.</p><div class="chart-container"><canvas id="obrasSocialesChart"></canvas></div></div>
+                <div class="bg-white p-6 rounded-lg shadow-md"><h2 class="text-xl font-semibold text-gray-700">Prestaciones por Día de la Semana</h2><p class="text-sm text-gray-500 mb-4">Distribución de la carga de trabajo a lo largo de la semana.</p><div class="chart-container"><canvas id="diasSemanaChart"></canvas></div></div>
+                <div class="bg-white p-6 rounded-lg shadow-md lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Frecuencia de Estudios por Paciente</h2><p class="text-sm text-gray-500 mb-4">Cuántos pacientes se realizaron 1, 2, 3 o más estudios.</p><div class="chart-container"><canvas id="frecuenciaChart"></canvas></div></div>
+                <div class="bg-white p-6 rounded-lg shadow-md lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Top 10 Pacientes con Más Estudios</h2><p class="text-sm text-gray-500 mb-4">Pacientes que han requerido la mayor cantidad de estudios.</p><ul id="top-pacientes-list" class="space-y-3 text-gray-600 mt-4"></ul></div>
+            `;
+
+            renderChart('origenChart', 'doughnut', data.origen.labels, [{ label: 'Origen', data: data.origen.data, backgroundColor: colorPalette }], 'Origen');
+            renderChart('tipoServicioChart', 'bar', data.tipoServicio.labels, [{ label: 'Estudios', data: data.tipoServicio.data, backgroundColor: colorPalette }], 'Tipo de Servicio');
+            renderChart('profesionalesChart', 'bar', data.profesionales.labels, [{ label: 'Estudios', data: data.profesionales.data, backgroundColor: colorPalette }], 'Profesional', { indexAxis: 'y' });
+            renderChart('obrasSocialesChart', 'bar', data.obrasSociales.labels, [{ label: 'Estudios', data: data.obrasSociales.data, backgroundColor: colorPalette }], 'Obra Social', { indexAxis: 'y' });
+            renderChart('diasSemanaChart', 'bar', data.diasSemana.labels, [{ label: 'Estudios', data: data.diasSemana.data, backgroundColor: colorPalette }], 'Día de la Semana');
+            renderChart('frecuenciaChart', 'bar', data.frecuenciaPacientes.labels, [{ label: 'Cantidad de Pacientes', data: data.frecuenciaPacientes.data, backgroundColor: colorPalette }], 'Frecuencia');
+            document.getElementById('top-pacientes-list').innerHTML = data.topPacientes.map(p => `<li class="flex justify-between items-center p-3 bg-gray-50 rounded-md"><span>${p.nombre}</span><span class="font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm">${p.cantidad} estudios</span></li>`).join('');
+        }
+
+        function showSummaryView() {
+            const months = Object.keys(statsData);
+            const summary = { totalPracticas: 0, totalPacientes: 0, evolution: { labels: [], practicas: [], pacientes: [] } };
+            months.forEach(month => {
+                const data = statsData[month];
+                summary.totalPracticas += data.kpis.practicas;
+                summary.totalPacientes += data.kpis.pacientes;
+                summary.evolution.labels.push(month.charAt(0).toUpperCase() + month.slice(1));
+                summary.evolution.practicas.push(data.kpis.practicas);
+                summary.evolution.pacientes.push(data.kpis.pacientes);
+            });
+            const mesPicoPracticas = summary.evolution.labels[summary.evolution.practicas.indexOf(Math.max(...summary.evolution.practicas))];
+            const promedioGeneral = (summary.totalPracticas / summary.totalPacientes).toFixed(2);
+            const kpiContainer = document.getElementById('kpi-container');
+            kpiContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8';
+            kpiContainer.innerHTML = `
+                <div class="bg-white p-4 rounded-lg shadow-md"> <p class="text-sm text-gray-500">Total Prácticas</p> <p class="text-2xl font-bold text-gray-800">${summary.totalPracticas}</p> </div>
+                <div class="bg-white p-4 rounded-lg shadow-md"> <p class="text-sm text-gray-500">Total Pacientes</p> <p class="text-2xl font-bold text-gray-800">${summary.totalPacientes}</p> </div>
+                <div class="bg-white p-4 rounded-lg shadow-md"> <p class="text-sm text-gray-500">Mes con Más Prácticas</p> <p class="text-2xl font-bold text-gray-800">${mesPicoPracticas}</p> </div>
+                <div class="bg-white p-4 rounded-lg shadow-md"> <p class="text-sm text-gray-500">Promedio General</p> <p class="text-2xl font-bold text-gray-800">${promedioGeneral}</p> </div>
+            `;
+            document.getElementById('charts-grid').innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-md lg:col-span-2">
+                    <h2 class="text-xl font-semibold text-gray-700">Evolución Mensual</h2>
+                    <p class="text-sm text-gray-500 mb-4">Comparativa de prácticas realizadas y pacientes únicos atendidos por mes.</p>
+                    <div class="chart-container" style="height: 400px;"><canvas id="evolutionChart"></canvas></div>
+                </div>
+            `;
+            renderChart('evolutionChart', 'line', summary.evolution.labels, [
+                { label: 'Prácticas Realizadas', data: summary.evolution.practicas, borderColor: colorPalette[0], backgroundColor: colorPalette[0], tension: 0.1 },
+                { label: 'Pacientes Únicos', data: summary.evolution.pacientes, borderColor: colorPalette[1], backgroundColor: colorPalette[1], tension: 0.1 }
+            ], 'Evolución');
+        }
+
+        function switchView(view, month = null) {
+            clearFilterMessage(); // Limpia el filtro al cambiar de vista
+            document.querySelectorAll('#view-selector button').forEach(button => {
+                button.classList.toggle('tab-active', button.dataset.view === view && button.dataset.month === month);
+            });
+            if (view === 'summary') {
+                showSummaryView();
+            } else if (view === 'monthly' && month) {
+                showMonthlyView(month);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const viewSelector = document.getElementById('view-selector');
+            const months = Object.keys(statsData);
+            const summaryButton = document.createElement('button');
+            summaryButton.textContent = 'Resumen General';
+            summaryButton.dataset.view = 'summary';
+            summaryButton.dataset.month = 'null';
+            summaryButton.className = 'px-4 py-2 text-sm font-medium border rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50';
+            summaryButton.addEventListener('click', () => switchView('summary'));
+            viewSelector.appendChild(summaryButton);
+            months.forEach(month => {
+                const button = document.createElement('button');
+                button.textContent = month.charAt(0).toUpperCase() + month.slice(1);
+                button.dataset.view = 'monthly';
+                button.dataset.month = month;
+                button.className = 'px-4 py-2 text-sm font-medium border rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50';
+                button.addEventListener('click', () => switchView('monthly', month));
+                viewSelector.appendChild(button);
+            });
+            
+            // Event listener para el botón de limpiar filtro
+            document.getElementById('clear-filter-btn').addEventListener('click', clearFilterMessage);
+
+            switchView('summary');
+        });
+    </script>
+</body>
+</html>
