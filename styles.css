@@ -1,0 +1,43 @@
+/* Estilos personalizados y configuración de la fuente */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc; /* Gris muy claro */
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+/* Estilo para el botón de mes activo */
+.tab-active {
+    background-color: #0f766e; /* Nuevo Verde azulado principal */
+    color: white;
+    border-color: #0f766e;
+}
+
+/* Hace que el cursor cambie a puntero en los elementos del gráfico */
+canvas:hover {
+    cursor: pointer;
+}
+
+.kpi-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.kpi-icon {
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
