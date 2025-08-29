@@ -4,52 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Estadísticas Médicas</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Estilos personalizados y configuración de la fuente */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Gris muy claro */
-        }
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-        }
-        /* Estilo para el botón de mes activo */
-        .tab-active {
-            background-color: #0f766e; /* Nuevo Verde azulado principal */
-            color: white;
-            border-color: #0f766e;
-        }
-        /* Hace que el cursor cambie a puntero en los elementos del gráfico */
-        canvas:hover {
-            cursor: pointer;
-        }
-        .kpi-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .kpi-icon {
-            flex-shrink: 0;
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="p-4 sm:p-6 md:p-8">
 
@@ -80,7 +44,7 @@
         </header>
 
         <div id="view-selector" class="mb-8 flex flex-wrap gap-2">
-            </div>
+        </div>
         
         <div id="filter-bar" class="hidden mb-6 p-4 bg-teal-100 border border-teal-200 rounded-lg flex justify-between items-center">
             <div>
@@ -94,223 +58,9 @@
 
         <div id="dashboard-content">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="kpi-container">
-                </div>
+            </div>
 
             <div id="charts-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                </div>
-        </div>
-    </div>
-
-    <script>
-        // --- LÓGICA DE CONTRASEÑA ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const passwordForm = document.getElementById('password-form');
-            const passwordInput = document.getElementById('password-input');
-            const errorMessage = document.getElementById('error-message');
-            const passwordModal = document.getElementById('password-modal');
-            const mainContent = document.getElementById('main-content');
-            const CORRECT_PASSWORD = 'ipam3125';
-
-            passwordForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (passwordInput.value === CORRECT_PASSWORD) {
-                    passwordModal.classList.add('hidden');
-                    mainContent.classList.remove('hidden');
-                    // Iniciar el dashboard una vez que la contraseña es correcta
-                    initializeDashboard();
-                } else {
-                    errorMessage.classList.remove('hidden');
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }
-            });
-        });
-
-        // --- BASE DE DATOS DE ESTADÍSTICAS ---
-        const statsData = {
-            enero: {
-                periodo: "01 al 31 de enero de 2025",
-                kpis: { practicas: 408, pacientes: 147, promedio: 2.78 },
-                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [118, 169, 121] },
-                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [25, 94, 198, 10, 26] },
-                profesionales: { labels: ["Médico Informate", "ALESSI DAVID", "MERLAT VANESA", "Centro Médico IPAM", "GONZALEZ EDUARDO", "JAMIN ALEXIS"], data: [260, 44, 43, 21, 9, 6] },
-                obrasSociales: { labels: ["193 - GLOBAL EMPRESARIA S.A", "223 - ANDAR GLOBAL", "219 - SOMU (GLOBAL)", "216 - GLOBAL HOSPITAL ESPAÑOL"], data: [268, 69, 53, 18] },
-                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [53, 88, 57, 104, 59, 37, 10] },
-                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios", "10 Estudios", "38 Estudios"], data: [61, 53, 14, 6, 6, 2, 1, 1] },
-                topPacientes: [ { nombre: "SCIAINI CLAUDIA ANA MARIA", cantidad: 39 }, { nombre: "CANO JAVIER ORLANDO", cantidad: 14 }, { nombre: "LIBUTTI VALENTINO PATRICIO", cantidad: 12 }, { nombre: "BERON ESCALANTE AYLIN ROMA", cantidad: 11 }, { nombre: "JOSE DIEGO OMAR", cantidad: 11 }, { nombre: "CALVO FLORENCIA AGUSTINA", cantidad: 7 }, { nombre: "CANIS ALBERTO RAFAEL", cantidad: 7 }, { nombre: "GARCIA LOPEZ LUISINA", cantidad: 7 }, { nombre: "RIOS VICTOR DARIO", cantidad: 7 }, { nombre: "FARIAS VANESA CECILIA", cantidad: 6 } ]
-            },
-            febrero: {
-                periodo: "01 al 28 de febrero de 2025",
-                kpis: { practicas: 318, pacientes: 154, promedio: 2.06 },
-                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [85, 141, 92] },
-                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [24, 63, 198, 9, 24] },
-                profesionales: { labels: ["Médico Informate", "ALESSI DAVID", "MERLAT VANESA", "SCARABINO NADIA", "PIACENZI MARIA", "FALCO FERNANDO"], data: [228, 31, 20, 9, 8, 5] },
-                obrasSociales: { labels: ["193 - GLOBAL EMPRESARIA S.A", "223 - ANDAR GLOBAL", "219 - SOMU (GLOBAL)", "216 - GLOBAL HOSPITAL ESPAÑOL"], data: [227, 67, 21, 3] },
-                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [60, 42, 52, 53, 43, 46, 22] },
-                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "5 Estudios", "6 Estudios", "8 Estudios", "16 Estudios"], data: [83, 53, 8, 4, 1, 2, 1] },
-                topPacientes: [ { nombre: "FERREYRA JORGE", cantidad: 18 }, { nombre: "DIAZ CINTIA BEATRIZ", cantidad: 15 }, { nombre: "SCIAINI CLAUDIA ANA MARIA", cantidad: 9 }, { nombre: "FONTELA LUZMILA JACKELINE", cantidad: 8 }, { nombre: "GAUNA HECTOR RICARDO", cantidad: 7 }, { nombre: "BADINO ALEJANDRO MARTIN", cantidad: 6 }, { nombre: "CORBALAN DIEGO HERNAN", cantidad: 6 }, { nombre: "LOMBARDI CRISTIAN DURVAL", cantidad: 5 }, { nombre: "ORTIZ SEGOVIA HUGO ALCIDES", cantidad: 5 }, { nombre: "PERALTA THIAN SANTIAGO", cantidad: 5 } ]
-            },
-            marzo: {
-                periodo: "01 al 31 de marzo de 2025",
-                kpis: { practicas: 326, pacientes: 148, promedio: 2.20 },
-                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [91, 135, 100] },
-                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [19, 67, 205, 13, 22] },
-                profesionales: { labels: ["Médico Informate", "MERLAT VANESA", "ALESSI DAVID", "Centro Médico IPAM", "FALCO FERNANDO", "GENOVA DAMIAN"], data: [237, 36, 31, 6, 5, 3] },
-                obrasSociales: { labels: ["193 - GLOBAL EMPRESARIA S.A", "223 - ANDAR GLOBAL", "219 - SOMU (GLOBAL)", "216 - GLOBAL HOSPITAL ESPAÑOL", "229 - GLOBAL EMPRESARIA SA"], data: [233, 60, 26, 5, 2] },
-                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [55, 43, 49, 62, 69, 19, 29] },
-                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "11 Estudios", "12 Estudios"], data: [67, 54, 8, 9, 5, 1, 1] },
-                topPacientes: [ { nombre: "FERNANDEZ NARCISO GUSTAVO", cantidad: 12 }, { nombre: "LEDESMA AXEL JOEY", cantidad: 11 }, { nombre: "GUADAGNA WENDY ROCIO", cantidad: 10 }, { nombre: "LUNA NAIM ISMAEL", cantidad: 7 }, { nombre: "NUÑEZ MAURICIO MIGUEL", cantidad: 7 }, { nombre: "VIERA HECTOR", cantidad: 7 }, { nombre: "FONTELA LUZMILA JACKELINE", cantidad: 6 }, { nombre: "AMBEK EMANNUEL", cantidad: 5 }, { nombre: "CARO SANDRA ANDREA", cantidad: 5 }, { nombre: "MARZADRI FELIPE JULIAN", cantidad: 5 } ]
-            },
-            abril: {
-                periodo: "01 al 30 de abril de 2025",
-                kpis: { practicas: 379, pacientes: 169, promedio: 2.24 },
-                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [81, 167, 131] },
-                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [30, 102, 191, 5, 51] },
-                profesionales: { labels: ["Médico Informate", "MERLAT VANESA", "ALESSI DAVID", "PIACENZI MARIA", "FUMAGALLO EDUARDO", "LUYO VERA LIGIA"], data: [245, 56, 27, 13, 9, 5] },
-                obrasSociales: { labels: ["193 - GLOBAL EMPRESARIA S.A", "223 - ANDAR GLOBAL", "230 - ANDAR GLOBAL PLUS", "219 - SOMU (GLOBAL)", "229 - GLOBAL EMPRESARIA SA", "216 - GLOBAL HOSPITAL ESPAÑOL"], data: [264, 75, 23, 12, 4, 1] },
-                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [65, 78, 74, 57, 62, 26, 17] },
-                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "5 Estudios", "6 Estudios", "14 Estudios"], data: [73, 63, 15, 6, 3, 1] },
-                topPacientes: [ { nombre: "MARZADRI FELIPE JULIAN", cantidad: 14 }, { nombre: "MANSILLA DIEGO ROMAN", cantidad: 8 }, { nombre: "MARSICO PILAR", cantidad: 8 }, { nombre: "SOSA MORENO MIGUEL ANGEL", cantidad: 8 }, { nombre: "CABRAL PABLO ELIAS", cantidad: 7 }, { nombre: "MACORITO MOLINARI ALVARO", cantidad: 7 }, { nombre: "SILVA YAMILA BELEN", cantidad: 7 }, { nombre: "FRAGAPANE OSCAR MIGUEL", cantidad: 6 }, { nombre: "LOPEZ HUGO", cantidad: 6 }, { nombre: "PAREDES SERGIO FABIAN", cantidad: 6 } ]
-            },
-            mayo: {
-                periodo: "01 al 31 de mayo de 2025",
-                kpis: { practicas: 389, pacientes: 179, promedio: 1.94 },
-                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [108, 197, 84] },
-                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [29, 120, 203, 19, 18] },
-                profesionales: { labels: ["Médico Informate", "ALESSI DAVID", "MERLAT VANESA", "Centro Médico IPAM", "PIACENZI MARIA", "SCARABINO NADIA", "LUYO VERA LIGIA"], data: [234, 61, 46, 10, 8, 7, 6] },
-                obrasSociales: { labels: ["193 - GLOBAL EMPRESARIA S.A", "223 - ANDAR GLOBAL", "230 - ANDAR GLOBAL PLUS", "219 - SOMU (GLOBAL)", "229 - GLOBAL EMPRESARIA SA", "216 - GLOBAL HOSPITAL ESPAÑOL"], data: [272, 59, 25, 22, 7, 4] },
-                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [67, 52, 64, 77, 76, 24, 29] },
-                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios", "8 Estudios", "9 Estudios", "12 Estudios"], data: [84, 124, 45, 40, 20, 6, 8, 9, 12] },
-                topPacientes: [ { nombre: "ALEGRE MAURO MATIAS", cantidad: 12 }, { nombre: "BRACCO CELINA DANIELA", cantidad: 11 }, { nombre: "RODRIGUEZ JONATAN ALEXIS", cantidad: 10 }, { nombre: "PEREYRA JESICA GEORGINA", cantidad: 9 }, { nombre: "VILLENEUVE MELANIE", cantidad: 9 }, { nombre: "CORBALAN HIPOLITO RAMON", cantidad: 6 }, { nombre: "VILLORDO ANTONINO VALENTIN", cantidad: 6 }, { nombre: "ALTAMIRANO VICTOR HUGO", cantidad: 5 }, { nombre: "AYALA VALERIA ROMINA", cantidad: 5 }, { nombre: "BADINO ALEJANDRO MARTIN", cantidad: 5 } ]
-            },
-            junio: {
-                periodo: "01 al 30 de junio de 2025",
-                kpis: { practicas: 397, pacientes: 188, promedio: 2.11 },
-                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [101, 213, 83] },
-                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [27, 132, 195, 8, 35] },
-                profesionales: { labels: ["Médico Informate", "ALESSI DAVID", "MERLAT VANESA", "PIACENZI MARIA", "FALCO FERNANDO", "SCARABINO NADIA"], data: [246, 61, 49, 15, 7, 7] },
-                obrasSociales: { labels: ["193 - GLOBAL EMPRESARIA S.A", "223 - ANDAR GLOBAL", "230 - ANDAR GLOBAL PLUS", "219 - SOMU (GLOBAL)"], data: [305, 65, 21, 6] },
-                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [63, 74, 58, 75, 84, 20, 23] },
-                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios", "7 Estudios", "11 Estudios", "28 Estudios"], data: [95, 63, 16, 6, 3, 2, 1, 1, 1] },
-                topPacientes: [ { nombre: "ALEGRE MAURO MATIAS", cantidad: 28 }, { nombre: "AMICELLI DOMINGO ROQUE", cantidad: 13 }, { nombre: "PERALTA GRACIELA LILIANA", cantidad: 12 }, { nombre: "BUYATTI YANINA", cantidad: 6 }, { nombre: "MACHUCA CAROLINA SOLEDAD", cantidad: 6 }, { nombre: "RAMOS JAVIER MARCELO", cantidad: 6 }, { nombre: "BENITEZ SERGIO JORGE", cantidad: 5 }, { nombre: "ENTESANO VANESA", cantidad: 5 }, { nombre: "MORIN NEstor FABIAN", cantidad: 5 }, { nombre: "POSTIGLIONE CAMILA ALDANA", cantidad: 5 } ]
-            },
-            julio: {
-                periodo: "01 al 31 de julio de 2025",
-                kpis: { practicas: 444, pacientes: 196, promedio: 2.27 },
-                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [99, 208, 137] },
-                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [23, 110, 270, 9, 32] },
-                profesionales: { labels: ["Médico Informate", "MERLAT VANESA", "ALESSI DAVID", "PIACENZI MARIA", "FUMAGALLO EDUARDO", "SCARABINO NADIA"], data: [311, 56, 31, 13, 10, 6] },
-                obrasSociales: { labels: ["193 - GLOBAL EMPRESARIA S.A", "223 - ANDAR GLOBAL", "230 - ANDAR GLOBAL PLUS", "219 - SOMU (GLOBAL)", "229 - GLOBAL EMPRESARIA SA"], data: [321, 73, 37, 12, 1] },
-                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [72, 84, 100, 86, 62, 22, 18] },
-                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios", "7 Estudios", "9 Estudios", "32 Estudios"], data: [86, 68, 24, 6, 4, 5, 1, 1, 1] },
-                topPacientes: [ { nombre: "MUÑOZ VERA CONSTANZA", cantidad: 32 }, { nombre: "MARTINEZ ORLANDO OSCAR", cantidad: 9 }, { nombre: "OBREGON MIRTA GRACIELA", cantidad: 9 }, { nombre: "GONZALEZ TAMARA MARIEL", cantidad: 7 }, { nombre: "ALVARENGA ANGEL GABRIEL", cantidad: 6 }, { nombre: "CUADROS LILIANA SUSANA", cantidad: 6 }, { nombre: "MONGE SOLEDAD AYLEN", cantidad: 6 }, { nombre: "REMINECHY RENZO ANTONIO", cantidad: 6 }, { nombre: "RIVERO CAROLINA", cantidad: 6 }, { nombre: "TINININI GIULIANO GIANMARCO", cantidad: 6 } ]
-            },
-            agosto: {
-                periodo: "01 al 26 de agosto de 2025",
-                kpis: { practicas: 293, pacientes: 157, promedio: 1.87 },
-                origen: { labels: ["Guardia", "Imagenes", "Internación"], data: [90, 153, 50] },
-                tipoServicio: { labels: ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"], data: [13, 57, 196, 4, 23] },
-                profesionales: { labels: ["Médico Informate", "MERLAT VANESA", "ALESSI DAVID", "PIACENZI MARIA", "LUYO VERA LIGIA", "SCARABINO NADIA"], data: [222, 28, 20, 9, 3, 3] },
-                obrasSociales: { labels: ["193 - GLOBAL EMPRESARIA S.A", "223 - ANDAR GLOBAL", "230 - ANDAR GLOBAL PLUS", "219 - SOMU (GLOBAL)", "229 - GLOBAL EMPRESARIA SA", "216 - GLOBAL HOSPITAL ESPAÑOL"], data: [194, 48, 35, 12, 3, 1] },
-                diasSemana: { labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"], data: [55, 71, 28, 33, 60, 33, 13] },
-                frecuenciaPacientes: { labels: ["1 Estudio", "2 Estudios", "3 Estudios", "4 Estudios", "5 Estudios", "6 Estudios"], data: [80, 106, 48, 20, 10, 6] },
-                topPacientes: [ { nombre: "CASEN RODRIGUEZ AMANDA", cantidad: 6 }, { nombre: "LUENGO FLORENCIA GABRIELA", cantidad: 6 }, { nombre: "SCHIBELBEIN EDUARDO", cantidad: 6 }, { nombre: "LARES DAMARIS JAZMIN", cantidad: 5 }, { nombre: "OLIVERA NILDA ESTER", cantidad: 5 }, { nombre: "VALDEZ FRANCHESCA", cantidad: 5 }, { nombre: "D ALOIA ALEJANDRO GASPAR", cantidad: 4 }, { nombre: "DOMINGUEZ YANINA SOLEDAD", cantidad: 4 }, { nombre: "GIMENEZ VALENTINO", cantidad: 4 }, { nombre: "GIORDANO ERIKA LAURA", cantidad: 4 } ]
-            }
-        };
-
-        // --- LÓGICA DEL DASHBOARD ---
-
-        let charts = {};
-        const colorPalette = ['#0f766e', '#0e7490', '#1d4ed8', '#16a34a', '#8b5cf6', '#ec4899'];
-        
-        function showFilterMessage(filterType, filterValue) {
-            const filterBar = document.getElementById('filter-bar');
-            const filterText = document.getElementById('filter-text');
-            filterText.textContent = `Mostrando resultados para ${filterType}: "${filterValue}"`;
-            filterBar.classList.remove('hidden');
-        }
-
-        function clearFilterMessage() {
-            document.getElementById('filter-bar').classList.add('hidden');
-        }
-
-        function renderChart(canvasId, type, labels, datasets, chartTitle, options = {}) {
-            if (charts[canvasId]) {
-                charts[canvasId].destroy();
-            }
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            const defaultOptions = {
-                responsive: true, maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top', labels: { color: '#475569' } },
-                    tooltip: { backgroundColor: '#1e293b', titleFont: { size: 14 }, bodyFont: { size: 12 }, padding: 10, cornerRadius: 4, mode: 'index', intersect: false, }
-                },
-                scales: (type === 'bar' || type === 'line') ? { 
-                    y: { beginAtZero: true, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } }, 
-                    x: { grid: { display: false }, ticks: { color: '#64748b' } } 
-                } : {},
-                onClick: (evt, elements) => {
-                    if (elements.length > 0) {
-                        const index = elements[0].index;
-                        const label = evt.chart.data.labels[index];
-                        showFilterMessage(chartTitle, label);
-                    }
-                },
-            };
-             if (type === 'doughnut') {
-                defaultOptions.plugins.legend.position = 'right';
-            } else if (datasets.length <= 1 && type !== 'line') { // Don't hide legend for multi-line charts
-                defaultOptions.plugins.legend.display = false;
-            }
-
-            if (options.indexAxis === 'y') {
-                defaultOptions.scales = { 
-                    x: { beginAtZero: true, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } }, 
-                    y: { grid: { display: false }, ticks: { color: '#64748b' } } 
-                };
-            }
-            charts[canvasId] = new Chart(ctx, { type, data: { labels, datasets }, options: { ...defaultOptions, ...options } });
-        }
-        
-        function getChangeIndicator(current, previous) {
-            if (previous === null || previous === 0) return '';
-            const change = ((current - previous) / previous) * 100;
-            const color = change >= 0 ? 'text-green-600' : 'text-red-600';
-            const icon = change >= 0 ? 
-                `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" /></svg>` :
-                `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414 0l-3 3a1 1 0 101.414 1.414L9 10.586V7a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 000-1.414z" clip-rule="evenodd" /></svg>`;
-            return `<span class="flex items-center text-xs font-semibold ${color} ml-2">${icon} ${change.toFixed(1)}%</span>`;
-        }
-
-        function showMonthlyView(month) {
-            const data = statsData[month];
-            if (!data) return;
-
-            const months = Object.keys(statsData);
-            const currentMonthIndex = months.indexOf(month);
-            const previousMonthData = currentMonthIndex > 0 ? statsData[months[currentMonthIndex - 1]] : null;
-            const practicasIndicator = getChangeIndicator(data.kpis.practicas, previousMonthData ? previousMonthData.kpis.practicas : null);
-            const pacientesIndicator = getChangeIndicator(data.kpis.pacientes, previousMonthData ? previousMonthData.kpis.pacientes : null);
-            const maxServiceIndex = data.tipoServicio.data.indexOf(Math.max(...data.tipoServicio.data));
-            const servicioPrincipal = data.tipoServicio.labels[maxServiceIndex];
-            const maxDayIndex = data.diasSemana.data.indexOf(Math.max(...data.diasSemana.data));
-            const diaPico = data.diasSemana.labels[maxDayIndex];
-            const maxOsIndex = data.obrasSociales.data.indexOf(Math.max(...data.obrasSociales.data));
-            const osPrincipal = data.obrasSociales.labels[maxOsIndex];
-
-            const kpiContainer = document.getElementById('kpi-container');
-            kpiContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8';
-            kpiContainer.innerHTML = `
-                <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg></div><div><p class="text-sm text-gray-500">Total Prácticas</p><div class="flex items-baseline"><p class="text-2xl font-bold text-gray-800">${data.kpis.practicas}</p>${practicasIndicator}</div></div></div>
-                <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div><div><p class="text-sm text-gray-500">Pacientes Únicos</p><div class="flex items-baseline"><p class="text-2xl font-bold text-gray-800">${data.kpis.pacientes}</p>${pacientesIndicator}</div></div></div>
-                <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg></div><div><p class="text-sm text-gray-500">Promedio x Paciente</p><p class="text-2xl font-bold text-gray-800">${data.kpis.promedio}</p></div></div>
-                <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547a2 2 0 00-.547 1.806l.477 2.387a6 6 0 00.517 3.86l.158.318a6 6 0 003.86.517l2.387.477a2 2 0 001.806-.547a2 2 0 00.547-1.806l-.477-2.387a6 6 0 00-.517-3.86l-.158-.318a6 6 0 01-.517-3.86l.477-2.387a2 2 0 00.547-1.806z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8V4m0 4h4m-4 0L8 8" /></svg></div><div><p class="text-sm text-gray-500">Servicio Principal</p><p class="text-2xl font-bold text-gray-800">${servicioPrincipal}</p></div></div>
-                <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg></div><div class="min-w-0"><p class="text-sm text-gray-500">Obra Social Principal</p><p class="text-xl font-bold text-gray-800 truncate">${osPrincipal}</p></div></div>
-                <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div><div><p class="text-sm text-gray-500">Día de Mayor Actividad</p><p class="text-2xl font-bold text-gray-800">${diaPico}</p></div></div>
-            `;
-
-            const chartsGrid = document.getElementById('charts-grid');
-            chartsGrid.innerHTML = `
                 <div class="bg-white p-6 rounded-xl shadow-sm"><h2 class="text-xl font-semibold text-gray-700">Origen del Servicio</h2><p class="text-sm text-gray-500 mb-4">De qué área provienen las solicitudes de estudios.</p><div class="chart-container"><canvas id="origenChart"></canvas></div></div>
                 <div class="bg-white p-6 rounded-xl shadow-sm"><h2 class="text-xl font-semibold text-gray-700">Tipo de Servicio</h2><p class="text-sm text-gray-500 mb-4">Distribución de los tipos de estudios médicos realizados.</p><div class="chart-container"><canvas id="tipoServicioChart"></canvas></div></div>
                 <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Profesionales con Mayor Volumen</h2><p class="text-sm text-gray-500 mb-4">Clasificación de profesionales según la cantidad de estudios.</p><div class="chart-container" style="height: 400px;"><canvas id="profesionalesChart"></canvas></div></div>
@@ -318,147 +68,18 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm"><h2 class="text-xl font-semibold text-gray-700">Prestaciones por Día de la Semana</h2><p class="text-sm text-gray-500 mb-4">Distribución de la carga de trabajo a lo largo de la semana.</p><div class="chart-container"><canvas id="diasSemanaChart"></canvas></div></div>
                 <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Frecuencia de Estudios por Paciente</h2><p class="text-sm text-gray-500 mb-4">Cuántos pacientes se realizaron 1, 2, 3 o más estudios.</p><div class="chart-container"><canvas id="frecuenciaChart"></canvas></div></div>
                 <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Top 10 Pacientes con Más Estudios</h2><p class="text-sm text-gray-500 mb-4">Pacientes que han requerido la mayor cantidad de estudios.</p><ul id="top-pacientes-list" class="space-y-3 text-gray-600 mt-4"></ul></div>
-            `;
-
-            renderChart('origenChart', 'doughnut', data.origen.labels, [{ label: 'Origen', data: data.origen.data, backgroundColor: colorPalette }], 'Origen');
-            renderChart('tipoServicioChart', 'bar', data.tipoServicio.labels, [{ label: 'Estudios', data: data.tipoServicio.data, backgroundColor: colorPalette[0] }], 'Tipo de Servicio');
-            renderChart('profesionalesChart', 'bar', data.profesionales.labels, [{ label: 'Estudios', data: data.profesionales.data, backgroundColor: colorPalette[1] }], 'Profesional', { indexAxis: 'y' });
-            renderChart('obrasSocialesChart', 'bar', data.obrasSociales.labels, [{ label: 'Estudios', data: data.obrasSociales.data, backgroundColor: colorPalette[2] }], 'Obra Social', { indexAxis: 'y' });
-            renderChart('diasSemanaChart', 'bar', data.diasSemana.labels, [{ label: 'Estudios', data: data.diasSemana.data, backgroundColor: colorPalette[3] }], 'Día de la Semana');
-            renderChart('frecuenciaChart', 'bar', data.frecuenciaPacientes.labels, [{ label: 'Cantidad de Pacientes', data: data.frecuenciaPacientes.data, backgroundColor: colorPalette[4] }], 'Frecuencia');
-            document.getElementById('top-pacientes-list').innerHTML = data.topPacientes.map(p => `<li class="flex justify-between items-center p-3 bg-gray-50 rounded-md"><span>${p.nombre}</span><span class="font-bold text-teal-600 bg-teal-100 px-3 py-1 rounded-full text-sm">${p.cantidad} estudios</span></li>`).join('');
-        }
-
-        function showSummaryView() {
-            const months = Object.keys(statsData);
-            const summary = { totalPracticas: 0, totalPacientes: 0, evolution: { labels: [], practicas: [], pacientes: [] } };
-            
-            const serviceEvolution = {};
-            const allServiceTypes = ["Eco Doppler", "Ecografía", "Radiología", "Resonancia", "Tomografía"];
-            allServiceTypes.forEach(service => serviceEvolution[service] = []);
-
-            months.forEach(month => {
-                const data = statsData[month];
-                summary.totalPracticas += data.kpis.practicas;
-                summary.totalPacientes += data.kpis.pacientes;
-                summary.evolution.labels.push(month.charAt(0).toUpperCase() + month.slice(1));
-                summary.evolution.practicas.push(data.kpis.practicas);
-                summary.evolution.pacientes.push(data.kpis.pacientes);
-
-                const monthlyServiceData = {};
-                data.tipoServicio.labels.forEach((label, index) => {
-                    monthlyServiceData[label] = data.tipoServicio.data[index];
-                });
-                allServiceTypes.forEach(service => {
-                    serviceEvolution[service].push(monthlyServiceData[service] || 0);
-                });
-            });
-
-            const mesPicoPracticas = summary.evolution.labels[summary.evolution.practicas.indexOf(Math.max(...summary.evolution.practicas))];
-            const promedioGeneral = (summary.totalPracticas / summary.totalPacientes).toFixed(2);
-            const kpiContainer = document.getElementById('kpi-container');
-            kpiContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8';
-            kpiContainer.innerHTML = `
-                <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg></div><div><p class="text-sm text-gray-500">Total Prácticas</p><p class="text-2xl font-bold text-gray-800">${summary.totalPracticas}</p></div></div>
-                <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div><div><p class="text-sm text-gray-500">Total Pacientes</p><p class="text-2xl font-bold text-gray-800">${summary.totalPacientes}</p></div></div>
-                <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div><div><p class="text-sm text-gray-500">Mes con Más Prácticas</p><p class="text-2xl font-bold text-gray-800">${mesPicoPracticas}</p></div></div>
-                <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg></div><div><p class="text-sm text-gray-500">Promedio General</p><p class="text-2xl font-bold text-gray-800">${promedioGeneral}</p></div></div>
-            `;
-            
-            document.getElementById('charts-grid').innerHTML = `
+                
                 <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
-                    <h2 class="text-xl font-semibold text-gray-700">Evolución Mensual General</h2>
-                    <p class="text-sm text-gray-500 mb-4">Comparativa de prácticas realizadas y pacientes únicos atendidos por mes.</p>
-                    <div class="chart-container" style="height: 400px;"><canvas id="evolutionChart"></canvas></div>
+                    <h2 class="text-xl font-semibold text-gray-700">Análisis de Prácticas por Obra Social y Servicio</h2>
+                    <p class="text-sm text-gray-500 mb-4">Seleccione los servicios para ver su evolución por obra social.</p>
+                    <div id="service-legend-container" class="service-legend flex flex-wrap gap-2 mb-4"></div>
+                    <div class="chart-container" style="height:400px"><canvas id="interactiveEvolutionChart"></canvas></div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
-                    <h2 class="text-xl font-semibold text-gray-700">Evolución Mensual por Tipo de Servicio</h2>
-                    <p class="text-sm text-gray-500 mb-4">Variación en la cantidad de estudios para cada servicio a lo largo de los meses.</p>
-                    <div class="chart-container" style="height: 400px;"><canvas id="serviceEvolutionChart"></canvas></div>
-                </div>
-            `;
-            
-            renderChart('evolutionChart', 'line', summary.evolution.labels, [
-                { 
-                    label: 'Prácticas Realizadas', 
-                    data: summary.evolution.practicas, 
-                    borderColor: colorPalette[0], 
-                    backgroundColor: 'rgba(15, 118, 110, 0.2)', 
-                    tension: 0.2, 
-                    fill: true 
-                },
-                { 
-                    label: 'Pacientes Únicos', 
-                    data: summary.evolution.pacientes, 
-                    borderColor: colorPalette[2], 
-                    backgroundColor: 'rgba(29, 78, 216, 0.2)', 
-                    tension: 0.2, 
-                    fill: true 
-                }
-            ], 'Evolución');
-            
-            const serviceDatasets = allServiceTypes.map((service, index) => ({
-                label: service,
-                data: serviceEvolution[service],
-                borderColor: colorPalette[index % colorPalette.length],
-                tension: 0.2,
-                fill: false
-            }));
+            </div>
+        </div>
+    </div>
 
-            renderChart('serviceEvolutionChart', 'line', summary.evolution.labels, serviceDatasets, 'Evolución por Servicio', {
-                plugins: {
-                    datalabels: {
-                        align: 'end',
-                        anchor: 'end',
-                        backgroundColor: (context) => context.dataset.borderColor,
-                        borderRadius: 4,
-                        color: 'white',
-                        font: { weight: 'bold', size: 10 },
-                        padding: 4
-                    }
-                }
-            });
-        }
+    <script src="dashboard.js"></script>
 
-        function switchView(view, month = null) {
-            clearFilterMessage(); // Limpia el filtro al cambiar de vista
-            document.querySelectorAll('#view-selector button').forEach(button => {
-                button.classList.toggle('tab-active', button.dataset.view === view && button.dataset.month === month);
-            });
-            if (view === 'summary') {
-                showSummaryView();
-            } else if (view === 'monthly' && month) {
-                showMonthlyView(month);
-            }
-        }
-
-        function initializeDashboard() {
-            // Registrar el plugin de datalabels globalmente
-            Chart.register(ChartDataLabels);
-
-            const viewSelector = document.getElementById('view-selector');
-            const months = Object.keys(statsData);
-            const summaryButton = document.createElement('button');
-            summaryButton.textContent = 'Resumen General';
-            summaryButton.dataset.view = 'summary';
-            summaryButton.dataset.month = 'null';
-            summaryButton.className = 'px-4 py-2 text-sm font-medium border rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50';
-            summaryButton.addEventListener('click', () => switchView('summary'));
-            viewSelector.appendChild(summaryButton);
-            months.forEach(month => {
-                const button = document.createElement('button');
-                button.textContent = month.charAt(0).toUpperCase() + month.slice(1);
-                button.dataset.view = 'monthly';
-                button.dataset.month = month;
-                button.className = 'px-4 py-2 text-sm font-medium border rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50';
-                button.addEventListener('click', () => switchView('monthly', month));
-                viewSelector.appendChild(button);
-            });
-            
-            document.getElementById('clear-filter-btn').addEventListener('click', clearFilterMessage);
-
-            switchView('summary');
-        }
-    </script>
 </body>
 </html>
