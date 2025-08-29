@@ -1,0 +1,1552 @@
+{
+    "Enero": {
+        "periodo": "01 al 31 de Enero de 2025",
+        "kpis": {
+            "practicas": 408,
+            "pacientes": 147,
+            "promedio": 2.78
+        },
+        "origen": {
+            "labels": [
+                "Guardia",
+                "Imagenes",
+                "Internación"
+            ],
+            "data": [
+                118,
+                169,
+                121
+            ]
+        },
+        "tipoServicio": {
+            "labels": [
+                "Eco Doppler",
+                "Ecografía",
+                "Radiología",
+                "Resonancia",
+                "Tomografía"
+            ],
+            "data": [
+                26,
+                103,
+                240,
+                13,
+                26
+            ]
+        },
+        "profesionales": {
+            "labels": [
+                "Médico Informate Diagnóstico por Imágenes",
+                "ALESSI DAVID ROMAN",
+                "MERLAT VANESA ROXANA",
+                "Centro Médico IPAM",
+                "GONZALEZ EDUARDO ADRIAN",
+                "PIACENZI MARIA ALEJANDRA"
+            ],
+            "data": [
+                260,
+                44,
+                43,
+                21,
+                9,
+                7
+            ]
+        },
+        "obrasSociales": {
+            "labels": [
+                "193 - GLOBAL EMPRESARIA S.A",
+                "223 - ANDAR GLOBAL",
+                "219 - SOMU (GLOBAL)",
+                "216 - GLOBAL HOSPITAL ESPAÑOL"
+            ],
+            "data": [
+                268,
+                69,
+                53,
+                18
+            ]
+        },
+        "diasSemana": {
+            "labels": [
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+                "Domingo"
+            ],
+            "data": [
+                53,
+                88,
+                57,
+                104,
+                59,
+                37,
+                10
+            ]
+        },
+        "frecuenciaPacientes": {
+            "labels": [
+                "1 Estudio",
+                "2 Estudios",
+                "3 Estudios",
+                "4 Estudios",
+                "5 Estudios",
+                "6 Estudios",
+                "7 Estudios",
+                "11 Estudios",
+                "12 Estudios",
+                "14 Estudios",
+                "39 Estudios"
+            ],
+            "data": [
+                53,
+                49,
+                16,
+                10,
+                6,
+                4,
+                4,
+                2,
+                1,
+                1,
+                1
+            ]
+        },
+        "topPacientes": [
+            {
+                "nombre": "SCIAINI CLAUDIA ANA MARIA",
+                "cantidad": 39
+            },
+            {
+                "nombre": "CANO JAVIER ORLANDO",
+                "cantidad": 14
+            },
+            {
+                "nombre": "LIBUTTI VALENTINO PATRICIO",
+                "cantidad": 12
+            },
+            {
+                "nombre": "BERON ESCALANTE AYLIN ROMA",
+                "cantidad": 11
+            },
+            {
+                "nombre": "JOSE DIEGO OMAR",
+                "cantidad": 11
+            },
+            {
+                "nombre": "CALVO FLORENCIA AGUSTINA",
+                "cantidad": 7
+            },
+            {
+                "nombre": "CANIS ALBERTO RAFAEL",
+                "cantidad": 7
+            },
+            {
+                "nombre": "GARCIA LOPEZ LUISINA",
+                "cantidad": 7
+            },
+            {
+                "nombre": "RIOS VICTOR DARIO",
+                "cantidad": 7
+            },
+            {
+                "nombre": "FARIAS VANESA CECILIA",
+                "cantidad": 6
+            }
+        ],
+        "datos_grafica_avanzada": {
+            "Eco Doppler": {
+                "193 - GLOBAL EMPRESARIA S.A": 5,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 1,
+                "219 - SOMU (GLOBAL)": 7,
+                "223 - ANDAR GLOBAL": 13
+            },
+            "Ecografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 59,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 7,
+                "219 - SOMU (GLOBAL)": 9,
+                "223 - ANDAR GLOBAL": 28
+            },
+            "Radiología": {
+                "193 - GLOBAL EMPRESARIA S.A": 186,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 7,
+                "219 - SOMU (GLOBAL)": 27,
+                "223 - ANDAR GLOBAL": 20
+            },
+            "Resonancia": {
+                "193 - GLOBAL EMPRESARIA S.A": 5,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 3,
+                "223 - ANDAR GLOBAL": 5
+            },
+            "Tomografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 13,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 3,
+                "219 - SOMU (GLOBAL)": 7,
+                "223 - ANDAR GLOBAL": 3
+            }
+        }
+    },
+    "Febrero": {
+        "periodo": "01 al 28 de Febrero de 2025",
+        "kpis": {
+            "practicas": 318,
+            "pacientes": 154,
+            "promedio": 2.06
+        },
+        "origen": {
+            "labels": [
+                "Guardia",
+                "Imagenes",
+                "Internación"
+            ],
+            "data": [
+                85,
+                141,
+                92
+            ]
+        },
+        "tipoServicio": {
+            "labels": [
+                "Eco Doppler",
+                "Ecografía",
+                "Radiología",
+                "Resonancia",
+                "Tomografía"
+            ],
+            "data": [
+                24,
+                63,
+                198,
+                9,
+                24
+            ]
+        },
+        "profesionales": {
+            "labels": [
+                "Médico Informate Diagnóstico por Imágenes",
+                "ALESSI DAVID ROMAN",
+                "MERLAT VANESA ROXANA",
+                "SCARABINO NADIA DESIRE",
+                "PIACENZI MARIA ALEJANDRA",
+                "FALCO FERNANDO JAVIER"
+            ],
+            "data": [
+                228,
+                31,
+                20,
+                9,
+                8,
+                5
+            ]
+        },
+        "obrasSociales": {
+            "labels": [
+                "193 - GLOBAL EMPRESARIA S.A",
+                "223 - ANDAR GLOBAL",
+                "219 - SOMU (GLOBAL)",
+                "216 - GLOBAL HOSPITAL ESPAÑOL"
+            ],
+            "data": [
+                227,
+                67,
+                21,
+                3
+            ]
+        },
+        "diasSemana": {
+            "labels": [
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+                "Domingo"
+            ],
+            "data": [
+                60,
+                42,
+                52,
+                53,
+                43,
+                46,
+                22
+            ]
+        },
+        "frecuenciaPacientes": {
+            "labels": [
+                "1 Estudio",
+                "2 Estudios",
+                "3 Estudios",
+                "4 Estudios",
+                "5 Estudios",
+                "6 Estudios",
+                "7 Estudios",
+                "8 Estudios",
+                "9 Estudios",
+                "15 Estudios",
+                "18 Estudios"
+            ],
+            "data": [
+                72,
+                57,
+                13,
+                1,
+                4,
+                2,
+                1,
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        "topPacientes": [
+            {
+                "nombre": "FERREYRA JORGE",
+                "cantidad": 18
+            },
+            {
+                "nombre": "DIAZ CINTIA BEATRIZ",
+                "cantidad": 15
+            },
+            {
+                "nombre": "SCIAINI CLAUDIA ANA MARIA",
+                "cantidad": 9
+            },
+            {
+                "nombre": "FONTELA LUZMILA JACKELINE",
+                "cantidad": 8
+            },
+            {
+                "nombre": "GAUNA HECTOR RICARDO",
+                "cantidad": 7
+            },
+            {
+                "nombre": "BADINO ALEJANDRO MARTIN",
+                "cantidad": 6
+            },
+            {
+                "nombre": "CORBALAN DIEGO HERNAN",
+                "cantidad": 6
+            },
+            {
+                "nombre": "LOMBARDI CRISTIAN DURVAL",
+                "cantidad": 5
+            },
+            {
+                "nombre": "ORTIZ SEGOVIA HUGO ALCIDES",
+                "cantidad": 5
+            },
+            {
+                "nombre": "PERALTA THIAN SANTIAGO",
+                "cantidad": 5
+            }
+        ],
+        "datos_grafica_avanzada": {
+            "Eco Doppler": {
+                "193 - GLOBAL EMPRESARIA S.A": 7,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 16
+            },
+            "Ecografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 39,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 1,
+                "219 - SOMU (GLOBAL)": 2,
+                "223 - ANDAR GLOBAL": 21
+            },
+            "Radiología": {
+                "193 - GLOBAL EMPRESARIA S.A": 164,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 2,
+                "219 - SOMU (GLOBAL)": 11,
+                "223 - ANDAR GLOBAL": 21
+            },
+            "Resonancia": {
+                "193 - GLOBAL EMPRESARIA S.A": 5,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 3
+            },
+            "Tomografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 12,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 6,
+                "223 - ANDAR GLOBAL": 6
+            }
+        }
+    },
+    "Marzo": {
+        "periodo": "01 al 31 de Marzo de 2025",
+        "kpis": {
+            "practicas": 326,
+            "pacientes": 148,
+            "promedio": 2.2
+        },
+        "origen": {
+            "labels": [
+                "Guardia",
+                "Imagenes",
+                "Internación"
+            ],
+            "data": [
+                91,
+                135,
+                100
+            ]
+        },
+        "tipoServicio": {
+            "labels": [
+                "Eco Doppler",
+                "Ecografía",
+                "Radiología",
+                "Resonancia",
+                "Tomografía"
+            ],
+            "data": [
+                19,
+                67,
+                205,
+                13,
+                22
+            ]
+        },
+        "profesionales": {
+            "labels": [
+                "Médico Informate Diagnóstico por Imágenes",
+                "MERLAT VANESA ROXANA",
+                "ALESSI DAVID ROMAN",
+                "Centro Médico IPAM",
+                "FALCO FERNANDO JAVIER",
+                "GENOVA DAMIAN NICOLAS"
+            ],
+            "data": [
+                237,
+                36,
+                31,
+                6,
+                5,
+                3
+            ]
+        },
+        "obrasSociales": {
+            "labels": [
+                "193 - GLOBAL EMPRESARIA S.A",
+                "223 - ANDAR GLOBAL",
+                "219 - SOMU (GLOBAL)",
+                "216 - GLOBAL HOSPITAL ESPAÑOL",
+                "229 - GLOBAL EMPRESARIA SA"
+            ],
+            "data": [
+                233,
+                60,
+                26,
+                5,
+                2
+            ]
+        },
+        "diasSemana": {
+            "labels": [
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+                "Domingo"
+            ],
+            "data": [
+                55,
+                43,
+                49,
+                62,
+                69,
+                19,
+                29
+            ]
+        },
+        "frecuenciaPacientes": {
+            "labels": [
+                "1 Estudio",
+                "2 Estudios",
+                "3 Estudios",
+                "4 Estudios",
+                "5 Estudios",
+                "6 Estudios",
+                "7 Estudios",
+                "10 Estudios",
+                "11 Estudios",
+                "12 Estudios"
+            ],
+            "data": [
+                60,
+                57,
+                9,
+                10,
+                5,
+                1,
+                3,
+                1,
+                1,
+                1
+            ]
+        },
+        "topPacientes": [
+            {
+                "nombre": "FERNANDEZ NARCISO GUSTAVO",
+                "cantidad": 12
+            },
+            {
+                "nombre": "LEDESMA AXEL JOEY",
+                "cantidad": 11
+            },
+            {
+                "nombre": "GUADAGNA WENDY ROCIO",
+                "cantidad": 10
+            },
+            {
+                "nombre": "LUNA NAIM ISMAEL",
+                "cantidad": 7
+            },
+            {
+                "nombre": "NUÑEZ MAURICIO MIGUEL",
+                "cantidad": 7
+            },
+            {
+                "nombre": "VIERA HECTOR",
+                "cantidad": 7
+            },
+            {
+                "nombre": "FONTELA LUZMILA JACKELINE",
+                "cantidad": 6
+            },
+            {
+                "nombre": "AMBEK EMANNUEL",
+                "cantidad": 5
+            },
+            {
+                "nombre": "CARO SANDRA ANDREA",
+                "cantidad": 5
+            },
+            {
+                "nombre": "MARZADRI FELIPE JULIAN",
+                "cantidad": 5
+            }
+        ],
+        "datos_grafica_avanzada": {
+            "Eco Doppler": {
+                "193 - GLOBAL EMPRESARIA S.A": 9,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 1,
+                "219 - SOMU (GLOBAL)": 3,
+                "223 - ANDAR GLOBAL": 6,
+                "229 - GLOBAL EMPRESARIA SA": 0
+            },
+            "Ecografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 42,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 2,
+                "219 - SOMU (GLOBAL)": 8,
+                "223 - ANDAR GLOBAL": 14,
+                "229 - GLOBAL EMPRESARIA SA": 1
+            },
+            "Radiología": {
+                "193 - GLOBAL EMPRESARIA S.A": 159,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 1,
+                "219 - SOMU (GLOBAL)": 14,
+                "223 - ANDAR GLOBAL": 31,
+                "229 - GLOBAL EMPRESARIA SA": 0
+            },
+            "Resonancia": {
+                "193 - GLOBAL EMPRESARIA S.A": 10,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 1,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 1,
+                "229 - GLOBAL EMPRESARIA SA": 1
+            },
+            "Tomografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 13,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 8,
+                "229 - GLOBAL EMPRESARIA SA": 0
+            }
+        }
+    },
+    "Abril": {
+        "periodo": "01 al 30 de Abril de 2025",
+        "kpis": {
+            "practicas": 379,
+            "pacientes": 169,
+            "promedio": 2.24
+        },
+        "origen": {
+            "labels": [
+                "Guardia",
+                "Imagenes",
+                "Internación"
+            ],
+            "data": [
+                81,
+                167,
+                131
+            ]
+        },
+        "tipoServicio": {
+            "labels": [
+                "Eco Doppler",
+                "Ecografía",
+                "Radiología",
+                "Resonancia",
+                "Tomografía"
+            ],
+            "data": [
+                30,
+                102,
+                191,
+                5,
+                51
+            ]
+        },
+        "profesionales": {
+            "labels": [
+                "Médico Informate Diagnóstico por Imágenes",
+                "MERLAT VANESA ROXANA",
+                "ALESSI DAVID ROMAN",
+                "PIACENZI MARIA ALEJANDRA",
+                "FUMAGALLO EDUARDO",
+                "LUYO VERA LIGIA"
+            ],
+            "data": [
+                245,
+                56,
+                27,
+                13,
+                9,
+                5
+            ]
+        },
+        "obrasSociales": {
+            "labels": [
+                "193 - GLOBAL EMPRESARIA S.A",
+                "223 - ANDAR GLOBAL",
+                "230 - ANDAR GLOBAL PLUS",
+                "219 - SOMU (GLOBAL)",
+                "229 - GLOBAL EMPRESARIA SA",
+                "216 - GLOBAL HOSPITAL ESPAÑOL"
+            ],
+            "data": [
+                264,
+                75,
+                23,
+                12,
+                4,
+                1
+            ]
+        },
+        "diasSemana": {
+            "labels": [
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+                "Domingo"
+            ],
+            "data": [
+                65,
+                78,
+                74,
+                57,
+                62,
+                26,
+                17
+            ]
+        },
+        "frecuenciaPacientes": {
+            "labels": [
+                "1 Estudio",
+                "2 Estudios",
+                "3 Estudios",
+                "4 Estudios",
+                "5 Estudios",
+                "6 Estudios",
+                "7 Estudios",
+                "8 Estudios",
+                "14 Estudios"
+            ],
+            "data": [
+                70,
+                58,
+                16,
+                8,
+                6,
+                4,
+                3,
+                3,
+                1
+            ]
+        },
+        "topPacientes": [
+            {
+                "nombre": "MARZADRI FELIPE JULIAN",
+                "cantidad": 14
+            },
+            {
+                "nombre": "MANSILLA DIEGO ROMAN",
+                "cantidad": 8
+            },
+            {
+                "nombre": "MARSICO PILAR",
+                "cantidad": 8
+            },
+            {
+                "nombre": "SOSA MORENO MIGUEL ANGEL",
+                "cantidad": 8
+            },
+            {
+                "nombre": "CABRAL PABLO ELIAS",
+                "cantidad": 7
+            },
+            {
+                "nombre": "MACORITO MOLINARI ALVARO",
+                "cantidad": 7
+            },
+            {
+                "nombre": "SILVA YAMILA BELEN",
+                "cantidad": 7
+            },
+            {
+                "nombre": "FRAGAPANE OSCAR MIGUEL",
+                "cantidad": 6
+            },
+            {
+                "nombre": "LOPEZ HUGO",
+                "cantidad": 6
+            },
+            {
+                "nombre": "PAREDES SERGIO FABIAN",
+                "cantidad": 6
+            }
+        ],
+        "datos_grafica_avanzada": {
+            "Eco Doppler": {
+                "193 - GLOBAL EMPRESARIA S.A": 12,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 2,
+                "223 - ANDAR GLOBAL": 11,
+                "229 - GLOBAL EMPRESARIA SA": 1,
+                "230 - ANDAR GLOBAL PLUS": 4
+            },
+            "Ecografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 67,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 4,
+                "223 - ANDAR GLOBAL": 28,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 3
+            },
+            "Radiología": {
+                "193 - GLOBAL EMPRESARIA S.A": 155,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 5,
+                "223 - ANDAR GLOBAL": 18,
+                "229 - GLOBAL EMPRESARIA SA": 3,
+                "230 - ANDAR GLOBAL PLUS": 10
+            },
+            "Resonancia": {
+                "193 - GLOBAL EMPRESARIA S.A": 4,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 0,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 0
+            },
+            "Tomografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 26,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 1,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 18,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 6
+            }
+        }
+    },
+    "Mayo": {
+        "periodo": "01 al 31 de Mayo de 2025",
+        "kpis": {
+            "practicas": 389,
+            "pacientes": 179,
+            "promedio": 2.17
+        },
+        "origen": {
+            "labels": [
+                "Guardia",
+                "Imagenes",
+                "Internación"
+            ],
+            "data": [
+                108,
+                197,
+                84
+            ]
+        },
+        "tipoServicio": {
+            "labels": [
+                "Eco Doppler",
+                "Ecografía",
+                "Radiología",
+                "Resonancia",
+                "Tomografía"
+            ],
+            "data": [
+                29,
+                120,
+                203,
+                19,
+                18
+            ]
+        },
+        "profesionales": {
+            "labels": [
+                "Médico Informate Diagnóstico por Imágenes",
+                "ALESSI DAVID ROMAN",
+                "MERLAT VANESA ROXANA",
+                "Centro Médico IPAM",
+                "PIACENZI MARIA ALEJANDRA",
+                "SCARABINO NADIA DESIRE"
+            ],
+            "data": [
+                234,
+                61,
+                46,
+                10,
+                8,
+                7
+            ]
+        },
+        "obrasSociales": {
+            "labels": [
+                "193 - GLOBAL EMPRESARIA S.A",
+                "223 - ANDAR GLOBAL",
+                "230 - ANDAR GLOBAL PLUS",
+                "219 - SOMU (GLOBAL)",
+                "229 - GLOBAL EMPRESARIA SA",
+                "216 - GLOBAL HOSPITAL ESPAÑOL"
+            ],
+            "data": [
+                272,
+                59,
+                25,
+                22,
+                7,
+                4
+            ]
+        },
+        "diasSemana": {
+            "labels": [
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+                "Domingo"
+            ],
+            "data": [
+                67,
+                52,
+                64,
+                77,
+                76,
+                24,
+                29
+            ]
+        },
+        "frecuenciaPacientes": {
+            "labels": [
+                "1 Estudio",
+                "2 Estudios",
+                "3 Estudios",
+                "4 Estudios",
+                "5 Estudios",
+                "6 Estudios",
+                "9 Estudios",
+                "10 Estudios",
+                "11 Estudios",
+                "12 Estudios"
+            ],
+            "data": [
+                74,
+                65,
+                16,
+                11,
+                6,
+                2,
+                2,
+                1,
+                1,
+                1
+            ]
+        },
+        "topPacientes": [
+            {
+                "nombre": "ALEGRE MAURO MATIAS",
+                "cantidad": 12
+            },
+            {
+                "nombre": "BRACCO CELINA DANIELA",
+                "cantidad": 11
+            },
+            {
+                "nombre": "RODRIGUEZ JONATAN ALEXIS",
+                "cantidad": 10
+            },
+            {
+                "nombre": "PEREYRA JESICA GEORGINA",
+                "cantidad": 9
+            },
+            {
+                "nombre": "VILLENEUVE MELANIE",
+                "cantidad": 9
+            },
+            {
+                "nombre": "CORBALAN HIPOLITO RAMON",
+                "cantidad": 6
+            },
+            {
+                "nombre": "VILLORDO ANTONINO VALENTIN",
+                "cantidad": 6
+            },
+            {
+                "nombre": "ALTAMIRANO VICTOR HUGO",
+                "cantidad": 5
+            },
+            {
+                "nombre": "AYALA VALERIA ROMINA",
+                "cantidad": 5
+            },
+            {
+                "nombre": "BADINO ALEJANDRO MARTIN",
+                "cantidad": 5
+            }
+        ],
+        "datos_grafica_avanzada": {
+            "Eco Doppler": {
+                "193 - GLOBAL EMPRESARIA S.A": 14,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 11,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 3
+            },
+            "Ecografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 79,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 8,
+                "223 - ANDAR GLOBAL": 22,
+                "229 - GLOBAL EMPRESARIA SA": 2,
+                "230 - ANDAR GLOBAL PLUS": 9
+            },
+            "Radiología": {
+                "193 - GLOBAL EMPRESARIA S.A": 158,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 4,
+                "219 - SOMU (GLOBAL)": 13,
+                "223 - ANDAR GLOBAL": 15,
+                "229 - GLOBAL EMPRESARIA SA": 3,
+                "230 - ANDAR GLOBAL PLUS": 10
+            },
+            "Resonancia": {
+                "193 - GLOBAL EMPRESARIA S.A": 13,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 6,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 0
+            },
+            "Tomografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 8,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 5,
+                "229 - GLOBAL EMPRESARIA SA": 2,
+                "230 - ANDAR GLOBAL PLUS": 3
+            }
+        }
+    },
+    "Junio": {
+        "periodo": "01 al 30 de Junio de 2025",
+        "kpis": {
+            "practicas": 397,
+            "pacientes": 188,
+            "promedio": 2.11
+        },
+        "origen": {
+            "labels": [
+                "Guardia",
+                "Imagenes",
+                "Internación"
+            ],
+            "data": [
+                101,
+                213,
+                83
+            ]
+        },
+        "tipoServicio": {
+            "labels": [
+                "Eco Doppler",
+                "Ecografía",
+                "Radiología",
+                "Resonancia",
+                "Tomografía"
+            ],
+            "data": [
+                27,
+                132,
+                195,
+                8,
+                35
+            ]
+        },
+        "profesionales": {
+            "labels": [
+                "Médico Informate Diagnóstico por Imágenes",
+                "ALESSI DAVID ROMAN",
+                "MERLAT VANESA ROXANA",
+                "PIACENZI MARIA ALEJANDRA",
+                "FALCO FERNANDO JAVIER",
+                "SCARABINO NADIA DESIRE"
+            ],
+            "data": [
+                246,
+                61,
+                49,
+                15,
+                7,
+                7
+            ]
+        },
+        "obrasSociales": {
+            "labels": [
+                "193 - GLOBAL EMPRESARIA S.A",
+                "223 - ANDAR GLOBAL",
+                "230 - ANDAR GLOBAL PLUS",
+                "219 - SOMU (GLOBAL)"
+            ],
+            "data": [
+                305,
+                65,
+                21,
+                6
+            ]
+        },
+        "diasSemana": {
+            "labels": [
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+                "Domingo"
+            ],
+            "data": [
+                63,
+                74,
+                58,
+                75,
+                84,
+                20,
+                23
+            ]
+        },
+        "frecuenciaPacientes": {
+            "labels": [
+                "1 Estudio",
+                "2 Estudios",
+                "3 Estudios",
+                "4 Estudios",
+                "5 Estudios",
+                "6 Estudios",
+                "12 Estudios",
+                "13 Estudios",
+                "28 Estudios"
+            ],
+            "data": [
+                87,
+                61,
+                23,
+                7,
+                4,
+                3,
+                1,
+                1,
+                1
+            ]
+        },
+        "topPacientes": [
+            {
+                "nombre": "ALEGRE MAURO MATIAS",
+                "cantidad": 28
+            },
+            {
+                "nombre": "AMICELLI DOMINGO ROQUE",
+                "cantidad": 13
+            },
+            {
+                "nombre": "PERALTA GRACIELA LILIANA",
+                "cantidad": 12
+            },
+            {
+                "nombre": "BUYATTI YANINA",
+                "cantidad": 6
+            },
+            {
+                "nombre": "MACHUCA CAROLINA SOLEDAD",
+                "cantidad": 6
+            },
+            {
+                "nombre": "RAMOS JAVIER MARCELO",
+                "cantidad": 6
+            },
+            {
+                "nombre": "BENITEZ SERGIO JORGE",
+                "cantidad": 5
+            },
+            {
+                "nombre": "ENTESANO VANESA",
+                "cantidad": 5
+            },
+            {
+                "nombre": "MORIN NESTOR FABIAN",
+                "cantidad": 5
+            },
+            {
+                "nombre": "POSTIGLIONE CAMILA ALDANA",
+                "cantidad": 5
+            }
+        ],
+        "datos_grafica_avanzada": {
+            "Eco Doppler": {
+                "193 - GLOBAL EMPRESARIA S.A": 11,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 9,
+                "230 - ANDAR GLOBAL PLUS": 6
+            },
+            "Ecografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 81,
+                "219 - SOMU (GLOBAL)": 5,
+                "223 - ANDAR GLOBAL": 41,
+                "230 - ANDAR GLOBAL PLUS": 5
+            },
+            "Radiología": {
+                "193 - GLOBAL EMPRESARIA S.A": 181,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 7,
+                "230 - ANDAR GLOBAL PLUS": 7
+            },
+            "Resonancia": {
+                "193 - GLOBAL EMPRESARIA S.A": 6,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 2,
+                "230 - ANDAR GLOBAL PLUS": 0
+            },
+            "Tomografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 26,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 6,
+                "230 - ANDAR GLOBAL PLUS": 3
+            }
+        }
+    },
+    "Julio": {
+        "periodo": "01 al 31 de Julio de 2025",
+        "kpis": {
+            "practicas": 444,
+            "pacientes": 196,
+            "promedio": 2.27
+        },
+        "origen": {
+            "labels": [
+                "Guardia",
+                "Imagenes",
+                "Internación"
+            ],
+            "data": [
+                99,
+                208,
+                137
+            ]
+        },
+        "tipoServicio": {
+            "labels": [
+                "Eco Doppler",
+                "Ecografía",
+                "Radiología",
+                "Resonancia",
+                "Tomografía"
+            ],
+            "data": [
+                23,
+                110,
+                270,
+                9,
+                32
+            ]
+        },
+        "profesionales": {
+            "labels": [
+                "Médico Informate Diagnóstico por Imágenes",
+                "MERLAT VANESA ROXANA",
+                "ALESSI DAVID ROMAN",
+                "PIACENZI MARIA ALEJANDRA",
+                "FUMAGALLO EDUARDO",
+                "SCARABINO NADIA DESIRE"
+            ],
+            "data": [
+                311,
+                56,
+                31,
+                13,
+                10,
+                6
+            ]
+        },
+        "obrasSociales": {
+            "labels": [
+                "193 - GLOBAL EMPRESARIA S.A",
+                "223 - ANDAR GLOBAL",
+                "230 - ANDAR GLOBAL PLUS",
+                "219 - SOMU (GLOBAL)",
+                "229 - GLOBAL EMPRESARIA SA"
+            ],
+            "data": [
+                321,
+                73,
+                37,
+                12,
+                1
+            ]
+        },
+        "diasSemana": {
+            "labels": [
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+                "Domingo"
+            ],
+            "data": [
+                72,
+                84,
+                100,
+                86,
+                62,
+                22,
+                18
+            ]
+        },
+        "frecuenciaPacientes": {
+            "labels": [
+                "1 Estudio",
+                "2 Estudios",
+                "3 Estudios",
+                "4 Estudios",
+                "5 Estudios",
+                "6 Estudios",
+                "7 Estudios",
+                "9 Estudios",
+                "32 Estudios"
+            ],
+            "data": [
+                77,
+                70,
+                26,
+                9,
+                4,
+                6,
+                1,
+                2,
+                1
+            ]
+        },
+        "topPacientes": [
+            {
+                "nombre": "MUÑOZ VERA CONSTANZA",
+                "cantidad": 32
+            },
+            {
+                "nombre": "MARTINEZ ORLANDO OSCAR",
+                "cantidad": 9
+            },
+            {
+                "nombre": "OBREGON MIRTA GRACIELA",
+                "cantidad": 9
+            },
+            {
+                "nombre": "GONZALEZ TAMARA MARIEL",
+                "cantidad": 7
+            },
+            {
+                "nombre": "ALVARENGA ANGEL GABRIEL",
+                "cantidad": 6
+            },
+            {
+                "nombre": "CUADROS LILIANA SUSANA",
+                "cantidad": 6
+            },
+            {
+                "nombre": "MONGE SOLEDAD AYLEN",
+                "cantidad": 6
+            },
+            {
+                "nombre": "REMINECHY RENZO ANTONIO",
+                "cantidad": 6
+            },
+            {
+                "nombre": "RIVERO CAROLINA",
+                "cantidad": 6
+            },
+            {
+                "nombre": "TINININI GIULIANO GIANMARCO",
+                "cantidad": 6
+            }
+        ],
+        "datos_grafica_avanzada": {
+            "Eco Doppler": {
+                "193 - GLOBAL EMPRESARIA S.A": 14,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 6,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 2
+            },
+            "Ecografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 69,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 27,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 13
+            },
+            "Radiología": {
+                "193 - GLOBAL EMPRESARIA S.A": 215,
+                "219 - SOMU (GLOBAL)": 9,
+                "223 - ANDAR GLOBAL": 28,
+                "229 - GLOBAL EMPRESARIA SA": 1,
+                "230 - ANDAR GLOBAL PLUS": 17
+            },
+            "Resonancia": {
+                "193 - GLOBAL EMPRESARIA S.A": 4,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 4,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 1
+            },
+            "Tomografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 19,
+                "219 - SOMU (GLOBAL)": 1,
+                "223 - ANDAR GLOBAL": 8,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 4
+            }
+        }
+    },
+    "Agosto": {
+        "periodo": "01 al 28 de Agosto de 2025",
+        "kpis": {
+            "practicas": 330,
+            "pacientes": 172,
+            "promedio": 1.92
+        },
+        "origen": {
+            "labels": [
+                "Guardia",
+                "Imagenes",
+                "Internación"
+            ],
+            "data": [
+                108,
+                164,
+                58
+            ]
+        },
+        "tipoServicio": {
+            "labels": [
+                "Eco Doppler",
+                "Ecografía",
+                "Radiología",
+                "Resonancia",
+                "Tomografía"
+            ],
+            "data": [
+                15,
+                61,
+                226,
+                5,
+                23
+            ]
+        },
+        "profesionales": {
+            "labels": [
+                "Médico Informate Diagnóstico por Imágenes",
+                "MERLAT VANESA ROXANA",
+                "ALESSI DAVID ROMAN",
+                "PIACENZI MARIA ALEJANDRA",
+                "SCARABINO NADIA DESIRE",
+                "LUYO VERA LIGIA"
+            ],
+            "data": [
+                253,
+                28,
+                22,
+                11,
+                5,
+                3
+            ]
+        },
+        "obrasSociales": {
+            "labels": [
+                "193 - GLOBAL EMPRESARIA S.A",
+                "223 - ANDAR GLOBAL",
+                "230 - ANDAR GLOBAL PLUS",
+                "219 - SOMU (GLOBAL)",
+                "229 - GLOBAL EMPRESARIA SA",
+                "216 - GLOBAL HOSPITAL ESPAÑOL"
+            ],
+            "data": [
+                218,
+                53,
+                43,
+                12,
+                3,
+                1
+            ]
+        },
+        "diasSemana": {
+            "labels": [
+                "Lunes",
+                "Martes",
+                "Miércoles",
+                "Jueves",
+                "Viernes",
+                "Sábado",
+                "Domingo"
+            ],
+            "data": [
+                56,
+                81,
+                34,
+                51,
+                60,
+                32,
+                16
+            ]
+        },
+        "frecuenciaPacientes": {
+            "labels": [
+                "1 Estudio",
+                "2 Estudios",
+                "3 Estudios",
+                "4 Estudios",
+                "5 Estudios",
+                "6 Estudios"
+            ],
+            "data": [
+                80,
+                56,
+                20,
+                7,
+                4,
+                5
+            ]
+        },
+        "topPacientes": [
+            {
+                "nombre": "CASEN RODRIGUEZ AMANDA",
+                "cantidad": 6
+            },
+            {
+                "nombre": "ESPINDOLA JOSE LUIS",
+                "cantidad": 6
+            },
+            {
+                "nombre": "LUENGO FLORENCIA GABRIELA",
+                "cantidad": 6
+            },
+            {
+                "nombre": "MOJICA LUISINA",
+                "cantidad": 6
+            },
+            {
+                "nombre": "SCHIBELBEIN EDUARDO",
+                "cantidad": 6
+            },
+            {
+                "nombre": "FLORES JULIETA",
+                "cantidad": 5
+            },
+            {
+                "nombre": "LARES DAMARIS JAZMIN",
+                "cantidad": 5
+            },
+            {
+                "nombre": "OLIVERA NILDA ESTER",
+                "cantidad": 5
+            },
+            {
+                "nombre": "VALDEZ FRANCHESCA",
+                "cantidad": 5
+            },
+            {
+                "nombre": "D ALOIA ALEJANDRO GASPAR",
+                "cantidad": 4
+            }
+        ],
+        "datos_grafica_avanzada": {
+            "Eco Doppler": {
+                "193 - GLOBAL EMPRESARIA S.A": 11,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 3,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 1
+            },
+            "Ecografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 32,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 7,
+                "223 - ANDAR GLOBAL": 14,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 8
+            },
+            "Radiología": {
+                "193 - GLOBAL EMPRESARIA S.A": 161,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 1,
+                "219 - SOMU (GLOBAL)": 5,
+                "223 - ANDAR GLOBAL": 24,
+                "229 - GLOBAL EMPRESARIA SA": 3,
+                "230 - ANDAR GLOBAL PLUS": 32
+            },
+            "Resonancia": {
+                "193 - GLOBAL EMPRESARIA S.A": 5,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 0,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 0
+            },
+            "Tomografía": {
+                "193 - GLOBAL EMPRESARIA S.A": 9,
+                "216 - GLOBAL HOSPITAL ESPAÑOL": 0,
+                "219 - SOMU (GLOBAL)": 0,
+                "223 - ANDAR GLOBAL": 12,
+                "229 - GLOBAL EMPRESARIA SA": 0,
+                "230 - ANDAR GLOBAL PLUS": 2
+            }
+        }
+    }
+}
