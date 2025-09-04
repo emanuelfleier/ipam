@@ -1,43 +1,83 @@
-/* Estilos personalizados y configuración de la fuente */
+/* Estilos personalizados y configuración de la fuente /
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f8fafc; /* Gris muy claro */
+font-family: 'Inter', sans-serif;
+background-color: #f8fafc; / Gris muy claro */
 }
 
 .chart-container {
-    position: relative;
-    height: 300px;
-    width: 100%;
+position: relative;
+height: 300px;
+width: 100%;
 }
 
-/* Estilo para el botón de mes activo */
+/* Estilo para el botón de mes activo /
 .tab-active {
-    background-color: #0f766e; /* Nuevo Verde azulado principal */
-    color: white;
-    border-color: #0f766e;
+background-color: #0f766e; / Nuevo Verde azulado principal */
+color: white;
+border-color: #0f766e;
 }
 
 /* Hace que el cursor cambie a puntero en los elementos del gráfico */
 canvas:hover {
-    cursor: pointer;
+cursor: pointer;
 }
 
 .kpi-card {
-    background-color: white;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+background-color: white;
+border-radius: 0.75rem;
+padding: 1.5rem;
+box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+display: flex;
+align-items: center;
+gap: 1rem;
 }
 
 .kpi-icon {
-    flex-shrink: 0;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    display: flex;
+flex-shrink: 0;
+width: 3rem;
+height: 3rem;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* === ESTILOS MODERNIZADOS PARA FILTROS INTERACTIVOS === */
+
+/* 1. Estilo base del botón (estado inactivo) */
+.filter-btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    padding: 8px 16px; /* Aumentamos el padding para más espacio */
+    border-radius: 12px; /* Esquinas redondeadas, pero no totalmente tipo "píldora" */
+    border: none; /* Quitamos el borde para un look más limpio */
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    
+    /* Nota: La opacidad se elimina para que los colores definidos en JS se vean bien */
+}
+
+/* 2. Estilo del punto de color */
+.filter-btn-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    /* Un borde sutil alrededor del punto para definirlo mejor */
+    border: 1px solid rgba(0, 0, 0, 0.05); 
+}
+
+/* 3. Estilo del estado activo */
+.filter-btn.active {
+    /* El color de fondo y texto se aplica desde JS (btn.style.backgroundColor) */
+    /* Añadimos sombra para dar profundidad al botón activo */
+    box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* 4. Efecto hover para todos los botones */
+.filter-btn:hover {
+    transform: translateY(-2px); /* Efecto de elevación sutil */
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.08); /* Sombra más pronunciada al pasar el mouse */
 }
