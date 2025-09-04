@@ -3,83 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Estadísticas Médicas</title>
-    
+    <title>Clínica Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/20+v7f7F+rV7aY7v8E4S9A7o/40rQ5qQ5E4aC5fE4aC5D4d6d4s5" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="p-4 sm:p-6 md:p-8">
+    <!-- Se eliminaron los scripts de Choices.js -->
 
-    <div id="password-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">Acceso Restringido</h2>
-            <p class="text-center text-gray-500 mb-6">Por favor, ingrese la contraseña para continuar.</p>
-            <form id="password-form">
-                <div class="mb-4">
-                    <label for="password-input" class="sr-only">Contraseña</label>
-                    <input type="password" id="password-input" placeholder="Contraseña" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div id="login-screen" class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
+            <h2 class="text-2xl font-bold text-center mb-6">Iniciar Sesión</h2>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="password-input" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <input type="password" id="password-input" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
                 </div>
-                <p id="error-message" class="text-red-500 text-sm text-center mb-4 hidden">Contraseña incorrecta. Intente de nuevo.</p>
-                <button type="submit" class="w-full bg-teal-600 text-white font-bold py-2 px-4 rounded-md hover:bg-teal-700 transition-colors duration-300">
-                    Ingresar
-                </button>
+                <button type="submit" class="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 transition-colors duration-200">Acceder</button>
+                <div id="login-message" class="text-red-500 text-sm text-center mt-2 hidden"></div>
             </form>
         </div>
     </div>
-
-    <div id="main-content" class="max-w-7xl mx-auto hidden">
-        <header class="mb-8 text-center">
-            <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-700 to-cyan-600">
-                Dashboard de Diagnóstico por Imagen
-            </h1>
-            <p class="text-xl font-medium text-gray-600 mt-1">Sanatorio IPAM</p>
-            <p class="text-gray-500 mt-2">Análisis de prestaciones - Año 2025</p>
-        </header>
-
-        <div id="view-selector" class="mb-8 flex flex-wrap gap-2">
-        </div>
-        
-        <div id="filter-bar" class="hidden mb-6 p-4 bg-teal-100 border border-teal-200 rounded-lg flex justify-between items-center">
-            <div>
-                <p class="font-semibold text-teal-800">Filtro Activo (Simulación)</p>
-                <p id="filter-text" class="text-sm text-teal-700"></p>
-                <p class="text-xs text-teal-600 mt-1">Nota: Para un filtrado real, se requerirían datos no agregados.</p>
-            </div>
-            <button id="clear-filter-btn" class="px-3 py-1 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700">Limpiar Filtro</button>
-        </div>
-
-
-        <div id="dashboard-content">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="kpi-container">
+    <main id="dashboard-container" class="hidden p-6">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-4xl font-bold text-teal-700 mb-6">Dashboard Clínico</h1>
+            
+            <div id="year-selector" class="flex flex-wrap gap-2 justify-center mb-6">
             </div>
 
-            <div id="charts-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm"><h2 class="text-xl font-semibold text-gray-700">Origen del Servicio</h2><p class="text-sm text-gray-500 mb-4">De qué área provienen las solicitudes de estudios.</p><div class="chart-container"><canvas id="origenChart"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl shadow-sm"><h2 class="text-xl font-semibold text-gray-700">Tipo de Servicio</h2><p class="text-sm text-gray-500 mb-4">Distribución de los tipos de estudios médicos realizados.</p><div class="chart-container"><canvas id="tipoServicioChart"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Profesionales con Mayor Volumen</h2><p class="text-sm text-gray-500 mb-4">Clasificación de profesionales según la cantidad de estudios.</p><div class="chart-container" style="height: 400px;"><canvas id="profesionalesChart"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl shadow-sm"><h2 class="text-xl font-semibold text-gray-700">Obras Sociales con Mayor Volumen</h2><p class="text-sm text-gray-500 mb-4">Obras sociales que generaron el mayor volumen de estudios.</p><div class="chart-container"><canvas id="obrasSocialesChart"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl shadow-sm"><h2 class="text-xl font-semibold text-gray-700">Prestaciones por Día de la Semana</h2><p class="text-sm text-gray-500 mb-4">Distribución de la carga de trabajo a lo largo de la semana.</p><div class="chart-container"><canvas id="diasSemanaChart"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Frecuencia de Estudios por Paciente</h2><p class="text-sm text-gray-500 mb-4">Cuántos pacientes se realizaron 1, 2, 3 o más estudios.</p><div class="chart-container"><canvas id="frecuenciaChart"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Top 10 Pacientes con Más Estudios</h2><p class="text-sm text-gray-500 mb-4">Pacientes que han requerido la mayor cantidad de estudios.</p><ul id="top-pacientes-list" class="space-y-3 text-gray-600 mt-4"></ul></div>
+            <div id="actions-selector" class="flex flex-wrap gap-2 justify-center mb-10 p-2 bg-gray-100 rounded-lg shadow-inner">
+            </div>
+
+            <div id="filter-bar" class="bg-yellow-100 text-yellow-700 p-3 rounded-lg flex items-center justify-between mb-8 hidden">
+                <span id="filter-text" class="font-medium text-sm"></span>
+                <button id="clear-filter-btn" class="text-xs ml-4 py-1 px-3 bg-yellow-200 rounded-full hover:bg-yellow-300 transition-colors duration-200">Borrar Filtro</button>
+            </div>
+
+            <div id="kpi-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"></div>
+            
+            <div id="charts-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Evolución Mensual General</h2><p class="text-sm text-gray-500 mb-4">Comparativa de prácticas realizadas y pacientes únicos atendidos por mes.</p><div class="chart-container" style="height: 400px;"><canvas id="evolutionChart"></canvas></div></div>
+                <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Evolución Mensual por Tipo de Servicio</h2><p class="text-sm text-gray-500 mb-4">Variación en la cantidad de estudios para cada servicio a lo largo de los meses.</p><div class="chart-container" style="height: 400px;"><canvas id="serviceEvolutionChart"></canvas></div></div>
                 
+                <!-- === SECCIÓN DE FILTROS ACTUALIZADA === -->
                 <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
-                    <h2 class="text-xl font-semibold text-gray-700">Análisis de Prácticas por Obra Social y Servicio</h2>
-                    <p class="text-sm text-gray-500 mb-4">Seleccione los servicios para ver su evolución por obra social.</p>
-                    <div id="service-legend-container" class="service-legend flex flex-wrap gap-2 mb-4"></div>
-                    <div class="chart-container" style="height:400px"><canvas id="interactiveEvolutionChart"></canvas></div>
+                    <div class="mb-4">
+                        <h2 class="text-xl font-semibold text-gray-700">Evolución de Servicios por Obra Social</h2>
+                        <p class="text-sm text-gray-500">Haz clic en los servicios y obras sociales para filtrar el gráfico.</p>
+                    </div>
+
+                    <!-- Contenedor para los filtros de SERVICIO (arriba) -->
+                    <div id="service-filters-container" class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
+                        <!-- Los botones de filtro para servicios se generarán aquí con JS -->
+                    </div>
+
+                    <!-- Contenedor del Gráfico -->
+                    <div class="chart-container" style="height: 400px;"><canvas id="servicioPorOSChart"></canvas></div>
+
+                    <!-- Contenedor para los filtros de OBRA SOCIAL (abajo) -->
+                    <div id="os-filters-container" class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4">
+                        <!-- Los botones de filtro para obras sociales se generarán aquí con JS -->
+                    </div>
                 </div>
+                <!-- === FIN DE SECCIÓN ACTUALIZADA === -->
+
             </div>
         </div>
-    </div>
+    </main>
 
-    <script src="dashboard.js"></script>
+    <script type="module" src="./main.js"></script>
 
 </body>
 </html>
