@@ -2,7 +2,12 @@ export const Utils = {
     // La contraseña sigue aquí, por lo que es importante tenerlo en cuenta
     config: {
         password: 'ipam3125',
-        colorPalette: ['#14b8a6', '#06b6d4', '#475569', '#3b82f6', '#10b981'],
+        colorPalette: [
+            '#14b8a6', '#06b6d4', '#475569', '#3b82f6', '#10b981',
+            '#f59e0b', '#ef4444', '#8b5cf6', '#e11d48', '#22c55e',
+            '#f97316', '#6b7280', '#0ea5e9', '#d946ef', '#fbbf24',
+            '#9ca3af', '#6d28d9', '#1e3a8a', '#c2410c', '#34d399'
+        ],
         lightColorPalette: ['#ccfbf1', '#cffafe', '#e2e8f0', '#bfdbfe', '#d1fae5']
     },
     // Objeto para almacenar los datos procesados, ahora con estructura por año
