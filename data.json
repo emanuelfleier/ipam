@@ -4218,7 +4218,7 @@
             }
         },
         "Agosto": {
-            "periodo": "01 al 30 de Agosto de 2025",
+            "periodo": "01 al 31 de Agosto de 2025",
             "kpis": {
                 "practicas": 352,
                 "pacientes": 178,
@@ -4231,9 +4231,9 @@
                     "Internación"
                 ],
                 "data": [
-                    108,
-                    180,
-                    64
+                    106,
+                    179,
+                    67
                 ]
             },
             "tipoServicio": {
@@ -4246,8 +4246,8 @@
                 ],
                 "data": [
                     16,
-                    66,
-                    238,
+                    65,
+                    239,
                     5,
                     27
                 ]
@@ -4262,10 +4262,10 @@
                     "LUYO VERA LIGIA"
                 ],
                 "data": [
-                    269,
-                    31,
+                    270,
+                    32,
                     22,
-                    13,
+                    11,
                     5,
                     4
                 ]
@@ -4280,9 +4280,9 @@
                     "216 - GLOBAL HOSPITAL ESPAÑOL"
                 ],
                 "data": [
-                    230,
+                    231,
                     53,
-                    51,
+                    50,
                     12,
                     5,
                     1
@@ -4300,12 +4300,12 @@
                 ],
                 "data": [
                     56,
-                    81,
+                    79,
                     34,
-                    53,
-                    73,
+                    54,
+                    72,
                     39,
-                    16
+                    18
                 ]
             },
             "frecuenciaPacientes": {
@@ -4315,24 +4315,26 @@
                     "3 Estudios",
                     "4 Estudios",
                     "5 Estudios",
-                    "6 Estudios"
+                    "6 Estudios",
+                    "7 Estudios"
                 ],
                 "data": [
                     81,
                     57,
                     21,
                     7,
-                    6,
-                    6
+                    7,
+                    4,
+                    1
                 ]
             },
             "topPacientes": [
                 {
-                    "nombre": "CASEN RODRIGUEZ AMANDA",
-                    "cantidad": 6
+                    "nombre": "MOJICA LUISINA",
+                    "cantidad": 7
                 },
                 {
-                    "nombre": "CUADROS LILIANA SUSANA",
+                    "nombre": "CASEN RODRIGUEZ AMANDA",
                     "cantidad": 6
                 },
                 {
@@ -4344,15 +4346,15 @@
                     "cantidad": 6
                 },
                 {
-                    "nombre": "MOJICA LUISINA",
-                    "cantidad": 6
-                },
-                {
                     "nombre": "ESPINDOLA JOSE LUIS",
                     "cantidad": 6
                 },
                 {
-                    "nombre": "ALFREDO IREN",
+                    "nombre": "IREN ALFREDO DAMIAN",
+                    "cantidad": 5
+                },
+                {
+                    "nombre": "FLORES JULIETA",
                     "cantidad": 5
                 },
                 {
@@ -4360,11 +4362,11 @@
                     "cantidad": 5
                 },
                 {
-                    "nombre": "VALDEZ FRANCHESCA",
+                    "nombre": "LARES DAMARIS JAZMIN",
                     "cantidad": 5
                 },
                 {
-                    "nombre": "LARES DAMARIS JAZMIN",
+                    "nombre": "PEREZ ESTER CAROLINA",
                     "cantidad": 5
                 }
             ],
@@ -4379,7 +4381,7 @@
                     ],
                     "data": [
                         11,
-                        33,
+                        34,
                         169,
                         5,
                         12
@@ -4412,9 +4414,9 @@
                     ],
                     "data": [
                         3,
-                        14,
-                        24,
-                        12
+                        12,
+                        25,
+                        13
                     ]
                 },
                 "229 - GLOBAL EMPRESARIA SA": {
@@ -4438,7 +4440,7 @@
                         2,
                         10,
                         36,
-                        3
+                        2
                     ]
                 }
             },
