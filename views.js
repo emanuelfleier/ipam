@@ -1,5 +1,3 @@
-// views.js
-
 import { Utils } from './utils.js';
 
 // Registra el plugin de datalabels con Chart.js para que esté disponible en todos los gráficos.
@@ -211,15 +209,12 @@ export const Views = {
     /**
      * Muestra el resumen anual para un año específico.
      */
-// Reemplaza tu función showAnnualSummary existente con esta:
-// ... (resto de tu archivo views.js sin cambios)
 
-// ... (resto de tu archivo views.js sin cambios)
 
-    /**
-     * Muestra el resumen anual para un año específico.
-     * VERSIÓN MODIFICADA CON FILTROS INTERACTIVOS Y LÍNEAS POR SERVICIO
-     */
+
+
+
+    
     showAnnualSummary(year) {
         const months = Object.keys(Utils.statsData[year]);
         const summary = {
@@ -251,7 +246,7 @@ export const Views = {
         // --- RENDERIZADO DE KPIs Y GRÁFICOS INICIALES (sin cambios) ---
         this.elements.kpiContainer.innerHTML = `
             <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg></div><div><p class="text-sm text-gray-500">Total Prácticas</p><p class="text-2xl font-bold text-gray-800">${summary.totalPracticas}</p></div></div>
-            <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div><div><p class="text-sm text-gray-500">Total Pacientes</p><p class="text-2xl font-bold text-gray-800">${summary.totalPacientes}</p></div></div>
+            <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div><div><p class="text-sm text-gray-500">Total Pacientes</p><p class="text-2xl font-bold text-gray-800">${summary.totalPacientes}</p></div></div>
             <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div><div><p class="text-sm text-gray-500">Mes con Más Prácticas</p><p class="text-2xl font-bold text-gray-800">${mesPicoPracticas}</p></div></div>
             <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg></div><div><p class="text-sm text-gray-500">Promedio General</p><p class="text-2xl font-bold text-gray-800">${promedioGeneral}</p></div></div>
         `;
@@ -268,6 +263,17 @@ export const Views = {
                 <div class="chart-container" style="height: 400px;"><canvas id="servicioPorOSChart"></canvas></div>
                 <div id="os-filters-container" class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4"></div>
             </div>
+            <!-- === NUEVA SECCIÓN: GRÁFICO INVERTIDO === -->
+            <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
+                <div class="mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Evolución de Obra social por Servicio</h2>
+                    <p class="text-sm text-gray-500">Selecciona una o varias obras sociales y servicios para visualizar los datos.</p>
+                </div>
+                <div id="os-filters-container-2" class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4"></div>
+                <div class="chart-container" style="height: 400px;"><canvas id="osPorServicioChart"></canvas></div>
+                <div id="service-filters-container-2" class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4"></div>
+            </div>
+            <!-- === FIN DE NUEVA SECCIÓN === -->
         `;
         this.renderChart('evolutionChart', 'line', summary.evolution.labels, [{
             label: 'Prácticas Realizadas', data: summary.evolution.practicas, borderColor: Utils.config.colorPalette[0], backgroundColor: 'rgba(15, 118, 110, 0.2)', tension: 0.2, fill: true
@@ -275,7 +281,7 @@ export const Views = {
             label: 'Pacientes Únicos', data: summary.evolution.pacientes, borderColor: Utils.config.colorPalette[2], backgroundColor: 'rgba(29, 78, 216, 0.2)', tension: 0.2, fill: true
         }], 'Evolución');
         
-        // ---- NUEVA LÓGICA PARA GRÁFICO FILTRADO ----
+        // ---- LÓGICA EXISTENTE PARA EL GRÁFICO FILTRADO "Servicio por OS" ----
         
         // 1. Obtener todos los servicios y obras sociales únicos del año
         const allObrasSociales = new Set();
@@ -411,105 +417,118 @@ export const Views = {
         populateFilters(osFiltersContainer, uniqueObrasSociales, activeOses, offsetPalette);
         
         renderFilteredChart();
-    },
 
-// ... (resto de tu archivo views.js sin cambios)
-    /**
-     * Muestra el resumen total de todos los años.
-     */
-    showTotalSummary() {
-        const years = Object.keys(Utils.statsData).sort();
-        const summary = {
-            totalPracticas: 0,
-            totalPacientes: 0,
-            evolution: {
-                labels: [],
-                practicas: [],
-                pacientes: []
+
+        // === NUEVA LÓGICA PARA EL GRÁFICO INVERTIDO "OS por Servicio" ===
+        const osFiltersContainer2 = document.getElementById('os-filters-container-2');
+        const serviceFiltersContainer2 = document.getElementById('service-filters-container-2');
+
+        let activeOses2 = [...uniqueObrasSociales];
+        let activeServices2 = [...uniqueServiceTypes];
+
+        const renderFilteredOSChart = () => {
+            const datasets = [];
+
+            if (activeOses2.length === 0) {
+                this.renderChart('osPorServicioChart', 'line', summary.evolution.labels, [], 'Evolución de Obra Social por Servicio', {
+                    plugins: { legend: { display: false } }
+                });
+                return;
             }
-        };
 
-        const allServiceTypes = new Set();
-        years.forEach(year => {
-            const months = Object.keys(Utils.statsData[year]);
-            months.forEach(month => {
-                Utils.statsData[year][month].tipoServicio.labels.forEach(label => allServiceTypes.add(label));
-            });
-        });
-        const uniqueServiceTypes = Array.from(allServiceTypes);
+            activeOses2.forEach(os => {
+                const colorIndex = uniqueObrasSociales.indexOf(os);
+                const osColor = Utils.config.colorPalette[colorIndex % Utils.config.colorPalette.length];
 
-        const serviceEvolution = {};
-        uniqueServiceTypes.forEach(service => serviceEvolution[service] = []);
-
-        years.forEach(year => {
-            let annualPracticas = 0;
-            let annualPacientes = 0;
-            const months = Object.keys(Utils.statsData[year]);
-            const monthlyServiceData = {};
-            uniqueServiceTypes.forEach(service => monthlyServiceData[service] = 0);
-
-            months.forEach(month => {
-                const data = Utils.statsData[year][month];
-                annualPracticas += data.kpis.practicas;
-                annualPacientes += data.kpis.pacientes;
-                data.tipoServicio.labels.forEach((label, index) => {
-                    monthlyServiceData[label] += data.tipoServicio.data[index];
+                const monthlyData = months.map(month => {
+                    let totalForMonth = 0;
+                    if (activeServices2.length > 0) {
+                        activeServices2.forEach(service => {
+                            const osData = Utils.statsData[year][month]?.servicioPorObraSocial?.[os];
+                            if (osData) {
+                                const serviceIndex = osData.labels.indexOf(service);
+                                if (serviceIndex !== -1) {
+                                    totalForMonth += osData.data[serviceIndex];
+                                }
+                            }
+                        });
+                    }
+                    return totalForMonth;
+                });
+                
+                datasets.push({
+                    label: os,
+                    data: monthlyData,
+                    borderColor: osColor,
+                    backgroundColor: `${osColor}33`,
+                    borderWidth: 2.5,
+                    tension: 0.3,
+                    fill: true
                 });
             });
 
-            summary.totalPracticas += annualPracticas;
-            summary.totalPacientes += annualPacientes;
-            summary.evolution.labels.push(year);
-            summary.evolution.practicas.push(annualPracticas);
-            summary.evolution.pacientes.push(annualPacientes);
-
-            uniqueServiceTypes.forEach(service => {
-                serviceEvolution[service].push(monthlyServiceData[service] || 0);
+            this.renderChart('osPorServicioChart', 'line', summary.evolution.labels, datasets, 'Evolución de Obra Social por Servicio', {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
             });
-        });
+        };
 
-        const yearPicoPracticas = summary.evolution.labels[summary.evolution.practicas.indexOf(Math.max(...summary.evolution.practicas))];
-        const promedioGeneral = (summary.totalPracticas / summary.totalPacientes).toFixed(2);
+        const populateFilters2 = (container, items, stateArray, palette, isServiceFilter) => {
+            container.innerHTML = '';
+            items.forEach((item, index) => {
+                const color = palette[index % palette.length];
+                const btn = document.createElement('span');
+                btn.className = 'filter-btn active';
+                btn.dataset.value = item;
 
-        this.elements.kpiContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8';
-        this.elements.kpiContainer.innerHTML = `
-            <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg></div><div><p class="text-sm text-gray-500">Total Prácticas</p><p class="text-2xl font-bold text-gray-800">${summary.totalPracticas}</p></div></div>
-            <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div><div><p class="text-sm text-gray-500">Total Pacientes</p><p class="text-2xl font-bold text-gray-800">${summary.totalPacientes}</p></div></div>
-            <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div><div><p class="text-sm text-gray-500">Año con Más Prácticas</p><p class="text-2xl font-bold text-gray-800">${yearPicoPracticas}</p></div></div>
-            <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg></div><div><p class="text-sm text-gray-500">Promedio General</p><p class="text-2xl font-bold text-gray-800">${promedioGeneral}</p></div></div>
-        `;
-        this.elements.chartsGrid.innerHTML = `
-            <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Evolución Anual General</h2><p class="text-sm text-gray-500 mb-4">Comparativa de prácticas realizadas y pacientes únicos atendidos por año.</p><div class="chart-container" style="height: 400px;"><canvas id="evolutionChart"></canvas></div></div>
-            <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2"><h2 class="text-xl font-semibold text-gray-700">Evolución Anual por Tipo de Servicio</h2><p class="text-sm text-gray-500 mb-4">Variación en la cantidad de estudios para cada servicio a lo largo de los años.</p><div class="chart-container" style="height: 400px;"><canvas id="serviceEvolutionChart"></canvas></div></div>
-        `;
+                const dot = document.createElement('span');
+                dot.className = 'filter-btn-dot';
+                
+                const setButtonStyle = (isActive) => {
+                    if (isActive) {
+                        btn.style.backgroundColor = color;
+                        btn.style.color = '#fff';
+                        btn.style.borderColor = color;
+                        dot.style.backgroundColor = '#fff';
+                    } else {
+                        btn.style.backgroundColor = '#f1f5f9';
+                        btn.style.color = color;
+                        btn.style.borderColor = '#e2e8f0';
+                        dot.style.backgroundColor = color;
+                    }
+                };
 
-        this.renderChart('evolutionChart', 'line', summary.evolution.labels, [{
-            label: 'Prácticas Realizadas',
-            data: summary.evolution.practicas,
-            borderColor: Utils.config.colorPalette[0],
-            backgroundColor: 'rgba(15, 118, 110, 0.2)',
-            tension: 0.2,
-            fill: true
-        }, {
-            label: 'Pacientes Únicos',
-            data: summary.evolution.pacientes,
-            borderColor: Utils.config.colorPalette[2],
-            backgroundColor: 'rgba(29, 78, 216, 0.2)',
-            tension: 0.2,
-            fill: true
-        }], 'Evolución');
+                setButtonStyle(true);
+                btn.appendChild(dot);
+                btn.appendChild(document.createTextNode(item));
 
-        const serviceDatasets = uniqueServiceTypes.map((service, index) => ({
-            label: service,
-            data: serviceEvolution[service],
-            borderColor: Utils.config.colorPalette[index % Utils.config.colorPalette.length],
-            tension: 0.2,
-            fill: false
-        }));
+                btn.addEventListener('click', () => {
+                    const value = btn.dataset.value;
+                    const stateIndex = stateArray.indexOf(value);
 
-        this.renderChart('serviceEvolutionChart', 'line', summary.evolution.labels, serviceDatasets, 'Evolución por Servicio');
+                    if (stateIndex > -1) {
+                        stateArray.splice(stateIndex, 1);
+                    } else {
+                        stateArray.push(value);
+                    }
+                    
+                    btn.classList.toggle('active');
+                    setButtonStyle(btn.classList.contains('active'));
+                    renderFilteredOSChart();
+                });
+
+                container.appendChild(btn);
+            });
+        };
+        
+        populateFilters2(osFiltersContainer2, uniqueObrasSociales, activeOses2, offsetPalette, false);
+        populateFilters2(serviceFiltersContainer2, uniqueServiceTypes, activeServices2, Utils.config.colorPalette, true);
+        
+        renderFilteredOSChart();
     },
-
     /**
      * Alterna la vista del dashboard.
      */
