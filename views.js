@@ -203,18 +203,12 @@ export const Views = {
             data: data.frecuenciaPacientes.data,
             backgroundColor: Utils.config.colorPalette[4]
         }], 'Frecuencia');
-        document.getElementById('top-pacientes-list').innerHTML = data.topPacientes.map(p => `<li class="flex justify-between items-center p-3 bg-gray-50 rounded-md"><span>${p.nombre}</span><span class="font-bold text-teal-600 bg-teal-100 px-3 py-1 rounded-full text-sm">${p.cantidad} estudios</span></li>`).join('');
+        document.getElementById('top-pacientes-list').innerHTML = data.topPacientes.map(p => `<li class="flex justify-between items-center p-3 bg-gray-50 rounded-md"><span>${p.nombre}</span><span class="font-bold text-teal-600 bg-teal-100 px-3 py-1 rounded-full text-sm">${p.cantidad} estudios}</span></li>`).join('');
     },
 
     /**
      * Muestra el resumen anual para un año específico.
      */
-
-
-
-
-
-    
     showAnnualSummary(year) {
         const months = Object.keys(Utils.statsData[year]);
         const summary = {
@@ -438,7 +432,7 @@ export const Views = {
 
             activeOses2.forEach(os => {
                 const colorIndex = uniqueObrasSociales.indexOf(os);
-                const osColor = Utils.config.colorPalette[colorIndex % Utils.config.colorPalette.length];
+                const osColor = offsetPalette[colorIndex % offsetPalette.length];
 
                 const monthlyData = months.map(month => {
                     let totalForMonth = 0;
@@ -529,6 +523,287 @@ export const Views = {
         
         renderFilteredOSChart();
     },
+
+    /**
+     * Muestra el resumen total de todos los años.
+     */
+    showTotalSummary() {
+        const years = Object.keys(Utils.statsData).sort();
+        const summary = {
+            totalPracticas: 0,
+            totalPacientes: 0,
+            evolution: {
+                labels: [],
+                practicas: [],
+                pacientes: []
+            }
+        };
+
+        const allServiceTypes = new Set();
+        years.forEach(year => {
+            const months = Object.keys(Utils.statsData[year]);
+            months.forEach(month => {
+                Utils.statsData[year][month].tipoServicio.labels.forEach(label => allServiceTypes.add(label));
+            });
+        });
+        const uniqueServiceTypes = Array.from(allServiceTypes);
+
+        const serviceEvolution = {};
+        uniqueServiceTypes.forEach(service => serviceEvolution[service] = []);
+
+        years.forEach(year => {
+            let annualPracticas = 0;
+            let annualPacientes = 0;
+            const months = Object.keys(Utils.statsData[year]);
+            const monthlyServiceData = {};
+            uniqueServiceTypes.forEach(service => monthlyServiceData[service] = 0);
+
+            months.forEach(month => {
+                const data = Utils.statsData[year][month];
+                annualPracticas += data.kpis.practicas;
+                annualPacientes += data.kpis.pacientes;
+                data.tipoServicio.labels.forEach((label, index) => {
+                    monthlyServiceData[label] += data.tipoServicio.data[index];
+                });
+            });
+
+            summary.totalPracticas += annualPracticas;
+            summary.totalPacientes += annualPacientes;
+            summary.evolution.labels.push(year);
+            summary.evolution.practicas.push(annualPracticas);
+            summary.evolution.pacientes.push(annualPacientes);
+
+            uniqueServiceTypes.forEach(service => {
+                serviceEvolution[service].push(monthlyServiceData[service] || 0);
+            });
+        });
+
+        const yearPicoPracticas = summary.evolution.labels[summary.evolution.practicas.indexOf(Math.max(...summary.evolution.practicas))];
+        const promedioGeneral = (summary.totalPracticas / summary.totalPacientes).toFixed(2);
+
+        this.elements.kpiContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8';
+        this.elements.kpiContainer.innerHTML = `
+            <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg></div><div><p class="text-sm text-gray-500">Total Prácticas</p><p class="text-2xl font-bold text-gray-800">${summary.totalPracticas}</p></div></div>
+            <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div><div><p class="text-sm text-gray-500">Total Pacientes</p><p class="text-2xl font-bold text-gray-800">${summary.totalPacientes}</p></div></div>
+            <div class="kpi-card"><div class="kpi-icon bg-teal-100 text-teal-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div><div><p class="text-sm text-gray-500">Año con Más Prácticas</p><p class="text-2xl font-bold text-gray-800">${yearPicoPracticas}</p></div></div>
+            <div class="kpi-card"><div class="kpi-icon bg-cyan-100 text-cyan-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg></div><div><p class="text-sm text-gray-500">Promedio General</p><p class="text-2xl font-bold text-gray-800">${promedioGeneral}</p></div></div>
+        `;
+
+        this.elements.chartsGrid.innerHTML = `
+            <!-- === NUEVO GRÁFICO: EVOLUCIÓN ANUAL/MENSUAL GENERAL === -->
+            <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Evolución General</h2>
+                    <div class="flex gap-2">
+                        <button id="evolution-annual-btn" class="px-3 py-1 text-xs font-medium rounded-full bg-teal-600 text-white transition-colors duration-200">Anual</button>
+                        <button id="evolution-monthly-btn" class="px-3 py-1 text-xs font-medium rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors duration-200">Mensual</button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mb-4">Comparativa de prácticas realizadas y pacientes únicos atendidos por año o mes.</p>
+                <div class="chart-container" style="height: 400px;"><canvas id="evolutionChart"></canvas></div>
+            </div>
+            <!-- === FIN DE NUEVA GRÁFICA === -->
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-700">Evolución de Prácticas por Servicio</h2>
+                    <div class="flex gap-2">
+                        <button id="view-annual-btn" class="px-3 py-1 text-xs font-medium rounded-full bg-teal-600 text-white transition-colors duration-200">Anual</button>
+                        <button id="view-monthly-btn" class="px-3 py-1 text-xs font-medium rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors duration-200">Mensual</button>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mb-4">Muestra la distribución de las prácticas a lo largo de los años o meses.</p>
+                <div class="chart-container" style="height: 400px;"><canvas id="stackedChart"></canvas></div>
+            </div>
+        `;
+
+        // --- LÓGICA PARA EL GRÁFICO DE EVOLUCIÓN GENERAL ---
+        const evolutionAnnualBtn = document.getElementById('evolution-annual-btn');
+        const evolutionMonthlyBtn = document.getElementById('evolution-monthly-btn');
+        
+        let currentEvolutionView = 'annual';
+
+        const updateEvolutionButtonState = () => {
+            evolutionAnnualBtn.classList.toggle('bg-teal-600', currentEvolutionView === 'annual');
+            evolutionAnnualBtn.classList.toggle('text-white', currentEvolutionView === 'annual');
+            evolutionAnnualBtn.classList.toggle('bg-gray-200', currentEvolutionView !== 'annual');
+            evolutionAnnualBtn.classList.toggle('text-gray-600', currentEvolutionView !== 'annual');
+
+            evolutionMonthlyBtn.classList.toggle('bg-teal-600', currentEvolutionView === 'monthly');
+            evolutionMonthlyBtn.classList.toggle('text-white', currentEvolutionView === 'monthly');
+            evolutionMonthlyBtn.classList.toggle('bg-gray-200', currentEvolutionView !== 'monthly');
+            evolutionMonthlyBtn.classList.toggle('text-gray-600', currentEvolutionView !== 'monthly');
+        };
+
+        const renderEvolutionChart = (view) => {
+            let labels = [];
+            let practicasData = [];
+            let pacientesData = [];
+
+            if (view === 'annual') {
+                labels = years;
+                practicasData = summary.evolution.practicas;
+                pacientesData = summary.evolution.pacientes;
+            } else { // 'monthly'
+                const allMonthsAndYears = [];
+                years.forEach(year => {
+                    const monthsInYear = Object.keys(Utils.statsData[year]);
+                    monthsInYear.forEach(month => {
+                        allMonthsAndYears.push({ year, month });
+                    });
+                });
+                
+                labels = allMonthsAndYears.map(({ year, month }) => `${Utils.monthNamesMap[month.toLowerCase()] || month} ${year}`);
+                
+                allMonthsAndYears.forEach(({ year, month }) => {
+                    const monthData = Utils.statsData[year][month];
+                    practicasData.push(monthData.kpis.practicas);
+                    pacientesData.push(monthData.kpis.pacientes);
+                });
+            }
+
+            this.renderChart('evolutionChart', 'line', labels, [{
+                label: 'Prácticas Realizadas',
+                data: practicasData,
+                borderColor: Utils.config.colorPalette[0],
+                backgroundColor: 'rgba(15, 118, 110, 0.2)',
+                tension: 0.2,
+                fill: true
+            }, {
+                label: 'Pacientes Únicos',
+                data: pacientesData,
+                borderColor: Utils.config.colorPalette[2],
+                backgroundColor: 'rgba(29, 78, 216, 0.2)',
+                tension: 0.2,
+                fill: true
+            }], 'Evolución');
+        };
+
+        evolutionAnnualBtn.addEventListener('click', () => {
+            currentEvolutionView = 'annual';
+            updateEvolutionButtonState();
+            renderEvolutionChart('annual');
+        });
+
+        evolutionMonthlyBtn.addEventListener('click', () => {
+            currentEvolutionView = 'monthly';
+            updateEvolutionButtonState();
+            renderEvolutionChart('monthly');
+        });
+
+        updateEvolutionButtonState();
+        renderEvolutionChart('annual');
+        
+        // --- LÓGICA DE LA NUEVA GRÁFICA (COMPOSICIÓN DE PRÁCTICAS) ---
+        const viewAnnualBtn = document.getElementById('view-annual-btn');
+        const viewMonthlyBtn = document.getElementById('view-monthly-btn');
+
+        let currentStackedView = 'annual';
+
+        const updateButtonState = () => {
+            viewAnnualBtn.classList.toggle('bg-teal-600', currentStackedView === 'annual');
+            viewAnnualBtn.classList.toggle('text-white', currentStackedView === 'annual');
+            viewAnnualBtn.classList.toggle('bg-gray-200', currentStackedView !== 'annual');
+            viewAnnualBtn.classList.toggle('text-gray-600', currentStackedView !== 'annual');
+
+            viewMonthlyBtn.classList.toggle('bg-teal-600', currentStackedView === 'monthly');
+            viewMonthlyBtn.classList.toggle('text-white', currentStackedView === 'monthly');
+            viewMonthlyBtn.classList.toggle('bg-gray-200', currentStackedView !== 'monthly');
+            viewMonthlyBtn.classList.toggle('text-gray-600', currentStackedView !== 'monthly');
+        };
+
+        const renderStackedChart = (view) => {
+            let labels = [];
+            let datasets = [];
+            const serviceTotals = {};
+
+            // Paso 1: Obtener todos los servicios únicos de todos los años
+            const allServices = new Set();
+            Object.values(Utils.statsData).forEach(yearData => {
+                Object.values(yearData).forEach(monthData => {
+                    monthData.tipoServicio.labels.forEach(service => allServices.add(service));
+                });
+            });
+            const uniqueServices = Array.from(allServices).sort();
+            uniqueServices.forEach(service => serviceTotals[service] = []);
+
+            if (view === 'annual') {
+                labels = years; // Los años son las etiquetas del eje X
+                years.forEach(year => {
+                    let yearServices = {};
+                    uniqueServices.forEach(service => yearServices[service] = 0);
+                    Object.values(Utils.statsData[year]).forEach(monthData => {
+                        monthData.tipoServicio.labels.forEach((service, index) => {
+                            yearServices[service] += monthData.tipoServicio.data[index];
+                        });
+                    });
+                    uniqueServices.forEach(service => {
+                        serviceTotals[service].push(yearServices[service] || 0);
+                    });
+                });
+            } else { // 'monthly'
+                const allMonthsAndYears = [];
+                years.forEach(year => {
+                    const monthsInYear = Object.keys(Utils.statsData[year]);
+                    monthsInYear.forEach(month => {
+                        allMonthsAndYears.push({ year, month });
+                    });
+                });
+
+                labels = allMonthsAndYears.map(({ year, month }) => `${Utils.monthNamesMap[month.toLowerCase()] || month} ${year}`);
+
+                uniqueServices.forEach(service => {
+                    allMonthsAndYears.forEach(({ year, month }) => {
+                        const monthData = Utils.statsData[year][month];
+                        const serviceIndex = monthData.tipoServicio.labels.indexOf(service);
+                        const total = (serviceIndex !== -1) ? monthData.tipoServicio.data[serviceIndex] : 0;
+                        serviceTotals[service].push(total);
+                    });
+                });
+            }
+
+            // Paso 2: Crear los datasets para el gráfico de líneas
+            uniqueServices.forEach((service, index) => {
+                datasets.push({
+                    label: service,
+                    data: serviceTotals[service],
+                    borderColor: Utils.config.colorPalette[index % Utils.config.colorPalette.length],
+                    tension: 0.3, // Suaviza la línea
+                    fill: false // No rellena el área debajo de la línea
+                });
+            });
+
+            // Paso 3: Renderizar el gráfico
+            this.renderChart('stackedChart', 'line', labels, datasets, 'Evolución de Prácticas por Servicio', {
+                scales: {
+                    x: {
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            });
+        };
+
+        // Event listeners para los botones de la nueva gráfica
+        viewAnnualBtn.addEventListener('click', () => {
+            currentStackedView = 'annual';
+            updateButtonState();
+            renderStackedChart('annual');
+        });
+
+        viewMonthlyBtn.addEventListener('click', () => {
+            currentStackedView = 'monthly';
+            updateButtonState();
+            renderStackedChart('monthly');
+        });
+
+        // Renderizar la gráfica inicial en vista anual
+        updateButtonState();
+        renderStackedChart('annual');
+    },
+
     /**
      * Alterna la vista del dashboard.
      */
@@ -591,7 +866,7 @@ export const Views = {
         
         const availableMonths = Object.keys(Utils.statsData[year]);
         
-        orderedMonths.forEach(month => {
+orderedMonths.forEach(month => {
             if (availableMonths.includes(month)) {
                 const button = document.createElement('button');
                 button.textContent = month;
