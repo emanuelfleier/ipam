@@ -887,7 +887,7 @@ orderedMonths.forEach(month => {
         this.elements.yearSelector.innerHTML = '';
         this.elements.actionsSelector.innerHTML = '';
 
-        const years = Object.keys(Utils.statsData).sort();
+        const years = Object.keys(Utils.statsData).filter(key => !isNaN(parseInt(key))).sort();
 
         const totalSummaryButton = document.createElement('button');
         totalSummaryButton.textContent = 'Resumen Total';
@@ -912,5 +912,17 @@ orderedMonths.forEach(month => {
             });
             this.elements.yearSelector.appendChild(button);
         });
-    },
+
+        // --- LÓGICA AGREGADA ---
+        // Al cargar la página, selecciona el último año disponible por defecto.
+        const latestYear = years[years.length - 1];
+        if (latestYear) {
+            activeYear = latestYear;
+            this.initializeDashboardButtons(latestYear);
+            this.switchView('annual', latestYear);
+        } else {
+            // Si no hay años disponibles, muestra el resumen total
+            this.switchView('total', null);
+        }
+    }
 };
