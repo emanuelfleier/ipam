@@ -21,12 +21,8 @@ if (loginForm) {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('dashboard-container').classList.remove('hidden');
 
-            const availableYears = Object.keys(Utils.statsData).sort();
+            // Esta es la ÚNICA línea que necesitas para inicializar el dashboard
             Views.initializeYearButtons();
-
-            const latestYear = availableYears[availableYears.length - 1];
-            Views.initializeDashboardButtons(latestYear);
-            Views.switchView('annual', latestYear);
 
         } catch (error) {
             loginMessage.textContent = error.message;
