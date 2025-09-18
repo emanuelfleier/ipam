@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Clínico IPAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/20+v7f7F+rV7aY7v8E4S9A7o/40rQ5qQ5E4aC5fE4aC5D4d6d4s5" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+
+</head>
+<body class="bg-slate-100 text-slate-800 font-poppins">
+
+    <div id="login-screen" class="min-h-screen flex items-center justify-center bg-slate-50">
+        <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
+            <h2 class="text-2xl font-bold text-center mb-6">Iniciar Sesión</h2>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="password-input" class="block text-sm font-medium text-slate-700">Contraseña</label>
+                    <input type="password" id="password-input" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                </div>
+                <button type="submit" class="w-full bg-sky-600 text-white py-2 px-4 rounded-md hover:bg-sky-700 transition-colors duration-200">Acceder</button>
+                <div id="login-message" class="text-red-500 text-sm text-center mt-2 hidden"></div>
+            </form>
+        </div>
+    </div>
+
+    <main id="dashboard-container" class="hidden p-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Título y logo de la clínica -->
+            <header class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
+                <div class="flex items-center space-x-4">
+                    <!-- Contenedor para el logo de IPAM -->
+                    <div class="flex items-center justify-center p-4 rounded-xl bg-white shadow-sm">
+                        <!-- Reemplaza la URL en el 'src' con la de tu logo. -->
+                        <!-- Coloca la URL de tu logo aquí -->
+                        <img src="https://iili.io/K5JThv4.png" alt="Logo de Sanatorio IPAM" class="h-32 w-auto object-contain">
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-slate-800">Dashboard de Diagnóstico por Imágenes</h1>
+                        <p class="text-lg text-slate-500">Sanatorio IPAM</p>
+                    </div>
+                </div>
+            </header>
+
+            <div id="year-selector" class="flex flex-wrap gap-2 justify-center mb-6">
+            </div>
+
+            <div id="actions-selector" class="flex flex-wrap gap-2 justify-center mb-10 p-2 bg-slate-200 rounded-lg shadow-inner">
+            </div>
+
+            <div id="filter-bar" class="bg-yellow-100 text-yellow-700 p-3 rounded-lg flex items-center justify-between mb-8 hidden">
+                <span id="filter-text" class="font-medium text-sm"></span>
+                <button id="clear-filter-btn" class="text-xs ml-4 py-1 px-3 bg-yellow-200 rounded-full hover:bg-yellow-300 transition-colors duration-200">Borrar Filtro</button>
+            </div>
+
+            <div id="kpi-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"></div>
+            
+            <div id="charts-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Gráficos con scroll y contenedores mejorados -->
+                <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2"><h2 class="text-xl font-semibold text-slate-700">Evolución Mensual General</h2><p class="text-sm text-slate-500 mb-4">Comparativa de prácticas realizadas y pacientes únicos atendidos por mes.</p><div class="overflow-x-auto"><div class="chart-container" style="height: 400px; min-width: 800px;"><canvas id="evolutionChart"></canvas></div></div></div>
+                <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2"><h2 class="text-xl font-semibold text-slate-700">Evolución Mensual por Tipo de Servicio</h2><p class="text-sm text-slate-500 mb-4">Variación en la cantidad de estudios para cada servicio a lo largo de los meses.</p><div class="overflow-x-auto"><div class="chart-container" style="height: 400px; min-width: 800px;"><canvas id="serviceEvolutionChart"></canvas></div></div></div>
+                
+                <!-- Sección de filtros con diseño mejorado -->
+                <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2">
+                    <div class="mb-4">
+                        <h2 class="text-xl font-semibold text-slate-700">Evolución de Servicios por Obra Social</h2>
+                        <p class="text-sm text-slate-500">Haz clic en los servicios y obras sociales para filtrar el gráfico.</p>
+                    </div>
+
+                    <!-- Contenedor para los filtros de SERVICIO (arriba) -->
+                    <div id="service-filters-container" class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
+                        <!-- Los botones de filtro para servicios se generarán aquí con JS -->
+                    </div>
+
+                    <!-- Contenedor del Gráfico con scroll -->
+                    <div class="overflow-x-auto">
+                        <div class="chart-container" style="height: 400px; min-width: 800px;"><canvas id="servicioPorOSChart"></canvas></div>
+                    </div>
+
+                    <!-- Contenedor para los filtros de OBRA SOCIAL (abajo) -->
+                    <div id="os-filters-container" class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4">
+                        <!-- Los botones de filtro para obras sociales se generarán aquí con JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+
+</body>
+</html>
