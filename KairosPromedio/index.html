@@ -21,27 +21,28 @@
         <!-- Header -->
         <header class="text-center mb-10">
             <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">Vademecum Kairos Promedio - 20%</h1>
-            <p class="text-lg sm:text-xl text-gray-600">Se requiere calcula el precio final de medicamentos a partir de su valor promedio en el vademecum de Kairos y luego aplicar un descuento del 20%.</p>
+            <p class="text-lg sm:text-xl text-gray-600">Descubre cómo se calcula el precio final de un medicamento a partir de su valor promedio y un descuento.</p>
         </header>
 
         <!-- New Context Section -->
         <div class="mb-10 p-6 bg-gray-200 rounded-lg border-2 border-gray-300">
             <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Contexto y Justificación</h2>
             <p class="text-gray-700 text-lg">En el ámbito farmacéutico, un mismo medicamento puede tener múltiples precios en el vademécum debido a la existencia de diversas marcas, presentaciones o laboratorios. Esta variabilidad crea un desafío para establecer un valor único y justo que sirva de referencia.</p>
+            <p class="text-gray-700 text-lg mt-4">Por eso, surge la necesidad de un método estandarizado para determinar un <b>"precio título"</b> o <b>"precio de referencia"</b> que sea representativo del mercado, garantizando equidad y transparencia para todas las partes involucradas.</p>
         </div>
         
         <!-- Main Content Flow -->
         <div class="flex flex-col md:flex-row items-start md:space-x-8 space-y-8 md:space-y-0">
 
-            <!-- Step 1: Promedio -->
+            <!-- Step 1: Selección a Ojo -->
             <div class="flex-1 p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
                 <div class="flex items-center mb-4">
                     <div class="flex items-center justify-center w-10 h-10 bg-blue-500 rounded-full text-white font-bold text-xl mr-4 shadow-lg">1</div>
-                    <h2 class="text-2xl font-semibold text-blue-900">Paso 1: Calcular el Promedio</h2>
+                    <h2 class="text-2xl font-semibold text-blue-900">Paso 1: Selección del Precio Intermedio</h2>
                 </div>
-                <p class="text-gray-700 mb-4">El vademécum contiene varios precios para el mismo medicamento (por marcas o presentaciones). El primer paso es encontrar un valor central sumando todos estos precios y dividiéndolos por la cantidad de opciones.</p>
+                <p class="text-gray-700 mb-4">El vademécum contiene varios precios para el mismo medicamento. En este método, se observan los precios disponibles (desde el más bajo al más alto) y se selecciona el que se considera visualmente como el "valor central" o intermedio. Este será el precio de referencia.</p>
                 <div class="bg-blue-100 p-4 rounded-lg text-blue-800 text-center font-mono text-sm sm:text-base">
-                    Promedio = (Precio A + Precio B + Precio C) / 3
+                    Precio de Referencia = Precio intermedio (selección visual)
                 </div>
             </div>
 
@@ -56,9 +57,9 @@
                     <div class="flex items-center justify-center w-10 h-10 bg-green-500 rounded-full text-white font-bold text-xl mr-4 shadow-lg">2</div>
                     <h2 class="text-2xl font-semibold text-green-900">Paso 2: Aplicar el 20% de Descuento</h2>
                 </div>
-                <p class="text-gray-700 mb-4">Una vez que se tiene el precio promedio, se le aplica un descuento del 20%. Esto se realiza multiplicando el valor por 0.80, que es el equivalente a retener el 80% del precio original.</p>
+                <p class="text-gray-700 mb-4">Una vez que se tiene el precio de referencia, se le aplica un descuento del 20%. Esto se realiza multiplicando el valor por 0.80, que es el equivalente a retener el 80% del precio original.</p>
                 <div class="bg-green-100 p-4 rounded-lg text-green-800 text-center font-mono text-sm sm:text-base">
-                    Precio Final = Promedio × 0.80
+                    Precio Final = Precio de Referencia × 0.80
                 </div>
             </div>
 
@@ -66,7 +67,7 @@
         
         <!-- Example Section -->
         <div class="mt-12 p-8 bg-gray-100 rounded-xl border border-gray-300">
-            <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">Ejemplo Real: Omeprazol 20 mg cápsulas x 28 unidades</h3>
+            <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">Ejemplo Real: Omeprazol 20 mg</h3>
             <p class="text-gray-700 mb-6 text-center">Usemos marcas conocidas para ilustrar el proceso de forma práctica y real.</p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
@@ -87,14 +88,14 @@
             <div class="mt-8">
                 <p class="text-center text-lg text-gray-700 font-semibold mb-4">Cálculos:</p>
                 <div class="bg-gray-200 p-4 rounded-lg text-gray-800 text-center font-mono text-base sm:text-lg mb-4">
-                    Promedio = ($16.605,50 + $17.759,51 + $13.619,41) / 3 = $15.994,81
+                    Precio de Referencia (visual) = $16.605,50
                 </div>
                 <div class="bg-gray-200 p-4 rounded-lg text-gray-800 text-center font-mono text-base sm:text-lg">
-                    Precio Final = $15.994,81 × 0.80 = $12.795,85
+                    Precio Final = $16.605,50 × 0.80 = $13.284,40
                 </div>
             </div>
 
-            <p class="text-center text-xl font-bold text-green-700 mt-6">Resultado: $12.795,85</p>
+            <p class="text-center text-xl font-bold text-green-700 mt-6">Resultado: $13.284,40</p>
         </div>
 
     </div>
