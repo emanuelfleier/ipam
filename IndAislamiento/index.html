@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta: Módulo de Indicación de Aislamiento | Sanatorio IPAM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0D2C54; /* Azul marino profundo */
+            --accent-color: #C49B63;  /* Dorado/Bronce */
+            --background-light: #F5F5F3; /* Blanco hueso/Beige claro */
+            --background-white: #FFFFFF;
+            --text-dark: #212121;
+            --text-light: #616161;
+            --border-color: #E0E0E0;
+        }
+
+        /* --- Global Styles --- */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 0;
+            padding: 25px 30px;
+            background-color: var(--primary-color);
+            color: var(--background-white);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-top: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        p, li {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        /* --- Header / Hero Section --- */
+        .hero {
+            background-color: var(--primary-color);
+            color: var(--background-white);
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+            color: var(--background-white);
+            font-weight: 900;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 650px;
+            margin: 20px auto 0 auto;
+        }
+        
+        .project-meta {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .meta-item {
+            text-align: center;
+        }
+        
+        .meta-item span {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+        }
+        
+        .meta-item strong {
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+        }
+
+        /* --- Case Study Content --- */
+        .case-study {
+            padding: 60px 0;
+        }
+        
+        .section {
+            background: var(--background-white);
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .section-content {
+            padding: 30px;
+        }
+
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .section ul li {
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .section ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 1px;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* --- Prototype Specific Styles --- */
+        #prototype-container {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        .system-header { background-color: #333; color: white; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .system-header h1 { margin: 0; font-size: 0.9rem; font-weight: 600; font-family:'Roboto', sans-serif; color:white; }
+        .user-info { font-size: 0.8rem; text-align: right; }
+        .patient-banner { background-color: var(--background-light); padding: 12px 15px; border-bottom: 1px solid var(--border-color); display: flex; flex-wrap: wrap; justify-content: space-between; font-weight: 500; font-size:0.9rem; color: var(--text-light); }
+        .patient-banner strong { color: var(--text-dark); }
+        .patient-banner span { margin-right: 20px; }
+        .form-container { padding: 25px; background: var(--background-white); }
+        .form-container label { display: block; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; font-size: 0.9rem; }
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; font-family: 'Roboto', sans-serif; font-size: 1rem; transition: all 0.2s ease; }
+        input[type="text"]:focus, textarea:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 2px rgba(13, 44, 84, 0.2); }
+        input[readonly] { background-color: var(--background-light); }
+        textarea { resize: vertical; min-height: 80px; }
+        .radio-group label { display: inline-block; margin-right: 20px; font-weight: normal; cursor: pointer; color: var(--text-light); }
+        input[type="radio"] { margin-right: 5px; cursor: pointer; }
+        .form-actions { text-align: right; padding-top: 20px; }
+        .btn { padding: 10px 20px; border: 1px solid transparent; border-radius: 4px; font-size: 0.9rem; cursor: pointer; font-weight: 500; font-family: 'Roboto', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s ease; }
+        .btn-primary { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .btn-primary:hover { background-color: #081B33; border-color: #081B33; }
+        .btn-secondary { background-color: #757575; color: white; margin-right: 10px; border-color: #757575;}
+        .btn-secondary:hover { background-color: #616161; border-color: #616161; }
+        
+        /* --- Approval Section --- */
+        .approval-block { margin-top: 20px; }
+        .approval-buttons-container { display: flex; gap: 10px; margin-top: 20px; }
+        #approval-btn, #print-btn { flex-grow: 1; padding: 12px; font-size: 1rem; }
+        #approval-btn { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--text-dark); }
+        #approval-btn:hover { background-color: #B38B52; border-color: #B38B52; }
+        #approval-btn:disabled { background-color: #BDB76B; border-color: #BDB76B; color: var(--text-dark); cursor: not-allowed; }
+        input:disabled, textarea:disabled { background-color: var(--background-light); color: var(--text-light); }
+
+        /* --- Footer --- */
+        .page-footer { text-align: center; padding: 40px 0; background: #212121; color: #BDBDBD; }
+        #reset-link { font-size: 0.9em; color: #757575; text-decoration: none; cursor: pointer; margin-top: 15px; display: inline-block; transition: color 0.2s; }
+        #reset-link:hover { color: #BDBDBD; }
+
+        /* --- ESTILOS DE IMPRESIÓN --- */
+        @media print {
+            body { background-color: white; font-size: 12pt; color: black; }
+            .hero, .form-actions button, .approval-buttons-container, .page-footer { display: none; }
+            .case-study { padding: 0; }
+            .section { box-shadow: none; border: 1px solid #ccc; padding: 0; margin: 0 0 20px 0; border-radius: 0; }
+            .section-content { padding: 20px; }
+            h2 { color: black; background: #eee; font-size: 1.5rem; padding: 15px 20px; }
+            h3 { font-size: 1.3rem; }
+            #prototype-container { border: 1px solid #ccc; page-break-inside: avoid; }
+            .approval-block { page-break-before: always; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Propuesta de Implementación: Módulo de Indicación de Aislamiento</h1>
+            <p>Una propuesta estratégica para transformar un proceso clínico crítico, fortaleciendo la seguridad del paciente y la eficiencia operativa a través de la digitalización.</p>
+            <div class="project-meta">
+                <div class="meta-item">
+                    <span>Rol</span>
+                    <strong>Analista de Sistemas / Lider de Implementacion de Proyecto</strong>
+                </div>
+                <div class="meta-item">
+                    <span>Dirigido a</span>
+                    <strong>Dirección Médica - Sanatorio IPAM</strong>
+                </div>
+                <div class="meta-item">
+                    <span>Estado</span>
+                    <strong>Propuesta lista para aprobación</strong>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="case-study">
+        <div class="container">
+            
+            <section class="section">
+                <h2>1. Situación Actual y Problemática</h2>
+                <div class="section-content">
+                    <p>Actualmente, las indicaciones de aislamiento en el Sanatorio IPAM se realizan de manera **verbal o mediante una hoja de papel**. Este método tradicional, aunque arraigado, representa una vulnerabilidad significativa para la institución:</p>
+                    <ul>
+                        <li><strong>Alto Riesgo de Error Humano:</strong> Las órdenes verbales pueden ser malinterpretadas. La comunicación en papel depende de que el personal la vea a tiempo, sin garantía de acuse de recibo.</li>
+                        <li><strong>Falta de Estandarización:</strong> La ausencia de un formato único resulta en indicaciones incompletas y confusas, dejando la interpretación a criterio del personal.</li>
+                        <li><strong>Nula Trazabilidad:</strong> Es imposible auditar quién dio la orden y cuándo, o generar estadísticas para el comité de control de infecciones. El papel se pierde y no genera datos.</li>
+                        <li><strong>Comunicación Ineficiente:</strong> La notificación a otros servicios es manual y propensa a fallos, lo que aumenta el riesgo de rupturas del protocolo.</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>2. La Solución Propuesta: Diseño y Prototipo</h2>
+                <div class="section-content">
+                    <p>Se propone la **implementación de un módulo de aislamiento directamente en la Historia Clínica Electrónica (HCE)**. El objetivo es reemplazar el sistema manual por un flujo de trabajo digital, centralizado y auditable.</p>
+                    <h3>Funcionalidades Clave Propuestas</h3>
+                    <ul>
+                        <li><strong>Formulario Estructurado:</strong> Un formulario único y obligatorio para la selección del tipo de aislamiento, diagnóstico y criterio de finalización.</li>
+                        <li><strong>Firma Electrónica:</strong> Ninguna indicación es válida hasta que el médico la firme con su credencial, garantizando la autoría y la trazabilidad.</li>
+                        <li><strong>Notificaciones Automáticas:</strong> Al firmar, el sistema enviará alertas instantáneas a enfermería y marcará al paciente con un ícono visible para todos.</li>
+                        <li><strong>Base de Datos para Auditoría:</strong> Cada indicación se almacenará de forma estructurada, permitiendo generar reportes para gestión y epidemiología.</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>3. Prototipo Interactivo para Validación</h2>
+                <div class="section-content">
+                    <p>Para visualizar claramente el impacto y la simplicidad de la solución, he desarrollado un prototipo interactivo. Esta demostración permite **experimentar el flujo de trabajo propuesto**, validando su eficiencia y facilidad de uso.</p>
+                    <div id="prototype-container">
+                        <header class="system-header">
+                            <h1>Historia Clínica Electrónica - Sanatorio IPAM</h1>
+                            <div class="user-info">
+                                Dra. Juana Montero (Mat. 12345)<br>
+                                25/09/2025 - 13:15 hs
+                            </div>
+                        </header>
+                        <section class="patient-banner">
+                            <div>
+                                <span>Paciente: <strong>PÉREZ, JUAN</strong></span>
+                                <span>HC: <strong>789456</strong></span>
+                                <span>Edad: <strong>45 años</strong></span>
+                                <span>Habitación: <strong>302-A</strong></span>
+                            </div>
+                        </section>
+                        <main class="form-container">
+                            <div class="form-section">
+                                <label>Tipo de Indicación: <span style="color:red;">*</span></label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="aislamiento"> Aislamiento de Contacto</label>
+                                    <label><input type="radio" name="aislamiento"> Aislamiento por Gotas</label>
+                                    <label><input type="radio" name="aislamiento"> Aislamiento por Vía Aérea</label>
+                                    <label><input type="radio" name="aislamiento"> Aislamiento Protector (Inverso)</label>
+                                </div>
+                            </div>
+                            <div class="form-section">
+                                <label for="start-datetime">Fecha y Hora de Inicio:</label>
+                                <input type="text" id="start-datetime" readonly>
+                            </div>
+                            <div class="form-section">
+                                <label for="diagnostico">Diagnóstico / Motivo Asociado: <span style="color:red;">*</span></label>
+                                <input type="text" id="diagnostico" placeholder="Ej: Sospecha de Tuberculosis, Infección por SARM, etc.">
+                            </div>
+                            <div class="form-section">
+                                <label for="finalizacion">Criterio de Finalización / Duración: <span style="color:red;">*</span></label>
+                                <textarea id="finalizacion" placeholder="Ej: Hasta 3 cultivos negativos, suspender tras 48hs afebril, etc."></textarea>
+                            </div>
+                            <div class="form-section">
+                                <label for="comentarios">Comentarios Adicionales:</label>
+                                <textarea id="comentarios" placeholder="(Opcional) Ej: Priorizar lavado de manos con agua y jabón."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="alert('Acción cancelada.');">Cancelar</button>
+                                <button type="button" class="btn btn-primary" onclick="alert('INDICACIÓN FIRMADA Y VALIDADA.');">Firmar y Validar</button>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>4. Plan de Implementación y Beneficios</h2>
+                <div class="section-content">
+                    <h3>Roadmap de Implementación</h3>
+                     <ul>
+                        <li><strong>Fase 1: Aprobacion de la implementacion:</strong> Reunión con direccion medica para validar el prototipo y formalizar requerimientos.<br><em>Duración Estimada: 1 día a 1 semana.</em></li>
+                        <li><strong>Fase 2: Configuración e Integración:</strong> Parametrización del módulo de Historia Clínica e integración con la HCE y los módulos de alertas.<br><em>Duración Estimada: 1 semana.</em></li>
+                        <li><strong>Fase 3: Pruebas de Aceptación (UAT) y Capacitación.</strong> Despliegue controlado para Key Users. Recolección de feedback y capacitación oficial.<br><em>Duración Estimada: 2 semanas.</em></li>
+                        <li><strong>Fase 4: Despliegue en Producción (Go-Live).</strong> Puesta en marcha oficial. Período de soporte intensivo (hypercare).<br><em>Duración Estimada: 1 semana.</em></li>
+                    </ul>
+
+                    <h3>Beneficios Esperados</h3>
+                    <ul>
+                        <li><strong>Digitalizar el 100% del proceso</strong>, eliminando la dependencia del papel y la comunicación verbal.</li>
+                        <li><strong>Reducir drásticamente el tiempo</strong> entre la decisión médica y la aplicación efectiva del aislamiento.</li>
+                        <li><strong>Crear una base de datos robusta</strong> para análisis epidemiológico y mejora continua de protocolos.</li>
+                        <li><strong>Aumentar la adherencia a los protocolos</strong>, fortaleciendo la cultura de seguridad institucional.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>5. Solicitud y Registro de Aprobación</h2>
+                <div class="section-content">
+                    <p>Considerando los beneficios expuestos, se presenta esta propuesta a la Dirección Médica para su evaluación y se solicita formalmente la aprobación para dar inicio a la Fase 1 del plan de implementación.</p>
+                    <div class="approval-block">
+                        <h3>Registro de Aprobación de Dirección Médica</h3>
+                        <div class="form-section">
+                            <label for="approver-name">Médico Autorizante:</label>
+                            <input type="text" id="approver-name" placeholder="Nombre y Apellido del Director/a Médico/a">
+                        </div>
+                        <div class="form-section">
+                            <label for="approval-comments">Comentarios de Aprobación (Opcional):</label>
+                            <textarea id="approval-comments" placeholder="Ej: Proceder según lo planificado. Priorizar la capacitación del personal de UTI."></textarea>
+                        </div>
+                        <div class="approval-buttons-container">
+                            <button type="button" id="approval-btn" class="btn" onclick="lockApproval()">Aprobar Propuesta</button>
+                            <button type="button" id="print-btn" class="btn btn-secondary" onclick="window.print()" style="display: none;">🖨️ Imprimir Constancia</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer class="page-footer">
+        <div class="container">
+            <p>Propuesta de mejora de procesos presentada para su evaluación.</p>
+            <a href="#" id="reset-link" onclick="resetApproval(event)">Resetear Aprobación</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- Lógica para el bloqueo y persistencia de la aprobación ---
+        const approverNameInput = document.getElementById('approver-name');
+        const approvalCommentsInput = document.getElementById('approval-comments');
+        const approvalBtn = document.getElementById('approval-btn');
+        const printBtn = document.getElementById('print-btn');
+
+        function lockApproval() {
+            if (approverNameInput.value.trim() === '') {
+                alert('Por favor, ingrese el nombre del Médico Autorizante para dejar constancia.');
+                return;
+            }
+            const today = new Date();
+            const approvalData = { name: approverNameInput.value, comments: approvalCommentsInput.value, timestamp: today.toISOString() };
+            localStorage.setItem('projectApproval', JSON.stringify(approvalData));
+            renderApprovalState(approvalData);
+            alert('Aprobación registrada con éxito. Se da inicio formal a la Fase 1 del proyecto.');
+        }
+
+        function renderApprovalState(data) {
+            const approvalDate = new Date(data.timestamp);
+            const dateString = approvalDate.toLocaleDateString('es-AR');
+            approverNameInput.value = data.name;
+            approvalCommentsInput.value = data.comments;
+            approverNameInput.disabled = true;
+            approvalCommentsInput.disabled = true;
+            approvalBtn.disabled = true;
+            approvalBtn.textContent = `Aprobada por ${data.name}`;
+            printBtn.style.display = 'block';
+        }
+
+        function resetApproval(event) {
+            event.preventDefault();
+            if (confirm('¿Está seguro de que desea borrar la constancia de aprobación?')) {
+                localStorage.removeItem('projectApproval');
+                location.reload();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Llenar fecha y hora de inicio en el prototipo
+            const now = new Date();
+            const datePart = now.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const timePart = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('start-datetime').value = `${datePart} - ${timePart} hs`;
+
+            // Revisar si hay una aprobación guardada
+            const savedApproval = localStorage.getItem('projectApproval');
+            if (savedApproval) {
+                const approvalData = JSON.parse(savedApproval);
+                renderApprovalState(approvalData);
+            }
+        });
+    </script>
+
+</body>
+</html>
