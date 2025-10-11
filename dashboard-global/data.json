@@ -4447,6 +4447,213 @@
             "meta": {
                 "year": 2025
             }
+        },
+        "Septiembre": {
+            "periodo": "01 al 30 de Septiembre de 2025",
+            "kpis": {
+                "practicas": 433,
+                "pacientes": 170,
+                "promedio": 2.55
+            },
+            "origen": {
+                "labels": [
+                    "Guardia",
+                    "Imagenes",
+                    "Internación"
+                ],
+                "data": [
+                    136,
+                    166,
+                    131
+                ]
+            },
+            "tipoServicio": {
+                "labels": [
+                    "Eco Doppler",
+                    "Ecografía",
+                    "Radiología",
+                    "Resonancia",
+                    "Tomografía"
+                ],
+                "data": [
+                    14,
+                    95,
+                    279,
+                    7,
+                    38
+                ]
+            },
+            "profesionales": {
+                "labels": [
+                    "Médico Informate Diagnóstico por Imágenes",
+                    "ALESSI DAVID ROMAN",
+                    "MERLAT VANESA ROXANA",
+                    "PIACENZI MARIA ALEJANDRA",
+                    "SCARABINO NADIA DESIRE",
+                    "LUYO VERA LIGIA"
+                ],
+                "data": [
+                    324,
+                    46,
+                    38,
+                    10,
+                    4,
+                    3
+                ]
+            },
+            "obrasSociales": {
+                "labels": [
+                    "193 - GLOBAL EMPRESARIA S.A",
+                    "223 - ANDAR GLOBAL",
+                    "230 - ANDAR GLOBAL PLUS"
+                ],
+                "data": [
+                    305,
+                    104,
+                    24
+                ]
+            },
+            "diasSemana": {
+                "labels": [
+                    "Lunes",
+                    "Martes",
+                    "Miércoles",
+                    "Jueves",
+                    "Viernes",
+                    "Sábado",
+                    "Domingo"
+                ],
+                "data": [
+                    75,
+                    65,
+                    66,
+                    87,
+                    73,
+                    37,
+                    30
+                ]
+            },
+            "frecuenciaPacientes": {
+                "labels": [
+                    "1 Estudio",
+                    "2 Estudios",
+                    "3 Estudios",
+                    "4 Estudios",
+                    "5 Estudios",
+                    "6 Estudios",
+                    "7 Estudios",
+                    "9 Estudios",
+                    "14 Estudios",
+                    "17 Estudios",
+                    "18 Estudios"
+                ],
+                "data": [
+                    60,
+                    51,
+                    31,
+                    9,
+                    8,
+                    5,
+                    2,
+                    1,
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "topPacientes": [
+                {
+                    "nombre": "RIVERO CAROLINA",
+                    "cantidad": 18
+                },
+                {
+                    "nombre": "ZONTA FABRICIO",
+                    "cantidad": 17
+                },
+                {
+                    "nombre": "VIDAL SERGIO",
+                    "cantidad": 14
+                },
+                {
+                    "nombre": "MORENO AYELEN GABRIELA",
+                    "cantidad": 9
+                },
+                {
+                    "nombre": "ALVEDAÑO MORENA ANDREA",
+                    "cantidad": 7
+                },
+                {
+                    "nombre": "PIOTTO NELIDA",
+                    "cantidad": 7
+                },
+                {
+                    "nombre": "MEDINA BENJAMIN ISAIAS",
+                    "cantidad": 6
+                },
+                {
+                    "nombre": "MAESTRI JOSE ANGEL",
+                    "cantidad": 6
+                },
+                {
+                    "nombre": "GIANNI FERNANDO EMANUEL",
+                    "cantidad": 6
+                },
+                {
+                    "nombre": "MONZON PABLO",
+                    "cantidad": 6
+                }
+            ],
+            "servicioPorObraSocial": {
+                "193 - GLOBAL EMPRESARIA S.A": {
+                    "labels": [
+                        "Eco Doppler",
+                        "Ecografía",
+                        "Radiología",
+                        "Resonancia",
+                        "Tomografía"
+                    ],
+                    "data": [
+                        6,
+                        64,
+                        209,
+                        3,
+                        23
+                    ]
+                },
+                "223 - ANDAR GLOBAL": {
+                    "labels": [
+                        "Eco Doppler",
+                        "Ecografía",
+                        "Radiología",
+                        "Resonancia",
+                        "Tomografía"
+                    ],
+                    "data": [
+                        8,
+                        21,
+                        59,
+                        3,
+                        13
+                    ]
+                },
+                "230 - ANDAR GLOBAL PLUS": {
+                    "labels": [
+                        "Ecografía",
+                        "Radiología",
+                        "Resonancia",
+                        "Tomografía"
+                    ],
+                    "data": [
+                        10,
+                        11,
+                        1,
+                        2
+                    ]
+                }
+            },
+            "meta": {
+                "year": 2025
+            }
         }
     }
 }
