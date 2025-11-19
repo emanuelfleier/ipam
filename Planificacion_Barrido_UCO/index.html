@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificación de Barridos en UCO y Gestión de Pedidos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#1D4ED8', // Tailwind blue-700
+                        'secondary-green': '#059669', // Tailwind emerald-600
+                        'accent-red': '#DC2626', // Tailwind red-600
+                        'timeline-bg': '#F9FAFB', // Tailwind gray-50
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos generales para el cuerpo y la fuente */
+        body {
+            font-family: 'Inter', 'sans-serif';
+            background-color: #F3F4F6; /* Fondo gris claro */
+        }
+        /* Estilo para la barra de barrido */
+        .sweep-bar-container {
+            position: relative;
+            height: 80px; /* Reducido para más compacidad */
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        /* Estilo para las barras dentro del contenedor de barrido */
+        .timeline-bar {
+            position: absolute;
+            height: 100%;
+            border-radius: 0.375rem; /* Menos redondeado para un look más profesional */
+            opacity: 0.9;
+            transition: width 0.3s ease, left 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        /* Estilo para el pequeño margen entre barras */
+        .timeline-bar-padded {
+            margin: 0 1px; /* Pequeño margen horizontal para separación visual */
+            width: calc(var(--bar-width) - 2px) !important; /* Ajuste del ancho para el margen */
+        }
+
+        /* Estilo específico para el indicador de hora de ejecución */
+        .execution-marker {
+            position: absolute;
+            top: 0;
+            width: 3px; /* Más delgado */
+            height: 100%;
+            background-color: #1F2937; /* Gris oscuro para mejor contraste */
+            z-index: 20; /* Asegurar que esté por encima de todas las barras */
+            border-radius: 1px;
+            box-shadow: 0 0 5px rgba(31, 41, 55, 0.6);
+            transition: left 0.3s ease;
+        }
+        .execution-marker-label {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: #1F2937;
+        }
+        /* Línea de tiempo 36 horas */
+        .timeline-axis {
+            display: grid;
+            /* 36 horas */
+            grid-template-columns: repeat(36, 1fr); 
+            height: 40px;
+            border-bottom: 2px solid #D1D5DB;
+            position: relative;
+        }
+        .time-label {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6B7280;
+            position: relative;
+            z-index: 10;
+        }
+        /* Marcador de hora más visible */
+        .time-label:before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -8px;
+            width: 1px;
+            height: 10px;
+            background-color: #D1D5DB; /* Línea de la hora */
+            z-index: 1;
+        }
+        /* Líneas verticales de la rejilla horaria */
+        .timeline-axis::after {
+            content: '';
+            position: absolute;
+            top: 40px; /* Debajo de las etiquetas de tiempo */
+            left: 0;
+            right: 0;
+            bottom: -5px; /* Altura de la línea vertical */
+            /* Repite una línea vertical por cada 1/36 de ancho (cada hora) */
+            background-image: repeating-linear-gradient(to right, #E5E7EB 0, #E5E7EB 1px, transparent 1px, transparent calc(100%/36));
+            background-size: 100% 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Línea para marcar la medianoche (cambio de día) */
+        .midnight-marker {
+            position: absolute;
+            left: calc(12/36 * 100%); /* 12 horas de 36 */
+            top: 0;
+            bottom: -5px;
+            width: 2px;
+            background-color: #1D4ED8; /* Azul primario para destacar */
+            z-index: 50; 
+            border-radius: 1px;
+        }
+        .midnight-marker-label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: #1D4ED8;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-6 md:p-10">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-primary-blue mb-2">
+            📊 Planificación de Barridos en UCO y Gestión de Pedidos
+        </h1>
+        <p class="text-gray-600 mb-6 border-b pb-4">
+            Visualización detallada en 36 horas (12:00 del día anterior a 24:00 del día seleccionado).
+        </p>
+
+        <div id="day-navigation" class="flex flex-wrap gap-3 mb-8 p-3 bg-timeline-bg rounded-lg shadow-inner">
+            <div id="loading-indicator" class="text-gray-500">Cargando datos...</div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-primary-blue mb-4" id="selected-day-title"></h2>
+
+        <div id="kpi-cards-container" class="grid grid-cols-2 gap-4 mb-6">
+            </div>
+
+
+        <div class="flex flex-wrap gap-4 mb-6 text-sm">
+            <div class="flex items-center">
+                <div class="w-4 h-4 rounded-full bg-secondary-green mr-2"></div>
+                <span class="text-gray-700">Rango de Cobertura (Barrido)</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 rounded-full bg-yellow-500 mr-2"></div>
+                <span class="text-gray-700">Preparación Post-Ejecución</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 rounded-full bg-accent-red mr-2"></div>
+                <span class="text-gray-700">Entrega de Pedidos (Stock Repuesto)</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 bg-black mr-2"></div>
+                <span class="text-gray-700">Hora de Ejecución del Barrido</span>
+            </div>
+        </div>
+
+        <div class="relative w-full overflow-x-auto rounded-lg border border-gray-200 p-1">
+            <div id="timeline-container" class="relative w-[1800px] h-auto p-2">
+                
+                <div class="timeline-axis mb-8" id="time-axis">
+                    <div class="midnight-marker">
+                        <span class="midnight-marker-label">Medianoche / Inicio del Día</span>
+                    </div>
+                </div>
+
+                <div id="sweeps-visualization">
+                    <p class="text-center text-gray-500 p-8">Selecciona un día para visualizar la planificación de barridos.</p>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="mt-8 p-4 bg-timeline-bg border border-gray-300 rounded-lg shadow-inner">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">💬 Comentarios/Observaciones para el día <span id="comment-date-display" class="text-primary-blue font-bold"></span></h3>
+            <textarea id="day-observation" 
+                      class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue transition duration-150" 
+                      rows="3" 
+                      placeholder="Ingresa aquí tus notas o comentarios sobre la planificación del día..."></textarea>
+        </div>
+        </div>
+
+    <script>
+        // Datos de planificación (mantener los mismos para probar la nueva escala)
+        const planningData = {
+            '2025-11-18': {
+                name: 'Martes 18/11 (Día Normal)',
+                workingHours: 'No aplica (día normal)',
+                sweeps: [] 
+            },
+            '2025-11-19': {
+                name: 'Miércoles 19/11 (Comienzo de Gestión)',
+                workingHours: '07:00 hs a 22:00 hs',
+                sweeps: [
+                    {
+                        name: 'Barrido 1',
+                        executionTime: '09:00',
+                        rangeStart: '2025-11-18 06:00',
+                        rangeEnd: '2025-11-19 06:00',
+                        coverage: '24hs',
+                        prepTime: 1, // horas
+                        deliveryTime: 1 // horas
+                    },
+                    {
+                        name: 'Barrido 2',
+                        executionTime: '18:00',
+                        rangeStart: '2025-11-19 07:00',
+                        rangeEnd: '2025-11-19 16:00',
+                        coverage: '9 hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    }
+                ]
+            },
+            '2025-11-20': {
+                name: 'Jueves 20/11',
+                workingHours: '07:00 hs a 22:00 hs',
+                sweeps: [
+                    {
+                        name: 'Barrido 1',
+                        executionTime: '09:00',
+                        rangeStart: '2025-11-19 17:00',
+                        rangeEnd: '2025-11-20 06:00',
+                        coverage: '13hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    },
+                    {
+                        name: 'Barrido 2',
+                        executionTime: '18:00',
+                        rangeStart: '2025-11-20 07:00',
+                        rangeEnd: '2025-11-20 16:00',
+                        coverage: '9 hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    }
+                ]
+            },
+            '2025-11-21': {
+                name: 'Viernes 21/11',
+                workingHours: '07:00 hs a 22:00 hs',
+                sweeps: [
+                    {
+                        name: 'Barrido 1',
+                        executionTime: '09:00',
+                        rangeStart: '2025-11-20 17:00',
+                        rangeEnd: '2025-11-21 06:00',
+                        coverage: '13hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    },
+                    {
+                        name: 'Barrido 2',
+                        executionTime: '18:00',
+                        rangeStart: '2025-11-21 07:00',
+                        rangeEnd: '2025-11-21 16:00',
+                        coverage: '9 hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    }
+                ]
+            },
+            '2025-11-22': {
+                name: 'Sábado 22/11',
+                workingHours: '07:00 hs a 18:00 hs',
+                sweeps: [
+                    {
+                        name: 'Barrido 1',
+                        executionTime: '09:00',
+                        rangeStart: '2025-11-21 17:00',
+                        rangeEnd: '2025-11-22 06:00',
+                        coverage: '13hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    },
+                    {
+                        name: 'Barrido 2',
+                        executionTime: '16:00',
+                        rangeStart: '2025-11-22 07:00',
+                        rangeEnd: '2025-11-22 16:00',
+                        coverage: '9 hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    }
+                ]
+            },
+            '2025-11-23': {
+                name: 'Domingo 23/11',
+                workingHours: '10:00 hs a 18:00 hs',
+                sweeps: [
+                    {
+                        name: 'Barrido 1',
+                        executionTime: '13:00',
+                        rangeStart: '2025-11-22 17:00',
+                        rangeEnd: '2025-11-23 11:00',
+                        coverage: '18hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    }
+                ]
+            },
+            '2025-11-24': {
+                name: 'Lunes 24/11 (Feriado)',
+                workingHours: '07:00 hs a 16:00 hs',
+                sweeps: [
+                    {
+                        name: 'Barrido 1',
+                        executionTime: '09:00',
+                        rangeStart: '2025-11-23 12:00',
+                        rangeEnd: '2025-11-24 06:00',
+                        coverage: '18hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    }
+                ]
+            },
+            '2025-11-25': {
+                name: 'Martes 25/11',
+                workingHours: '07:00 hs a 22:00 hs',
+                sweeps: [
+                    {
+                        name: 'Barrido 1',
+                        executionTime: '09:00',
+                        rangeStart: '2025-11-24 07:00',
+                        rangeEnd: '2025-11-25 06:00',
+                        coverage: '23hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    },
+                    {
+                        name: 'Barrido 2',
+                        executionTime: '18:00',
+                        rangeStart: '2025-11-25 07:00',
+                        rangeEnd: '2025-11-25 16:00',
+                        coverage: '9 hs',
+                        prepTime: 1,
+                        deliveryTime: 1
+                    }
+                ]
+            }
+        };
+
+        let currentSelectedDate = Object.keys(planningData)[1]; // Inicializar en el primer día con barridos
+        
+        // CONSTANTES GLOBALES DE TIEMPO
+        const MINUTES_PER_HOUR = 60;
+        const HOURS_IN_TIMELINE = 36; // 12:00 (Día Anterior) a 24:00 (Día Actual)
+        const MINUTES_IN_TIMELINE = HOURS_IN_TIMELINE * MINUTES_PER_HOUR; // 2160 minutos
+
+        // Minutos de offset: 12:00 PM del día anterior es el punto 0 de nuestra escala.
+        const START_OFFSET_MINUTES = 12 * MINUTES_PER_HOUR; 
+
+        // Función auxiliar para convertir "HH:MM" a minutos desde 00:00 (día actual)
+        function timeToMinutes(timeStr) {
+            if (!timeStr) return 0;
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return (hours * 60) + minutes;
+        }
+
+        // Función para formatear minutos totales a un string legible (e.g., 2.5h)
+        function formatMinutesToHours(minutes) {
+            if (minutes === 0) return '0h';
+            const hours = minutes / 60;
+            return hours % 1 === 0 ? `${hours}h` : `${hours.toFixed(1)}h`;
+        }
+        
+        // Función para obtener la fecha del día anterior
+        function getPreviousDateKey(dateKey) {
+            const index = Object.keys(planningData).indexOf(dateKey);
+            return index > 0 ? Object.keys(planningData)[index - 1] : null;
+        }
+        
+        /**
+         * Configura el campo de comentarios: carga el valor guardado y establece el autoguardado.
+         */
+        function setupObservationField(dateKey) {
+            const observationEl = document.getElementById('day-observation');
+            const commentDateEl = document.getElementById('comment-date-display');
+            
+            // Cargar el comentario guardado
+            const savedComment = localStorage.getItem(`planning_comment_${dateKey}`);
+            observationEl.value = savedComment || '';
+            
+            // Mostrar la fecha
+            // Extraer solo la fecha (ej: "19/11") del nombre completo del día
+            const fullName = planningData[dateKey].name;
+            const match = fullName.match(/(\d{2}\/\d{2})/);
+            const displayDate = match ? match[0] : fullName;
+
+            commentDateEl.textContent = displayDate;
+
+            // Limpiar eventos anteriores (importante para evitar múltiples listeners)
+            observationEl.oninput = null;
+
+            // Configurar el autoguardado
+            observationEl.oninput = () => {
+                // Usamos localStorage para persistir el dato en el navegador
+                localStorage.setItem(`planning_comment_${dateKey}`, observationEl.value);
+            };
+        }
+
+
+        /**
+         * Calcula todas las métricas clave para el día seleccionado.
+         */
+        function calculateDayMetrics(dateKey) {
+            const data = planningData[dateKey];
+            const previousData = planningData[getPreviousDateKey(dateKey)];
+            
+            let totalCoverageMinutes = 0; // -> Suma simple de la duración total del rango (Requisito del usuario)
+            let totalPrepDeliveryMinutes = 0;
+            let totalGapMinutes = 0;
+            let sweepCountForGap = 0;
+            let lastDeliveryTimeToday = 0; 
+            let lastDeliveryTimeYesterday = 0; 
+            
+            const dayDate = dateKey; 
+            const todayMidnightMs = new Date(`${dayDate}T00:00:00`).getTime();
+            
+            // --- Cálculo del Inicio Laboral (para Gap) ---
+            const workingHoursMatch = data.workingHours.match(/^(\d{2}:\d{2}) hs/);
+            const workingStartMinutes = workingHoursMatch ? timeToMinutes(workingHoursMatch[1]) : null;
+            
+            // 1. ITERAR SOBRE BARRIDOS DEL DÍA ACTUAL
+            data.sweeps.forEach((sweep) => {
+                const executionMinutesToday = timeToMinutes(sweep.executionTime);
+                const prepDurationMinutes = sweep.prepTime * 60;
+                const deliveryDurationMinutes = sweep.deliveryTime * 60;
+                
+                // CÁLCULO DE COBERTURA: Suma simple de la duración total del rango (start -> end)
+                const rangeStartTime = new Date(sweep.rangeStart.replace(' ', 'T')).getTime();
+                const rangeEndTime = new Date(sweep.rangeEnd.replace(' ', 'T')).getTime();
+                
+                const durationMs = rangeEndTime - rangeStartTime;
+                totalCoverageMinutes += durationMs / (1000 * 60); // Suma la duración total del rango en minutos
+
+                // CÁLCULO DE PREP + ENTREGA (solo lo que cae en el día actual)
+                const prepStartMinutesToday = executionMinutesToday;
+                const deliveryStartMinutesToday = prepStartMinutesToday + prepDurationMinutes;
+                const deliveryEndMinutesToday = deliveryStartMinutesToday + deliveryDurationMinutes;
+                
+                // Prep que cae en el día actual
+                const actualPrepStart = Math.max(prepStartMinutesToday, 0);
+                const actualPrepEnd = Math.min(prepStartMinutesToday + prepDurationMinutes, 24 * 60);
+                totalPrepDeliveryMinutes += Math.max(0, actualPrepEnd - actualPrepStart);
+
+                // Entrega que cae en el día actual
+                const actualDeliveryStart = Math.max(deliveryStartMinutesToday, 0);
+                const actualDeliveryEnd = Math.min(deliveryEndMinutesToday, 24 * 60);
+                totalPrepDeliveryMinutes += Math.max(0, actualDeliveryEnd - actualDeliveryStart);
+                
+                // Calcular el tiempo de la última entrega
+                lastDeliveryTimeToday = Math.max(lastDeliveryTimeToday, actualDeliveryEnd);
+
+                // CÁLCULO DE GAP (Espera desde inicio laboral)
+                if (workingStartMinutes !== null) {
+                    const gapMinutes = Math.max(0, executionMinutesToday - workingStartMinutes);
+                    sweepCountForGap++;
+                    totalGapMinutes += gapMinutes;
+                }
+            });
+
+            // 2. CÁLCULO DE HORAS SIN COBERTURA (BRECHA)
+            // Calculado a partir de la Cobertura ÚNICA dentro de las 24h (para que sea una métrica útil)
+            let uniqueCoverageMinutes = 0;
+            const coverageIntervals = [];
+
+            data.sweeps.forEach((sweep) => {
+                const rangeStartTime = new Date(sweep.rangeStart.replace(' ', 'T')).getTime();
+                const rangeEndTime = new Date(sweep.rangeEnd.replace(' ', 'T')).getTime();
+                
+                // Intersección con el día actual (00:00 a 24:00)
+                const coverageStartTodayMs = Math.max(rangeStartTime, todayMidnightMs);
+                const coverageEndTodayMs = Math.min(rangeEndTime, todayMidnightMs + (24 * 60 * 60 * 1000));
+                
+                if (coverageStartTodayMs < coverageEndTodayMs) {
+                    const startMinutes = (coverageStartTodayMs - todayMidnightMs) / (1000 * 60);
+                    const endMinutes = (coverageEndTodayMs - todayMidnightMs) / (1000 * 60);
+                    coverageIntervals.push([startMinutes, endMinutes]);
+                }
+            });
+            
+            // Unión de intervalos para obtener la Cobertura Única
+            coverageIntervals.sort((a, b) => a[0] - b[0]);
+            if (coverageIntervals.length > 0) {
+                let currentInterval = coverageIntervals[0];
+                
+                for (let i = 1; i < coverageIntervals.length; i++) {
+                    const nextInterval = coverageIntervals[i];
+                    if (nextInterval[0] <= currentInterval[1]) {
+                        currentInterval[1] = Math.max(currentInterval[1], nextInterval[1]);
+                    } else {
+                        uniqueCoverageMinutes += currentInterval[1] - currentInterval[0];
+                        currentInterval = nextInterval;
+                    }
+                }
+                uniqueCoverageMinutes += currentInterval[1] - currentInterval[0];
+            }
+
+            // Horas sin Cobertura (Brecha): 24h - Cobertura Única dentro del día
+            const actualDayDurationMinutes = 24 * 60;
+            const totalUncoveredMinutes = actualDayDurationMinutes - uniqueCoverageMinutes;
+
+            // 3. CÁLCULO DE GAP DE REPOSICIÓN 
+            
+            if (previousData && previousData.sweeps.length > 0) {
+                let maxPreviousDeliveryEnd = 0;
+                previousData.sweeps.forEach(sweep => {
+                    const executionMinutesPrev = timeToMinutes(sweep.executionTime);
+                    const deliveryEndPrev = executionMinutesPrev + (sweep.prepTime + sweep.deliveryTime) * 60;
+                    
+                    if (deliveryEndPrev > 24 * 60) {
+                        maxPreviousDeliveryEnd = Math.max(maxPreviousDeliveryEnd, deliveryEndPrev - 24 * 60);
+                    }
+                });
+                lastDeliveryTimeYesterday = maxPreviousDeliveryEnd;
+            } else {
+                lastDeliveryTimeYesterday = 0; 
+            }
+            
+            let stock_repo_gap_minutes = 0;
+            if (data.sweeps.length > 0) {
+                const firstExecutionToday = timeToMinutes(data.sweeps[0].executionTime); 
+                stock_repo_gap_minutes = Math.max(0, firstExecutionToday - lastDeliveryTimeYesterday);
+            }
+
+            return {
+                workingHours: data.workingHours, // Se añade el horario laboral aquí
+                sweepCount: data.sweeps.length,
+                totalCoverageMinutes, 
+                totalPrepDeliveryMinutes,
+                averageGapMinutes: sweepCountForGap > 0 ? totalGapMinutes / sweepCountForGap : 0,
+                totalUncoveredMinutes: totalUncoveredMinutes, 
+                stockRepoGapMinutes: stock_repo_gap_minutes 
+            };
+        }
+
+        /**
+         * Renderiza las tarjetas KPI de resumen diario.
+         */
+        function renderKpiCards(metrics) {
+            const container = document.getElementById('kpi-cards-container');
+            container.innerHTML = '';
+            
+            // 1. Calcular Espera Promedio
+            let averageGapHours = 'N/A';
+            let averageGapColor = 'text-primary-blue';
+            let averageGapBg = 'bg-primary-blue/10';
+
+            if (metrics.sweepCount > 0 && metrics.averageGapMinutes > 0) {
+                const averageGapMinutes = metrics.averageGapMinutes;
+                averageGapHours = formatMinutesToHours(averageGapMinutes);
+                if (averageGapMinutes > 60) {
+                    averageGapColor = 'text-accent-red';
+                    averageGapBg = 'bg-accent-red/10';
+                } else {
+                    averageGapColor = 'text-secondary-green';
+                    averageGapBg = 'bg-secondary-green/10';
+                }
+            }
+
+            // 2. Definir los KPIs
+            const kpis = [
+                {
+                    title: 'Horario Laboral',
+                    value: metrics.workingHours,
+                    icon: '⏰',
+                    color: 'text-gray-700',
+                    bg: 'bg-gray-200'
+                },
+                {
+                    title: 'Cantidad de Barridos',
+                    value: metrics.sweepCount,
+                    icon: '🔢',
+                    color: 'text-primary-blue',
+                    bg: 'bg-primary-blue/10'
+                },
+                {
+                    title: 'Horas Totales Cubiertas',
+                    value: formatMinutesToHours(metrics.totalCoverageMinutes),
+                    icon: '✅',
+                    color: 'text-secondary-green',
+                    bg: 'bg-secondary-green/10'
+                },
+                {
+                    title: 'Horas de Prep y Entrega',
+                    value: formatMinutesToHours(metrics.totalPrepDeliveryMinutes),
+                    icon: '🚚',
+                    color: 'text-yellow-700',
+                    bg: 'bg-yellow-500/10'
+                },
+                {
+                    title: 'Espera Promedio (Gap)',
+                    value: averageGapHours,
+                    icon: '⏳',
+                    color: averageGapColor,
+                    bg: averageGapBg
+                },
+                {
+                    title: 'Horas sin Cobertura (Brecha)',
+                    value: formatMinutesToHours(metrics.totalUncoveredMinutes),
+                    icon: '❌',
+                    color: metrics.totalUncoveredMinutes > 60 ? 'text-accent-red' : 'text-gray-500',
+                    bg: metrics.totalUncoveredMinutes > 60 ? 'bg-accent-red/10' : 'bg-gray-200'
+                },
+                /* Opcional: Agregar el Gap de Reposición
+                {
+                    title: 'Gap Reposición Stock',
+                    value: formatMinutesToHours(metrics.stockRepoGapMinutes),
+                    icon: '📦',
+                    color: metrics.stockRepoGapMinutes > 60 ? 'text-accent-red' : 'text-primary-blue',
+                    bg: metrics.stockRepoGapMinutes > 60 ? 'bg-accent-red/10' : 'bg-primary-blue/10'
+                }
+                */
+            ];
+            
+            // 3. Renderizar las tarjetas
+            // Ajustar la rejilla dinámicamente según la cantidad de KPIs
+            container.className = `grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-6`; 
+            
+            kpis.forEach(kpi => {
+                const card = document.createElement('div');
+                card.className = `p-3 sm:p-4 rounded-lg shadow-sm border ${kpi.bg}`;
+                card.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="text-xl sm:text-2xl mr-2 sm:mr-3">${kpi.icon}</span>
+                        <div>
+                            <p class="text-xs font-medium text-gray-500">${kpi.title}</p>
+                            <p class="text-lg sm:text-xl font-bold ${kpi.color}">${kpi.value}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+
+        // Función principal para renderizar la línea de tiempo
+        function renderTimeline(dateKey) {
+            const data = planningData[dateKey];
+            const visualizationEl = document.getElementById('sweeps-visualization');
+            
+            visualizationEl.innerHTML = ''; // Limpiar visualizaciones anteriores
+            
+            // TITULO DEL DIA
+            document.getElementById('selected-day-title').textContent = data.name;
+
+            const metrics = calculateDayMetrics(dateKey); // Calcular todas las métricas
+            renderKpiCards(metrics); // Renderizar las tarjetas KPI (ahora incluye toda la info)
+
+            if (!data.sweeps || data.sweeps.length === 0) {
+                visualizationEl.innerHTML = '<p class="text-center text-gray-500 p-8">No hay barridos planificados para este día.</p>';
+                setupObservationField(dateKey); // Cargar y configurar observaciones incluso si no hay barridos
+                updateDaySelection(dateKey);
+                return;
+            }
+
+            // --- CÁLCULO DE HORAS LABORALES PARA MÉTRICA GAP ---
+            const workingHoursMatch = data.workingHours.match(/^(\d{2}:\d{2}) hs/);
+            const workingStartMinutes = workingHoursMatch ? timeToMinutes(workingHoursMatch[1]) : null;
+            const workingStartStr = workingHoursMatch ? workingHoursMatch[1] : '';
+
+            // 1. DÍA ANTERIOR (Yesterday)
+            const dayDateObject = new Date(dateKey);
+            const yesterday = new Date(dayDateObject);
+            yesterday.setDate(dayDateObject.getDate() - 1);
+            const yesterdayDateStr = yesterday.toISOString().split('T')[0];
+
+            // 2. Definir la ventana de 36 horas en milisegundos
+            const windowStartMs = new Date(`${yesterdayDateStr}T12:00:00`).getTime();
+            
+            // --- INICIO: VISUALIZACIÓN DE BARRAS ---
+
+            // --- MARCADOR DE HORAS LABORALES (Fondo) ---
+            if (workingStartMinutes !== null) {
+                const workingEndMatch = data.workingHours.match(/a (\d{2}:\d{2}) hs$/);
+                const workingEndMinutes = workingEndMatch ? timeToMinutes(workingEndMatch[1]) : 24 * 60;
+                
+                // Conversión a escala de 36 horas
+                const workingStartTimeline = workingStartMinutes + START_OFFSET_MINUTES; 
+                const workingEndTimeline = workingEndMinutes + START_OFFSET_MINUTES; 
+                
+                // Solo mostramos la parte que cae DENTRO de la ventana de 36 horas y DENTRO del día actual
+                const visualStartTimeline = Math.max(workingStartTimeline, START_OFFSET_MINUTES); // No antes de Medianoche
+                const visualEndTimeline = Math.min(workingEndTimeline, MINUTES_IN_TIMELINE); 
+
+                const durationMinutes = visualEndTimeline - visualStartTimeline;
+                if (durationMinutes > 0) {
+                    const visualPositionPct = (visualStartTimeline / MINUTES_IN_TIMELINE) * 100;
+                    const visualWidthPct = (durationMinutes / MINUTES_IN_TIMELINE) * 100;
+
+                    const workingHoursMarker = document.createElement('div');
+                    workingHoursMarker.className = 'timeline-bar bg-primary-blue/10 border-dashed border-2 border-primary-blue z-0';
+                    workingHoursMarker.style.cssText = `
+                        position: absolute; 
+                        height: 100%; 
+                        top: 0;
+                        left: ${visualPositionPct}%; 
+                        width: ${visualWidthPct}%;
+                        border-radius: 0;
+                        opacity: 0.8;
+                        pointer-events: none;
+                        box-shadow: none;
+                    `;
+                    visualizationEl.appendChild(workingHoursMarker);
+                }
+            }
+            
+            data.sweeps.forEach((sweep) => {
+
+                // --- 1. Cálculos de Ejecución, Preparación y Entrega (Bloques Post-Ejecución) ---
+                const executionMinutesToday = timeToMinutes(sweep.executionTime);
+                const executionMinutesTimeline = executionMinutesToday + START_OFFSET_MINUTES; 
+                const executionPositionPct = (executionMinutesTimeline / MINUTES_IN_TIMELINE) * 100;
+
+                const prepDurationMinutes = sweep.prepTime * 60;
+                const deliveryDurationMinutes = sweep.deliveryTime * 60;
+                
+                // Preparación
+                const prepStartMinutesTimeline = executionMinutesTimeline;
+
+                // Entrega
+                const deliveryStartMinutesTimeline = executionMinutesTimeline + prepDurationMinutes;
+                const deliveryEndMinutesTimeline = deliveryStartMinutesTimeline + deliveryDurationMinutes;
+
+                // --- 2. Cálculos de Rango de Cobertura ---
+                const rangeStartTime = new Date(sweep.rangeStart.replace(' ', 'T')).getTime();
+                const rangeEndTime = new Date(sweep.rangeEnd.replace(' ', 'T')).getTime();
+
+                // Intersección del rango de cobertura con nuestra ventana de 36 horas
+                const coverageStartMs = Math.max(rangeStartTime, windowStartMs);
+                const coverageEndMs = Math.min(rangeEndTime, new Date(`${dateKey}T24:00:00`).getTime());
+                
+                if (coverageStartMs < coverageEndMs) {
+                    const coverageStartMinutesTimeline = (coverageStartMs - windowStartMs) / (1000 * 60);
+                    const coverageDurationMinutes = (coverageEndMs - coverageStartMs) / (1000 * 60);
+
+                    const coveragePositionPct = (coverageStartMinutesTimeline / MINUTES_IN_TIMELINE) * 100;
+                    const coverageWidthPct = (coverageDurationMinutes / MINUTES_IN_TIMELINE) * 100;
+
+                    // --- 3. Cálculo de Espera/Gap (para el tooltip) ---
+                    let gapDetail = '';
+                    if (workingStartMinutes !== null) {
+                        const gapMinutes = Math.max(0, executionMinutesToday - workingStartMinutes);
+                        const gapHoursString = formatMinutesToHours(gapMinutes);
+                        gapDetail = `<span><strong class="text-primary-blue">Espera/Gap (desde ${workingStartStr}):</strong> ${gapHoursString}</span>`;
+                    }
+
+                    // --- 4. Renderizado del Contenedor de Barrido ---
+                    const sweepContainer = document.createElement('div');
+                    sweepContainer.className = 'sweep-bar-container bg-timeline-bg rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300';
+                    
+                    // Contenedor de información detallada
+                    const infoHeader = `
+                        <div class="flex justify-between items-center mb-1 text-gray-800">
+                            <p class="font-extrabold text-lg">${sweep.name}</p>
+                            <span class="text-xs font-semibold px-2 py-1 bg-secondary-green/20 text-secondary-green rounded-full">
+                                Cobertura: ${sweep.coverage}
+                            </span>
+                        </div>
+                        <div class="flex flex-wrap space-x-4 text-xs text-gray-600 mb-2">
+                            <span><strong class="text-black">Inicio de Proceso (Barrido Ejecutado):</strong> ${sweep.executionTime} hs</span>
+                            ${gapDetail}
+                            <span><strong class="text-black">Prep (Post-Barrido):</strong> ${sweep.prepTime} hr</span>
+                            <span><strong class="text-black">Entrega (Stock Repuesto):</strong> ${sweep.deliveryTime} hr</span>
+                        </div>
+                    `;
+                    sweepContainer.innerHTML += infoHeader;
+
+                    const barWrapper = document.createElement('div');
+                    barWrapper.className = 'relative h-8 w-full';
+
+                    // Rango de Cobertura
+                    barWrapper.innerHTML += `
+                        <div class="timeline-bar bg-secondary-green/70 z-5 timeline-bar-padded" 
+                            title="Rango Cobertura (Barrido): ${sweep.rangeStart} a ${sweep.rangeEnd}"
+                            style="left: ${coveragePositionPct}%; --bar-width: ${coverageWidthPct}%; width: ${coverageWidthPct}%;">
+                        </div>
+                    `;
+                    
+                    // Tiempo de Preparación Post-Ejecución
+                    const prepDurationPct = (prepDurationMinutes / MINUTES_IN_TIMELINE) * 100;
+                    if (prepDurationMinutes > 0 && executionMinutesTimeline + prepDurationMinutes <= MINUTES_IN_TIMELINE && executionMinutesTimeline >= 0) {
+                        barWrapper.innerHTML += `
+                            <div class="timeline-bar bg-yellow-500/90 z-10 timeline-bar-padded" 
+                                title="Preparación: Ejecución (${sweep.executionTime} hs) + ${sweep.prepTime} hr"
+                                style="left: ${executionPositionPct}%; --bar-width: ${prepDurationPct}%; width: ${prepDurationPct}%;">
+                            </div>
+                        `;
+                    }
+
+                    // Tiempo de Entrega de Pedidos
+                    const deliveryDurationPct = (deliveryDurationMinutes / MINUTES_IN_TIMELINE) * 100;
+                    if (deliveryStartMinutesTimeline < MINUTES_IN_TIMELINE && deliveryEndMinutesTimeline > 0) { 
+                        // Recalcular posiciones y anchos si el bloque es parcialmente visible (corta la ventana)
+                        const actualDeliveryStartTimeline = Math.max(deliveryStartMinutesTimeline, 0);
+                        const actualDeliveryEndTimeline = Math.min(deliveryEndMinutesTimeline, MINUTES_IN_TIMELINE);
+                        const actualDeliveryDurationMinutes = actualDeliveryEndTimeline - actualDeliveryStartTimeline;
+
+                        const actualDeliveryPositionPct = (actualDeliveryStartTimeline / MINUTES_IN_TIMELINE) * 100;
+                        const actualDeliveryWidthPct = (actualDeliveryDurationMinutes / MINUTES_IN_TIMELINE) * 100;
+                        
+                        barWrapper.innerHTML += `
+                            <div class="timeline-bar bg-accent-red/90 z-15 timeline-bar-padded" 
+                                title="Entrega de Pedidos: ${sweep.deliveryTime} hr"
+                                style="left: ${actualDeliveryPositionPct}%; --bar-width: ${actualDeliveryWidthPct}%; width: ${actualDeliveryWidthPct}%;">
+                            </div>
+                        `;
+                    }
+                    
+                    // Hora de Ejecución de Barrido (Marcador)
+                    barWrapper.innerHTML += `
+                        <div class="execution-marker" 
+                            title="Hora de Ejecución del Barrido: ${sweep.executionTime} hs"
+                            style="left: ${executionPositionPct}%;">
+                            <span class="execution-marker-label">${sweep.executionTime}</span>
+                        </div>
+                    `;
+                    
+                    sweepContainer.appendChild(barWrapper);
+                    visualizationEl.appendChild(sweepContainer);
+                }
+            });
+            
+            // --- LLAMADA CLAVE PARA GESTIONAR COMENTARIOS ---
+            setupObservationField(dateKey); 
+            
+            updateDaySelection(dateKey);
+        }
+
+        // Función para renderizar el eje de tiempo 12:00 (Prev) - 24:00 (Actual)
+        function renderTimeAxis() {
+            const axisEl = document.getElementById('time-axis');
+            let axisContent = '<div class="midnight-marker"><span class="midnight-marker-label">Medianoche / Inicio del Día</span></div>';
+            
+            for (let h = 0; h <= HOURS_IN_TIMELINE; h++) {
+                let hourToShow = h + 12;
+                let dayLabel = '';
+
+                if (hourToShow >= 24) {
+                    hourToShow -= 24; 
+                    dayLabel = ' (Hoy)';
+                } else {
+                    dayLabel = ' (Ayer)';
+                }
+                
+                const timeLabelText = `${hourToShow.toString().padStart(2, '0')}:00`;
+
+                if (h < HOURS_IN_TIMELINE) {
+                    axisContent += `
+                        <div class="time-label text-left ml-[-0.3rem]" style="grid-column: span 1 / span 1;">
+                            ${timeLabelText}${h % 4 === 0 && h !== 0 ? dayLabel : ''}
+                        </div>
+                    `;
+                }
+            }
+            axisEl.innerHTML = axisContent;
+        }
+
+        // Función para actualizar el estado de los botones de navegación
+        function updateDaySelection(dateKey) {
+            document.querySelectorAll('#day-navigation button').forEach(button => {
+                if (button.dataset.date === dateKey) {
+                    button.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+                    button.classList.add('bg-primary-blue', 'text-white', 'shadow-md');
+                } else {
+                    button.classList.remove('bg-primary-blue', 'text-white', 'shadow-md');
+                    button.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+                }
+            });
+        }
+
+        // Función para renderizar los botones de navegación
+        function renderDayNavigation() {
+            const navEl = document.getElementById('day-navigation');
+            navEl.innerHTML = '';
+            const dates = Object.keys(planningData);
+            
+            dates.forEach(dateKey => {
+                const dayData = planningData[dateKey];
+                const button = document.createElement('button');
+                button.dataset.date = dateKey;
+                const parts = dayData.name.split(' ');
+                const datePart = parts.length > 1 ? parts[1] : '';
+                const dayName = parts[0];
+                button.textContent = `${dayName} ${datePart}`;
+                button.className = 'px-4 py-2 text-sm font-medium rounded-full transition duration-150 ease-in-out whitespace-nowrap';
+                
+                button.addEventListener('click', () => {
+                    currentSelectedDate = dateKey;
+                    renderTimeline(dateKey);
+                });
+
+                navEl.appendChild(button);
+            });
+        }
+
+        // Inicialización de la aplicación
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTimeAxis();
+            renderDayNavigation();
+            // Cargar la visualización inicial
+            if (currentSelectedDate) {
+                renderTimeline(currentSelectedDate);
+            }
+        });
+    </script>
+</body>
+</html>
